@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | OASP System</title>
+    <!-- Font Awesome for Modern Icons (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #F2F2F2;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: #6A0DAD;
+            color: #fff;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            font-size: 1.9em;
+
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        nav ul li a:hover {
+            color: #D8BFD8;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            /* Adjust the width to fit content, subtract padding */
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+
+        /* Registration Section */
+        .registration-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .registration-container h2 {
+            text-align: center;
+            color: #6A0DAD;
+            margin-bottom: 20px;
+        }
+
+        .registration-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .registration-container label {
+            font-weight: bold;
+        }
+
+        .registration-container input,
+        select,
+        button {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .registration-container button {
+            background-color: #6A0DAD;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+
+
+        }
+
+        .registration-container button:hover {
+            background-color: #5A0A8C;
+
+        }
+
+        .submit {
+            display: block;
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-link a {
+            color: #6A0DAD;
+            text-decoration: none;
+        }
+
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link-container a {
+            color: #6A0DAD;
+            text-decoration: none;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #F9F9F9;
+            border-top: 3px solid #6A0DAD;
+            padding: 30px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <h1>ONLINE ASSIGNMENT SUBMISSION PLATFORM</h1>
+        <ul>
+            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Registration Section -->
+    <div class="registration-container">
+        <h2><i class="fas fa-user-circle" style="font-size: 3em; display: block; text-align: center;"></i></h2>
+        <h2 style="text-align: center;">User Registration</h2>
+
+
+        <form id="registrationForm" method="POST"  action="/auth/register">
+            <label for="userType">Register as:</label>
+            <select id="userType" name="role" required>
+                <option value="">--Select--</option>
+                <option value="student">Student</option>
+                <option value="lecturer">Lecturer</option>
+            </select>
+           
+                
+            <label for="name">
+                <i class="fas fa-user"></i> Full Name:
+            </label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" reqiured pattern="^[a-zA-Z\s]+$"
+                title="Only alphabets and spaces are allowed" required>
+
+            <label for="email">
+                <i class="fas fa-envelope"></i> Email Address:
+            </label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="password">
+                <i class="fas fa-lock"></i> Password:
+            </label>
+            <input type="password" id="password" name="password" placeholder="Enter your password"
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
+                title="Minimum 8 characters, at least one uppercase letter, one lowercase letter, and one number"
+                required>
+
+            <div  class="user-fields lecturer" style="display: none;" >
+                <label for="lecturerId">
+                    <i class="fas fa-id-card"></i> Lecturer ID:
+                </label>
+                <input type="text" id="lecturerId" name="lecturerIdNo"
+                        placeholder="Enter your lecturer ID or institutional ID" >
+            </div>
+            <div class="user-fields student" style="display: none;">
+                <label for="admission-no">
+                    <i class="fas fa-id-card"></i> Admission No:
+                </label>
+
+                <input type="text" id="admission-no" name="studentId" placeholder="Enter your student ID (e.g 1910310067)" 
+                pattern="^[a-zA-Z0-9]{10}$" title="10 alphanumeric characters" >
+            </div>
+
+                
+            <button class="submit" type="submit">Register</button>
+            
+        </form>
+        <div class="link-container">
+            <p>Already have an account? <a href="/auth/login">Login here</a></p>
+        </div>
+        <div class="back-link">
+            <a href="/welcome"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Script to display form fields based on user type selection
+        document.getElementById('userType').addEventListener('change', function () {
+            var userType = this.value;
+            document.querySelectorAll('.user-fields').forEach(function (el) {
+                el.style.display = 'none';
+            });
+
+            if (userType === 'student') {
+                document.querySelector('.student').style.display = 'block';
+                
+            } else if (userType === 'lecturer') {
+                document.querySelector('.lecturer').style.display = 'block';
+                
+        }});
+    </script>
+    <footer>
+
+        <div class="right-reserved">
+        <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i> for students
+            and instructors.</p>
+
+        </div>
+
+    </footer>
+</body>
+
+</html>

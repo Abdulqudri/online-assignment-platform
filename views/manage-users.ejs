@@ -1,0 +1,60 @@
+
+    <div class="container">
+        <h1>Manage Users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example user row, dynamic content will be loaded via JS/AJAX -->
+                <tr>
+                    <td>John Doe</td>
+                    <td>john.doe@example.com</td>
+                    <td>Student</td>
+                    <td>
+                        <button class="edit-btn" data-id="1">Edit</button>
+                        <button class="delete-btn" data-id="1">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jane Smith</td>
+                    <td>jane.smith@example.com</td>
+                    <td>Lecturer</td>
+                    <td>
+                        <button class="edit-btn" data-id="2">Edit</button>
+                        <button class="delete-btn" data-id="2">Delete</button>
+                    </td>
+                </tr>
+                <!-- More rows can be dynamically generated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JavaScript to handle actions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle Edit button click
+            document.querySelectorAll('.edit-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const userId = this.dataset.id;
+                    alert('Edit user with ID: ' + userId); // Replace this with AJAX or form redirection
+                });
+            });
+
+            // Handle Delete button click
+            document.querySelectorAll('.delete-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const userId = this.dataset.id;
+                    const confirmation = confirm('Are you sure you want to delete this user?');
+                    if (confirmation) {
+                        alert('User with ID: ' + userId + ' deleted.'); // Replace this with AJAX call to delete user
+                    }
+                });
+            });
+        });
+    </script>

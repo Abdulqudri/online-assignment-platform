@@ -1,0 +1,51 @@
+
+
+    <div class="container">
+        <h1>Create Lecturer ID</h1>
+        <form id="create-lecturer-id-form">
+            <label for="lecturer-id">Lecturer ID</label>
+            <input type="text" id="lecturer-id" name="lecturer-id" readonly placeholder="Auto-generated ID" required>
+
+            <button type="submit">Generate & Create Lecturer ID</button>
+        </form>
+    </div>
+
+    <!-- JavaScript to handle form submission and ID generation -->
+    <script>
+        document.getElementById('create-lecturer-id-form').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Prevent form from submitting normally
+
+    try {
+        // Generate 10-digit numerical Lecturer ID
+        const lecturerId = generateLecturerId();
+
+        // Send POST request
+        const res = await fetch("/createId", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json' // Specify JSON content type
+            },
+            body: JSON.stringify({ lecturerId }) // Wrap the ID in a JSON object
+        });
+
+        if (res.ok) {
+            const result = await res.json(); // Extract the JSON response
+            document.getElementById('lecturer-id').value = result.Id; // Update the input field
+            console.log('Lecturer ID Submitted:', result.Id);
+        } else {
+            console.error('Failed to submit:', res.status, res.statusText); // Log server-side errors
+        }
+    } catch (error) {
+        console.error('Error:', error); // Catch and log any network or JavaScript errors
+    }
+});
+
+        // Function to generate a 10-digit numerical ID
+        function generateLecturerId() {
+            const digits = 10;
+            const min = Math.pow(10, digits - 1);
+            const max = Math.pow(10, digits) - 1;
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    </script>
+

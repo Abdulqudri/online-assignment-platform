@@ -1,0 +1,57 @@
+
+
+    <div class="container">
+        <h1>Create Assignment</h1>
+        <form id="create-assignment-form">
+            <div>
+                <label for="assignment-title">Assignment Title</label>
+                <input type="text" id="assignment-title" placeholder="Enter assignment title" required>
+            </div>
+            <div>
+                <label for="assignment-description">Description</label>
+                <textarea id="assignment-description" placeholder="Enter assignment description" required></textarea>
+            </div>
+            <div>
+                <label for="due-date">Due Date</label>
+                <input type="date" id="due-date" required>
+            </div>
+            <div>
+                <label for="due-time">Due Time</label>
+                <input type="time" id="due-time" required>
+            </div>
+            <div>
+                <label for="file-upload">Attach File (Optional)</label>
+                <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.zip,.pptx">
+            </div>
+            <button type="submit">Create Assignment</button>
+        </form>
+        <div id="response-message" class="success-message"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('create-assignment-form');
+        const responseMessage = document.getElementById('response-message');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const title = document.getElementById('assignment-title').value.trim();
+            const description = document.getElementById('assignment-description').value.trim();
+            const dueDate = document.getElementById('due-date').value;
+            const dueTime = document.getElementById('due-time').value;
+
+            // Basic validation
+            if (!title || !description || !dueDate || !dueTime) {
+                responseMessage.textContent = "All fields (except file upload) are required!";
+                responseMessage.className = "error-message";
+                return;
+            }
+
+            // Simulate success response
+            responseMessage.textContent = "Assignment created successfully!";
+            responseMessage.className = "success-message";
+
+            // Reset form
+            form.reset();
+        });
+    </script>

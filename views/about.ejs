@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | OASP System</title>
+    <!-- Font Awesome for Modern Icons (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #F2F2F2;
+            /* Bright Gray */
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: #6A0DAD;
+            /* Aconite Purple */
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav h1 {
+            font-size: 1.8em;
+            color: #fff;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav ul li a:hover {
+            color: #D8BFD8;
+        }
+
+        /* About Section */
+        .about-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: #fff;
+            margin: 20px auto;
+            max-width: 1000px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-section h2 {
+            color: #6A0DAD;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        /* Features Section */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-box {
+            flex: 1 1 300px;
+            background: #F9F9F9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .feature-box i {
+            color: #6A0DAD;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .feature-box h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .feature-box p {
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        /* Developer Section */
+        .developer-section {
+            background: #F9F9F9;
+            padding: 50px 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .developer-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .developer-section h2 {
+            color: #6A0DAD;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .developer-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .developer-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .developer-info p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .developer-info a {
+            color: #6A0DAD;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .developer-info a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #F9F9F9;
+            border-top: 3px solid #6A0DAD;
+            padding: 30px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-section h2 {
+            color: #6A0DAD;
+            margin-bottom: 15px;
+        }
+
+        .contact-section p {
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        .contact-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-section ul li {
+            margin: 10px 0;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .contact-section ul li i {
+            color: #6A0DAD;
+            margin-right: 8px;
+        }
+
+        .contact-section a,
+        .right-reserved a {
+            color: #6A0DAD;
+            text-decoration: none;
+        }
+
+        .contact-section a:hover,
+        .right-reserved a:hover {
+            text-decoration: underline;
+        }
+
+        .right-reserved {
+            font-size: 0.9em;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .right-reserved i {
+            color: #6A0DAD;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <h1>ONLINE ASSIGNMENT SUBMISSION PLATFORM</h1>
+        <ul>
+            <% if(!user) { %>
+            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
+            <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+            <% }else{ %>
+                <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+                <li>
+                    <a id="logout"><i class="fas fa-sign-in-alt"></i> Logout</a>
+                  </li>
+                <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+            <% } %>
+        </ul>
+    </nav>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <h2> About the Online Assignment Submission Platform</h2>
+        <p id="dynamic-paragraph">
+            The Online Assignment Submission Platform (OASP) is a revolutionary system designed to streamline the
+            submission
+            and evaluation of assignments for students and lecturers. Built with cutting-edge technology, OASP aims to
+            enhance
+            productivity and simplify academic workflows. <br>
+
+            Our platform ensures plagiarism-free submissions, timely feedback, and performance analytics that support
+            both
+            academic excellence and administrative efficiency.
+        </p>
+
+        <div class="features">
+            <div class="feature-box">
+                <i class="fas fa-upload"></i>
+                <h3>Easy Submissions</h3>
+                <p>Upload assignments quickly and get instant confirmation.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-chart-line"></i>
+                <h3>Performance Analytics</h3>
+                <p>Track student progress and course performance easily.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-user-shield"></i>
+                <h3>Secure Access</h3>
+                <p>Built with robust authentication to protect your data.</p>
+            </div>
+        </div>
+    </section>
+    <!-- Developer Section -->
+    <section class="developer-section">
+        <div class="developer-container">
+            <h2>Meet the Developer</h2>
+            <div class="developer-info">
+                <img src="developer picture.jpg" alt="Developer Photo" class="developer-photo">
+                <p>
+                    Hi, I’m <strong>Al-Harbeeb</strong>, a Computer Science undergraduate at Usmanu Danfodiyo
+                    University, Sokoto.
+                    I specialize in developing user-friendly, scalable web applications like the Online Assignment
+                    Submission Platform (OASP).
+                    My goal is to simplify academic workflows with innovative solutions.
+                </p>
+                <p>
+                    Feel free to connect with me: <br>
+                    <a href="mailto:1910310067@udusok.edu.ng"><i class="fas fa-envelope"></i>
+                        1910310067@udusok.edu.ng</a> |
+                    <a href="https://twitter.com/al_harbeeb" target="_blank"><i class="fas fa-twitter"></i>
+                        @al_harbeeb</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <section class="contact-section">
+            <div class="contact-container">
+                <h2>Contact Us</h2>
+                <p>If you have any questions or need assistance, feel free to reach out to us:</p>
+                <ul>
+                    <li><i class="fas fa-phone-alt"></i> Phone: +2349033375279</li>
+                    <li><i class="fas fa-envelope"></i> Email: <a
+                            href="mailto:1910310067@udusok.edu.ng">1910310067@udusok.edu.ng</a></li>
+                    <li><i class="fas fa-twitter"></i> Twitter: <a href="https://twitter.com/al_harbeeb"
+                            target="_blank">@al_harbeeb</a></li>
+                </ul>
+            </div>
+
+            <div class="right-reserved">
+                <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i> for
+                    students and instructors.</p>
+            </div>
+        </section>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const heading = document.getElementById('dynamic-paragraph');
+            heading.style.opacity = '0';
+            heading.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                heading.style.transition = 'opacity 1.5s ease-in-out, transform 10s ease-in-out';
+                heading.style.opacity = '1';
+                heading.style.transform = 'translateY(0)';
+            }, 100); // Delay for animation to start
+        });
+    
+        const logout = document.querySelector("#logout");
+  
+        logout.addEventListener("click", async () => {
+          try {
+            res = await fetch("/auth/logout", {
+              method: "POST",
+              credentials: "include",
+            });
+            if (!res.ok) {
+              alert("Failed to log out.");
+            }
+            alert("logout sucessfully");
+            window.location.href = "/auth/login";
+          } catch (error) {
+            console.log(error);
+          }
+        });
+      </script>
+
+
+</body>
+
+</html>

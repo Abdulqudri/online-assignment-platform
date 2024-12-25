@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | OASP</title>
+    <!-- Font Awesome for Modern Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/public/css/main.css">
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <h1>Online Assignment Submission PLatform</h1>
+        <ul>
+          <li>
+            <a href="/dashboard"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li>
+            <a id="logout"><i class="fas fa-sign-in-alt"></i> Logout</a>
+          </li>
+          <li>
+            <a href="/about"><i class="fas fa-info-circle"></i> About</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2 id="role-title"><%= user.role %> Dasboard</h2>
+        <ul id="sidebar-menu">
+          <!-- Dynamic menu items will be inserted here -->
+
+      <% if (user.role === "student") { %>
+                <li><a href="/view-assignments"><i class="fas fa-book"></i> View Assignments</a></li>
+                <li><a href="/upload-assignments"><i class="fas fa-upload"></i> Upload Assignments</a></li>
+                <li><a href="/view-feedback"><i class="fas fa-comments"></i> View Feedback</a></li>
+                <li><a href="/submission-history"><i class="fas fa-history"></i> Submission History</a></li>
+                <li><a href="/student-manage-course"><i class="fas fa-user-edit"></i>Manage Course</a></li>
+      <% } else if (user.role === "lecturer") { %>
+                <li><a href="/create-assignments"><i class="fas fa-plus-circle"></i> Create Assignments</a></li>
+                <li><a href="/view-submissions"><i class="fas fa-file-alt"></i> View Submissions</a></li>
+                <li><a href="/provide-feedback"><i class="fas fa-check-circle"></i> Provide Feedback</a></li>
+                <li><a href="/assignment-analytics"><i class="fas fa-chart-line"></i> Assignment Analytics</a></li>
+                <li><a href="/lecturer-manage-course"><i class="fas fa-user-edit"></i> Manage Course</a></li>
+                <li><a href="/manage-plagiarism"><i class="fas fa-shield-alt"></i> Manage Plagiarism</a></li>
+      <% } else if (user.role === "admin") { %>
+                <li><a href="/manage-users"><i class="fas fa-users"></i> Manage Users</a></li>
+                <li><a href="/platform-analytics"><i class="fas fa-chart-bar"></i> Platform Analytics</a></li>
+                <li><a href="/generate-lecturerId"><i class="fas fa-cogs"></i> Generate Lecturer ID</a></li>
+                
+                <li><a href="/admin-manage-course"><i class="fas fa-user-edit"></i> Manage course</a></li>
+      <% } %>
+        </ul>
+      </aside>
+      <div class="main-content">
+        <%- body %>
+      </div>
+
+    </main>
+
+     
+      <script>
+
+      const logout = document.querySelector("#logout");
+
+      logout.addEventListener("click", async () => {
+        try {
+          res = await fetch("/auth/logout", {
+            method: "POST",
+            credentials: "include",
+          });
+          if (!res.ok) {
+            alert("Failed to log out.");
+          }
+          alert("logout sucessfully");
+          window.location.href = "/auth/login";
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    </script>
+  </body>
+</html>

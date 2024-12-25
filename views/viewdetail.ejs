@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Submission | Lecturer Dashboard</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #F9F9F9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Submission Details</h1>
+        <div class="details">
+            <div>
+                <label>Student ID:</label>
+                <span id="student-id">20231001</span>
+            </div>
+            <div>
+                <label>Student Name:</label>
+                <span id="student-name">John Doe</span>
+            </div>
+            <div>
+                <label>Assignment Title:</label>
+                <span id="assignment-title">Assignment 1</span>
+            </div>
+            <div>
+                <label>Submission Date:</label>
+                <span id="submission-date">2024-12-20</span>
+            </div>
+        </div>
+
+        <div class="file-viewer">
+            <iframe id="submission-file" src="#"></iframe>
+        </div>
+
+        <div class="actions">
+            <a id="download-link" href="#" download>Download Submission</a>
+            <a href="view-submissions.html">Back to Submissions</a>
+        </div>
+    </div>
+
+    <script>
+        // Simulated data for the submission details (replace with back-end integration)
+        const submissionDetails = {
+            studentId: "20231001",
+            studentName: "John Doe",
+            assignmentTitle: "Assignment 1",
+            submissionDate: "2024-12-20",
+            fileUrl: "example-submission.pdf" // Replace with the actual file path or URL
+        };
+
+        // Populate data dynamically
+        document.getElementById('student-id').textContent = submissionDetails.studentId;
+        document.getElementById('student-name').textContent = submissionDetails.studentName;
+        document.getElementById('assignment-title').textContent = submissionDetails.assignmentTitle;
+        document.getElementById('submission-date').textContent = submissionDetails.submissionDate;
+        document.getElementById('submission-file').src = submissionDetails.fileUrl;
+        document.getElementById('download-link').href = submissionDetails.fileUrl;
+    </script>

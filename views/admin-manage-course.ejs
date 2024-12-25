@@ -1,0 +1,198 @@
+<div class="admin-manage-container">
+    <h1>Manage Courses & Departments</h1>
+
+    <!-- Add Department Section -->
+    <div class="form-group">
+        <label for="new-department">Add New Department:</label>
+        <input type="text" id="new-department" placeholder="Enter department name">
+        <button id="add-department" onclick="createDepartment()">Add Department</button>
+        <div id="department-message" class="success-message" style="display: none;"></div>
+    </div>
+
+    <!-- Add Course Section -->
+    <div class="form-group">
+        <label for="select-department">Select Department:</label>
+        <select id="select-department">
+            <option value="" disabled selected>-- Select Department --</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="new-course-name">Add New Course:</label>
+        <input type="text" id="new-course-name" placeholder="Enter course name">
+        <input type="text" id="new-course-code" placeholder="Enter course code">
+        <button id="add-course" onclick="createCourse()">Add Course</button>
+        <div id="course-message" class="success-message" style="display: none;"></div>
+    </div>
+
+    <!-- Departments and Courses List -->
+    <div class="table-container">
+        <h2>Departments and Courses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Courses</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="data-table"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const departmentMessage = document.getElementById('department-message');
+    const courseMessage = document.getElementById('course-message');
+    const selectDepartment = document.getElementById('select-department');
+    const dataTable = document.getElementById('data-table');
+
+    // Fetch all departments and populate dropdown and table
+    async function fetchDepartments() {
+        try {
+            const res = await fetch('/all-dept');
+            const result = await res.json();
+
+            if (res.ok) {
+                populateDepartments(result.data || []);
+            } else {
+                console.error('Error fetching departments:', result.message);
+            }
+        } catch (error) {
+            console.error('Error fetching departments:', error);
+        }
+    }
+
+    // Populate departments in dropdown and table
+    function populateDepartments(departments) {
+        selectDepartment.innerHTML = '<option value="" disabled selected>-- Select Department --</option>';
+        dataTable.innerHTML = '';
+
+        departments.forEach(dept => {
+            // Populate dropdown
+            const option = document.createElement('option');
+            option.value = dept._id;
+            option.textContent = dept.departmentName;
+            selectDepartment.appendChild(option);
+
+            // Populate table
+            const row = document.createElement('tr');
+
+            // Department Name
+            const departmentCell = document.createElement('td');
+            departmentCell.textContent = dept.departmentName;
+            row.appendChild(departmentCell);
+
+            // Courses
+            const coursesCell = document.createElement('td');
+            coursesCell.textContent = (dept.courses || []).map(course => `${course.name} (${course.code})`).join(', ') || 'No courses';
+            row.appendChild(coursesCell);
+
+            // Actions
+            const actionsCell = document.createElement('td');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.onclick = () => deleteDepartment(dept._id);
+            actionsCell.appendChild(deleteBtn);
+            row.appendChild(actionsCell);
+
+            dataTable.appendChild(row);
+        });
+    }
+
+    // Create a new department
+    async function createDepartment() {
+        const departmentName = document.getElementById('new-department').value.trim();
+
+        if (!departmentName) {
+            departmentMessage.textContent = 'Department name is required.';
+            departmentMessage.style.display = 'block';
+            setTimeout(() => departmentMessage.style.display = 'none', 3000)
+            return;
+        }
+
+        try {
+            const res = await fetch('/new-dept', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ departmentName }),
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                departmentMessage.textContent = result.message || 'Department added successfully!';
+                fetchDepartments();
+            } else {
+                departmentMessage.textContent = result.error || 'Error creating department.';
+            }
+        } catch (error) {
+            departmentMessage.textContent = 'Something went wrong. Please try again.';
+        } finally {
+            departmentMessage.style.display = 'block';
+            setTimeout(() => departmentMessage.style.display = 'none', 3000);
+        }
+    }
+
+    // Add a course to a department
+    async function createCourse() {
+        const departmentId = selectDepartment.value;
+        const courseName = document.getElementById('new-course-name').value.trim();
+        const courseCode = document.getElementById('new-course-code').value.trim();
+        if (!departmentId || !courseName || !courseCode) {
+            courseMessage.textContent = 'All fields are required.';
+            courseMessage.style.display = 'block';
+            setTimeout(() => courseMessage.style.display = 'none', 3000);
+            return;
+        }
+
+        try {
+            const res = await fetch(`/new-course/${departmentId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: courseName, code: courseCode }),
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                courseMessage.textContent = result.message || 'Course added successfully!';
+                fetchDepartments();
+            } else {
+                courseMessage.textContent = result.error || 'Error adding course.';
+            }
+        } catch (error) {
+            courseMessage.textContent = 'Something went wrong. Please try again.';
+        } finally {
+            courseMessage.style.display = 'block';
+            setTimeout(() => courseMessage.style.display = 'none', 3000);
+        }
+    }
+
+    // Delete a department
+    async function deleteDepartment(departmentId) {
+        try {
+            const res = await fetch(`/delete-dept/${departmentId}`, {
+                method: 'POST',
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                alert(result.message || 'Department deleted successfully!');
+                fetchDepartments();
+            } else {
+                alert(result.error || 'Error deleting department.');
+            }
+        } catch (error) {
+            console.error('Error deleting department:', error);
+        }
+    }
+
+    // Initial fetch of departments
+    fetchDepartments();
+</script>

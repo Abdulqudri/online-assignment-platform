@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Online Assignment Submission Platform</title>
+    <!-- Font Awesome for Modern Icons (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #F1E6EA;
+            /* Bright Gray */
+            color: #6A0DAD;
+            line-height: 1.8;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: #6A0DAD;
+            color: #fff;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            font-size: 1.8em;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        nav ul li a:hover {
+            color: #D8BFD8;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: #fff;
+            border-bottom: 3px solid #6A0DAD;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero h2 {
+            color: #6A0DAD;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .hero .btn {
+            background-color: #6A0DAD;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .hero .btn:hover {
+            background-color: #5A0A8C;
+        }
+
+        /* Features Section */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 30px 20px;
+            background-color: #f9fafb;
+        }
+
+        .feature {
+            flex: 1 1 250px;
+            background: #fff;
+            margin: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature i {
+            color: #6A0DAD;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        /* Footer Section */
+        footer {
+            background: #F9F9F9;
+            border-top: 3px solid #6A0DAD;
+            padding: 30px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-section h2 {
+            color: #6A0DAD;
+            margin-bottom: 15px;
+        }
+
+        .contact-section p {
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        .contact-section a,
+        .right-reserved a {
+            color: #6A0DAD;
+            text-decoration: none;
+        }
+
+        .contact-section a:hover,
+        .right-reserved a:hover {
+            text-decoration: underline;
+        }
+
+        .right-reserved {
+            font-size: 0.9em;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .right-reserved i {
+            color: #6A0DAD;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <h1>ONLINE ASSIGNMENT SUBMISSION PLATFORM</h1>
+        <ul>
+            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
+            <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2 id="dynamic-heading">Welcome to the Online Assignment Submission Platform</h2>
+
+       
+
+        <p>
+            Our platform streamlines assignment submissions, offering an efficient way <br>for students to submit work,
+            lecturers to evaluate, and administrators to manage academic tasks.<br> Accessible, secure, and
+            user-friendly.
+        </p>
+        <a href="/auth/register" class="btn">Get Started</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="feature">
+            <i class="fas fa-file-upload"></i>
+            <h3>Easy Submission</h3>
+            <p>Upload assignments securely and receive instant confirmation.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-search"></i>
+            <h3>Plagiarism Check</h3>
+            <p>Ensure originality with integrated plagiarism detection tools.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-comment-dots"></i>
+            <h3>Real-time Feedback</h3>
+            <p>Receive timely feedback to improve your academic work.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-chart-line"></i>
+            <h3>Track Progress</h3>
+            <p>Stay updated with assignment scores and performance reports.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+
+        <section class="contact-section">
+            <div class="contact-container">
+                <h2>Contact Us</h2>
+                <p>If you have any questions or need assistance, feel free to reach out to us:</p>
+                <ul>
+                    <li><i class="fas fa-phone-alt"></i> Phone: +2349033375279</li>
+                    <li><i class="fas fa-envelope"></i> Email: <a
+                            href="mailto:1910310067@udusok.edu.ng">1910310067@udusok.edu.ng</a></li>
+                    <li><i class="fas fa-twitter"></i> Twitter: <a href="https://twitter.com/al_harbeeb"
+                            target="_blank">@al_harbeeb</a></li>
+                </ul>
+            </div>
+
+            </div class="right-reserved">
+            <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i> for
+                students and instructors.
+
+                </div>
+        </section>
+
+
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const heading = document.getElementById('dynamic-heading');
+            heading.style.opacity = '0';
+            heading.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                heading.style.transition = 'opacity 5s ease-in-out, transform 1.5s ease-in-out';
+                heading.style.opacity = '1';
+                heading.style.transform = 'translateY(0)';
+            }, 100); // Delay for animation to start
+        });
+    </script>
+</body>
+
+</html>

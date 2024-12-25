@@ -1,0 +1,49 @@
+    <div class="container">
+        <h1>Update Profile</h1>
+        <form action="update-profile-process.php" method="post">
+            <label for="full-name">Full Name</label>
+            <input type="text" id="full-name" name="full_name" placeholder="Enter your full name" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="password">New Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your new password">
+
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your new password">
+
+            <label for="bio">Bio</label>
+            <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+
+    <!-- Example script to handle form submission -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent actual form submission for demonstration
+                
+                // Validate form data before submitting (if necessary)
+                const fullName = document.getElementById('full-name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                if (password && password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return false;
+                }
+
+                // Submit form data via AJAX or a similar mechanism
+                // Here we would normally use fetch or XMLHttpRequest to send data
+                alert('Form submitted successfully!');
+            });
+        });
+    </script>
+
+

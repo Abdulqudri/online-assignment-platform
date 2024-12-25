@@ -1,0 +1,1238 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  main {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+
+  /* Navigation Bar */
+  nav {
+    background: #6a0dad;
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  nav h1 {
+    color: white;
+    font-size: 1.8em;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  nav ul li a:hover {
+    color: #d8bfd8;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    background: #6a0dad;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sidebar ul li {
+    margin: 15px 0;
+  }
+
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar ul li a:hover {
+    color: #d8bfd8;
+  }
+
+  .sidebar ul li i {
+    font-size: 1.3em;
+  }
+
+  /* Main Content */
+  .main-content {
+
+    flex: 1;
+    padding: 30px;
+  }
+
+  .main-content h1 {
+    color: #6a0dad;
+    margin-bottom: 20px;
+  }
+
+  /* Icon Grid */
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+  }
+
+  .icon-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+  }
+
+  .icon-card i {
+    font-size: 2.5em;
+    color: #6a0dad;
+    margin-bottom: 10px;
+  }
+
+  .icon-card h3 {
+    font-size: 1.1em;
+    color: #333;
+  }
+
+  .icon-card:hover {
+    transform: translateY(-5px);
+  }
+   /* View assignment styles*/
+   .assignments-container h2 {
+    text-align: center;
+    color: #6A0DAD;
+    margin-bottom: 20px;
+}
+
+/* Assignments Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table thead {
+    background-color: #6A0DAD;
+    color: #fff;
+}
+
+table thead th {
+    padding: 10px;
+    text-align: left;
+}
+
+table tbody tr {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:nth-child(even) {
+    background: #F9F9F9;
+}
+
+table tbody td {
+    padding: 10px;
+}
+
+.btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+    color: #fff;
+    display: inline-block;
+}
+
+.btn-submit {
+    background: #28a745;
+}
+
+.btn-view {
+    background: #007bff;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Upload Container */
+.upload-container {
+    background: #fff;
+    width: 90%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.upload-container h2 {
+    text-align: center;
+    color: #6A0DAD;
+    margin-bottom: 20px;
+}
+
+.upload-container label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.upload-container input,
+.upload-container textarea,
+.upload-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.upload-container textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.upload-container input[type="file"] {
+    padding: 5px;
+}
+
+.upload-container button {
+    display: block;
+    width: 100%;
+    background: #6A0DAD;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.upload-container button:hover {
+    background: #5a0cbb;
+}
+
+.upload-container .note {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: -15px;
+    margin-bottom: 20px;
+}
+/* update profile styles */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 100%;
+}
+
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+input, textarea, select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background: #6A0DAD;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #5A0A8A;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+/* Feedback Container */
+.feedback-container {
+    background: #fff;
+    width: 90%;
+    max-width: 1000px;
+    padding: 30px;
+    border-radius: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-container h2 {
+    text-align: center;
+    color: #6A0DAD;
+    margin-bottom: 20px;
+}
+
+/* Feedback Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table thead {
+    background-color: #6A0DAD;
+    color: #fff;
+}
+
+table thead th {
+    padding: 10px;
+    text-align: left;
+}
+
+table tbody tr {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:nth-child(even) {
+    background: #F9F9F9;
+}
+
+table tbody td {
+    padding: 10px;
+}
+
+.btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+    color: #fff;
+    display: inline-block;
+}
+
+.btn-view {
+    background: #007bff;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Submission History Container */
+.history-container {
+    background: #fff;
+    width: 90%;
+    max-width: 1000px;
+    padding: 30px;
+    border-radius: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.history-container h2 {
+    text-align: center;
+    color: #6A0DAD;
+    margin-bottom: 20px;
+}
+
+/* History Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table thead {
+    background-color: #6A0DAD;
+    color: #fff;
+}
+
+table thead th {
+    padding: 10px;
+    text-align: left;
+}
+
+table tbody tr {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:nth-child(even) {
+    background: #F9F9F9;
+}
+
+table tbody td {
+    padding: 10px;
+}
+
+.btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+    color: #fff;
+    display: inline-block;
+}
+
+.btn-feedback {
+    background: #007bff;
+}
+
+.btn-view {
+    background: #28a745;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+/*  create assignment styles */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    max-width: 100%;
+}
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: 600;
+    color: #333;
+}
+
+input[type="text"], textarea, input[type="date"], input[type="time"], input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background: #6A0DAD;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #5A0A8A;
+}
+
+.success-message {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/*  provide feedback stles */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    max-width: 100%;
+}
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.feedback-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.feedback-form input, .feedback-form textarea, .feedback-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.feedback-form textarea {
+    resize: none;
+    height: 150px;
+}
+
+.feedback-form button {
+    padding: 10px;
+    background-color: #6A0DAD;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.feedback-form button:hover {
+    background-color: #5A0A8A;
+}
+
+.success-message {
+    color: #28A745;
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+/* view submission styles */
+.view-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1200px;
+}
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table thead {
+    background-color: #6A0DAD;
+    color: white;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.actions a {
+    color: #6A0DAD;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}
+
+.actions a:hover {
+    color: #5A0A8A;
+}
+
+.message {
+    text-align: center;
+    color: #888;
+    margin-top: 20px;
+}
+
+/* manage plagmiasism styles */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    max-width: 100%;
+}
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #6A0DAD;
+    color: #fff;
+}
+
+button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #6A0DAD;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #5A0A8A;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.filter {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter input, .filter select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .filter {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+/* Assignment analytic styles */
+.container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 900px;
+}
+
+h1 {
+    color: #6A0DAD;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.charts {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+}
+
+.info-section {
+    margin-top: 20px;
+}
+
+.info-section h2 {
+    color: #6A0DAD;
+    margin-bottom: 10px;
+}
+
+.info-section ul {
+    list-style: none;
+    padding-left: 0;
+    font-size: 1.1em;
+}
+
+.info-section ul li {
+    margin-bottom: 5px;
+}
+
+/* platform analytic */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    max-width: 100%;
+}
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.chart-container {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #6A0DAD;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+/* manage users styles */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    max-width: 100%;
+}
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #6A0DAD;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f2f2f2;
+}
+
+button {
+    background: #6A0DAD;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #5A0A8A;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+
+/* generate lecturer ID */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 100%;
+}
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+input, button {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+button {
+    background: #6A0DAD;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #5A0A8A;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+/* view detail style */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    max-width: 100%;
+}
+
+h1 {
+    color: #6A0DAD;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1em;
+}
+
+.details label {
+    font-weight: bold;
+}
+
+.details span {
+    margin-bottom: 10px;
+}
+
+.actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.actions a {
+    text-decoration: none;
+    color: white;
+    background-color: #6A0DAD;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    margin-right: 10px;
+}
+
+.actions a:hover {
+    background-color: #5A0A8A;
+}
+
+.actions a:last-child {
+    background-color: #FF6B6B;
+}
+
+.actions a:last-child:hover {
+    background-color: #D9534F;
+}
+
+.file-viewer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.file-viewer iframe {
+    width: 100%;
+    height: 400px;
+    border: none;
+    border-radius: 4px;
+}
+
+ /* lecturer manage course style */
+ .manage-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 600px;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+h1 {
+    color: #6A0DAD;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+select, button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+button {
+    background-color: #6A0DAD;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #5A0A8A;
+}
+
+.success-message {
+    color: #28A745;
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+
+/* student manage course style */
+
+.student-manage-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 600px;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+h1 {
+    color: #6A0DAD;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+select, button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+button {
+    background-color: #6A0DAD;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #5A0A8A;
+}
+
+.success-message {
+    color: #28A745;
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+.selected-courses {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.selected-courses h2 {
+    font-size: 1.2em;
+    color: #6A0DAD;
+    margin-bottom: 10px;
+}
+
+.selected-courses ul {
+    list-style: disc;
+    padding-left: 20px;
+    color: #555;
+}
+
+.selected-courses ul li {
+    margin-bottom: 5px;
+}
+
+#enroll-button {
+    display: none;
+    margin-top: 20px;
+    background-color: #28A745;
+    font-size: 1.1em;
+}
+
+#enroll-button:hover {
+    background-color: #218838;
+}
+
+/* admin manage course style */
+
+.admin-manage-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 800px;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+h1 {
+    color: #6A0DAD;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+button {
+    background-color: #6A0DAD;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #5A0A8A;
+}
+
+.success-message, .error-message {
+    color: #fff;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    display: none;
+}
+
+.success-message {
+    background-color: #28A745;
+}
+
+.error-message {
+    background-color: #DC3545;
+}
+
+.table-container {
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #6A0DAD;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #DC3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.delete-btn:hover {
+    background-color: #B02A37;
+}

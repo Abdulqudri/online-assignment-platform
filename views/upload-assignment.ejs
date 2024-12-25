@@ -1,0 +1,30 @@
+    <div class="upload-container">
+        <h2>Upload Your Assignment</h2>
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <label for="assignment-title">Assignment Title</label>
+            <input type="text" id="assignment-title" name="assignment_title" placeholder="Enter assignment title" required>
+
+            <label for="course">Select Course</label>
+            <select id="course" name="course" required>
+                <option value="" disabled selected>-- Select Your Course --</option>
+                <option value="course1">Introduction to AI</option>
+                <option value="course2">Web Development</option>
+                <option value="course3">Data Structures</option>
+            </select>
+
+            <label for="file-upload">Upload File</label>
+            <input type="file" id="file-upload" name="file_upload" accept=".pdf,.docx,.zip" required>
+            <p class="note">Supported formats: PDF, DOCX, ZIP. Max size: 10MB.</p>
+
+            <label for="comments">Comments (Optional)</label>
+            <textarea id="comments" name="comments" placeholder="Add any additional comments"></textarea>
+
+            <label for="plagiarism-check">
+                <input type="checkbox" id="plagiarism-check" name="plagiarism_check">
+                Enable Plagiarism Check
+            </label>
+
+            <button type="submit"><i class="fas fa-upload"></i> Submit Assignment</button>
+        </form>
+    </div>
+

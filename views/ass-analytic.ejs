@@ -1,0 +1,121 @@
+
+
+    <div class="container">
+        <h1>Assignment Analytics</h1>
+
+        <div class="charts">
+            <!-- Submission Status Chart -->
+            <div class="chart-container">
+                <canvas id="submissionStatusChart"></canvas>
+            </div>
+
+            <!-- Grade Distribution Chart -->
+            <div class="chart-container">
+                <canvas id="gradeDistributionChart"></canvas>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Quick Stats</h2>
+            <ul id="quick-stats">
+                <!-- Stats will be populated here dynamically -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Simulated data (replace with real back-end integration)
+        const analyticsData = {
+            totalStudents: 50,
+            submissions: 40,
+            pendingSubmissions: 10,
+            gradeDistribution: {
+                "A+": 10,
+                "A": 12,
+                "B+": 8,
+                "B": 6,
+                "C+": 2,
+                "C": 2,
+                "D": 0,
+                "F": 0
+            }
+        };
+
+        // Calculate percentages
+        const submissionPercentage = ((analyticsData.submissions / analyticsData.totalStudents) * 100).toFixed(1);
+        const pendingPercentage = ((analyticsData.pendingSubmissions / analyticsData.totalStudents) * 100).toFixed(1);
+
+        // Populate quick stats
+        const quickStats = document.getElementById('quick-stats');
+        quickStats.innerHTML = `
+            <li>Total Students: ${analyticsData.totalStudents}</li>
+            <li>Submissions Received: ${analyticsData.submissions} (${submissionPercentage}%)</li>
+            <li>Pending Submissions: ${analyticsData.pendingSubmissions} (${pendingPercentage}%)</li>
+        `;
+
+        // Submission Status Chart
+        const submissionStatusCtx = document.getElementById('submissionStatusChart').getContext('2d');
+        new Chart(submissionStatusCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Submitted', 'Pending'],
+                datasets: [{
+                    data: [analyticsData.submissions, analyticsData.pendingSubmissions],
+                    backgroundColor: ['#6A0DAD', '#FF6B6B']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Submission Status'
+                    }
+                }
+            }
+        });
+
+        // Grade Distribution Chart
+        const gradeDistributionCtx = document.getElementById('gradeDistributionChart').getContext('2d');
+        new Chart(gradeDistributionCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(analyticsData.gradeDistribution),
+                datasets: [{
+                    label: 'Number of Students',
+                    data: Object.values(analyticsData.gradeDistribution),
+                    backgroundColor: '#6A0DAD'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Grade Distribution'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Grades'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Students'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>

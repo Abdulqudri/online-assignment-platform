@@ -1,0 +1,72 @@
+<!-- Main Content -->
+
+    <h1><%= user.name %> Welcome to Your Dashboard</h1>
+    <div class="icon-grid" id="icon-grid">
+        <% if (user.role === "student") { %>
+            <a href="/view-assignments" class="icon-card">
+                <i class="fas fa-book"></i>
+                <h3>View Assignments</h3>
+            </a>
+            <a href="/upload-assignments" class="icon-card">
+                <i class="fas fa-upload"></i>
+                <h3>Upload Assignments</h3>
+            </a>
+            <a href="/view-feedback" class="icon-card">
+                <i class="fas fa-comments"></i>
+                <h3>View Feedback</h3>
+            </a>
+            <a href="/submission-history" class="icon-card">
+                <i class="fas fa-history"></i>
+                <h3>Submission History</h3>
+            </a>
+            <a href="/student-manage-course" class="icon-card">
+                <i class="fas fa-user-edit"></i>
+                <h3>Manage Course</h3>
+            </a>
+        <% } else if (user.role === "lecturer") { %>
+            <a href="/create-assignments" class="icon-card">
+                <i class="fas fa-plus-circle"></i>
+                <h3>Create Assignments</h3>
+            </a>
+            <a href="/view-submissions" class="icon-card">
+                <i class="fas fa-file-alt"></i>
+                <h3>View Submissions</h3>
+            </a>
+            <a href="/provide-feedback" class="icon-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>Provide Feedback</h3>
+            </a>
+            <a href="/assignment-analytics" class="icon-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Assignment Analytics</h3>
+            </a>
+            <a href="/lecturer-manage-course" class="icon-card">
+                <i class="fas fa-user-edit"></i>
+                <h3>Manage Course</h3>
+            </a>
+            <a href="/manage-plagiarism" class="icon-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Manage Plagiarism</h3>
+            </a>
+        <% } else if (user.role === "admin") { %>
+            <a href="/manage-users" class="icon-card">
+                <i class="fas fa-users"></i>
+                <h3>Manage Users</h3>
+            </a>
+            <a href="/platform-analytics" class="icon-card">
+                <i class="fas fa-chart-bar"></i>
+                <h3>Platform Analytics</h3>
+            </a>
+            </a>
+            <a href="/generate-lecturerId" class="icon-card">
+                <i class="fas fa-cogs"></i>
+                <h3> Generate Lecturer ID</h3>
+            </a>
+            <a href="/admin-manage-course" class="icon-card">
+                <i class="fas fa-user-edit"></i>
+                <h3>Manage Course</h3>
+            </a>
+        <% } else { %>
+            <p>You do not have access to these features.</p>
+        <% } %>
+    </div>

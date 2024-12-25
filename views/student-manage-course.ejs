@@ -1,0 +1,102 @@
+
+
+    <div class="student-manage-container">
+        <h1>Manage Courses</h1>
+        <form id="manage-courses-form">
+            <div class="form-group">
+                <label for="department">Select Department:</label>
+                <select id="department" name="department" required>
+                    <option value="" disabled selected>-- Select Department --</option>
+                    <option value="computer-science">Computer Science</option>
+                    <option value="information-technology">Information Technology</option>
+                    <option value="electrical-engineering">Electrical Engineering</option>
+                    <option value="mechanical-engineering">Mechanical Engineering</option>
+                    <option value="civil-engineering">Civil Engineering</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="courses">Select Courses:</label>
+                <select id="courses" name="courses" multiple required>
+                    <option value="" disabled>-- Select Department First --</option>
+                </select>
+            </div>
+            <button type="submit">Add Courses</button>
+        </form>
+        <div class="success-message" id="success-message">
+            Courses have been successfully added to your list!
+        </div>
+        <div class="selected-courses" id="selected-courses">
+            <h2>Selected Courses:</h2>
+            <ul id="courses-list"></ul>
+            <button id="enroll-button">Enroll</button>
+        </div>
+    </div>
+
+    <script>
+        const departmentSelect = document.getElementById('department');
+        const coursesSelect = document.getElementById('courses');
+        const successMessage = document.getElementById('success-message');
+        const coursesList = document.getElementById('courses-list');
+        const enrollButton = document.getElementById('enroll-button');
+        const manageCoursesForm = document.getElementById('manage-courses-form');
+
+        // Mock data for courses
+        const departmentCourses = {
+            "computer-science": ["Data Structures", "Algorithms", "Operating Systems", "Artificial Intelligence"],
+            "information-technology": ["Web Development", "Database Systems", "Cyber Security", "Cloud Computing"],
+            "electrical-engineering": ["Circuit Analysis", "Electromagnetics", "Power Systems", "Control Systems"],
+            "mechanical-engineering": ["Thermodynamics", "Fluid Mechanics", "Material Science", "Manufacturing Processes"],
+            "civil-engineering": ["Structural Analysis", "Concrete Technology", "Environmental Engineering", "Transportation Engineering"]
+        };
+
+        // Update courses based on selected department
+        departmentSelect.addEventListener('change', function () {
+            const selectedDepartment = this.value;
+            coursesSelect.innerHTML = ""; // Clear previous options
+
+            if (selectedDepartment && departmentCourses[selectedDepartment]) {
+                departmentCourses[selectedDepartment].forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.toLowerCase().replace(/ /g, '-');
+                    option.textContent = course;
+                    coursesSelect.appendChild(option);
+                });
+                coursesSelect.multiple = true; // Allow multiple selection
+            } else {
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = "-- Select Department First --";
+                option.disabled = true;
+                coursesSelect.appendChild(option);
+            }
+        });
+
+        // Form submission handling
+        manageCoursesForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get selected courses
+            const selectedCourses = Array.from(coursesSelect.selectedOptions).map(option => option.text);
+
+            // Append new selected courses to the list
+            selectedCourses.forEach(course => {
+                const li = document.createElement('li');
+                li.textContent = course;
+                coursesList.appendChild(li);
+            });
+
+            // Show success message and enroll button
+            successMessage.style.display = 'block';
+            enrollButton.style.display = 'block';
+
+            // Reset message after 3 seconds
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        });
+
+        // Enroll button functionality
+        enrollButton.addEventListener('click', () => {
+            alert('You have successfully enrolled in the selected courses!');
+        });
+    </script>

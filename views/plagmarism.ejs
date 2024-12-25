@@ -1,0 +1,92 @@
+
+
+    <div class="container">
+        <h1>Manage Plagiarism</h1>
+
+        <div class="filter">
+            <input type="text" id="student-name" placeholder="Search by Student Name">
+            <select id="plagiarism-threshold">
+                <option value="">Filter by Plagiarism Score</option>
+                <option value="50">Above 50%</option>
+                <option value="75">Above 75%</option>
+                <option value="90">Above 90%</option>
+            </select>
+            <button onclick="applyFilter()">Apply Filter</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Assignment ID</th>
+                    <th>Student Name</th>
+                    <th>Plagiarism Score (%)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="plagiarism-data">
+                <!-- Dynamic rows will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JavaScript to handle plagiarism data -->
+    <script>
+        const plagiarismData = [
+            { id: "A101", student: "Alice Johnson", score: 85 },
+            { id: "A102", student: "Bob Smith", score: 65 },
+            { id: "A103", student: "Charlie Brown", score: 95 },
+            { id: "A104", student: "Diana Prince", score: 72 }
+        ];
+
+        const plagiarismTable = document.getElementById('plagiarism-data');
+
+        // Function to populate plagiarism data
+        function loadPlagiarismData(data) {
+            plagiarismTable.innerHTML = ''; // Clear existing data
+            data.forEach(item => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.student}</td>
+                    <td>${item.score}</td>
+                    <td class="action-buttons">
+                        <button onclick="reviewAssignment('${item.id}')">Review</button>
+                        <button onclick="flagAssignment('${item.id}')">Flag</button>
+                    </td>
+                `;
+
+                plagiarismTable.appendChild(row);
+            });
+        }
+
+        // Filter function
+        function applyFilter() {
+            const nameFilter = document.getElementById('student-name').value.toLowerCase();
+            const scoreFilter = document.getElementById('plagiarism-threshold').value;
+
+            const filteredData = plagiarismData.filter(item => {
+                const matchesName = item.student.toLowerCase().includes(nameFilter);
+                const matchesScore = !scoreFilter || item.score > parseInt(scoreFilter);
+
+                return matchesName && matchesScore;
+            });
+
+            loadPlagiarismData(filteredData);
+        }
+
+        // Simulate reviewing an assignment
+        function reviewAssignment(id) {
+            alert(`Reviewing assignment with ID: ${id}`);
+            // Implement actual review logic here
+        }
+
+        // Simulate flagging an assignment
+        function flagAssignment(id) {
+            alert(`Flagged assignment with ID: ${id}`);
+            // Implement actual flagging logic here
+        }
+
+        // Load data on page load
+        loadPlagiarismData(plagiarismData);
+    </script>

@@ -1,0 +1,62 @@
+
+
+    <div class="view-container">
+        <h1>View Submissions</h1>
+        <div id="submission-content">
+            <!-- Submissions will be dynamically populated here -->
+        </div>
+    </div>
+
+    <script>
+        // Simulated submissions data (replace with back-end integration)
+        const submissions = [
+            { studentId: "20231001", name: "John Doe", title: "Assignment 1", submissionDate: "2024-12-20", fileUrl: "#" },
+            { studentId: "20231002", name: "Jane Smith", title: "Assignment 1", submissionDate: "2024-12-21", fileUrl: "#" },
+            { studentId: "20231003", name: "Emily Johnson", title: "Assignment 1", submissionDate: "2024-12-22", fileUrl: "#" },
+        ];
+
+        const submissionContent = document.getElementById('submission-content');
+
+        if (submissions.length > 0) {
+            // Create table structure
+            let tableHtml = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Assignment Title</th>
+                            <th>Submission Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            // Populate rows dynamically
+            submissions.forEach(submission => {
+                tableHtml += `
+                    <tr>
+                        <td>${submission.studentId}</td>
+                        <td>${submission.name}</td>
+                        <td>${submission.title}</td>
+                        <td>${submission.submissionDate}</td>
+                        <td class="actions">
+                            <a href="${submission.fileUrl}" target="_blank"><i class="fas fa-eye"></i> View</a>
+                            <a href="${submission.fileUrl}" download><i class="fas fa-download"></i> Download</a>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += `
+                    </tbody>
+                </table>
+            `;
+
+            submissionContent.innerHTML = tableHtml;
+        } else {
+            // If no submissions are available
+            submissionContent.innerHTML = '<p class="message">No submissions available.</p>';
+        }
+    </script>
