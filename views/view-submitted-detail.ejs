@@ -1,29 +1,24 @@
 <div class="container">
-    <h1>Assignment Details</h1>
+    <h1>Submission Details</h1>
     <div class="details">
         <div>
-            <label>Assignment Course:</label>
-            <span id="assignment-title"><%= assignment.course.name %></span>
+            <label>Student ID:</label>
+            <span id="student-id"><%= assignment.submittedBy.userId %></span>
+        </div>
+        <div>
+            <label>Student Name:</label>
+            <span id="student-name"><%= assignment.submittedBy.name %></span>
         </div>
         <div>
             <label>Assignment Title:</label>
-            <span id="assignment-title"><%= assignment.title %></span>
-        </div>
-        <div>
-            <label>Description:</label>
-            <span id="assignment-description"><%= assignment.description %></span>
-        </div>
-        <div>
-            <label>Assignment Status:</label>
-            <span id="assignment-status"><%= assignment.status %></span>
+            <span id="assignment-title"><%= assignment.assignment.title %></span>
         </div>
         <div>
             <label>Submission Date:</label>
-            <span id="submission-date"><%= new Date(assignment.dueDate).toLocaleDateString() %></span>
+            <span id="submission-date"><%= new Date(assignment.submittedAt).toLocaleDateString() %></span>
         </div>
     </div>
 
-    <!-- Display the file in an iframe -->
     <div class="file-viewer">
         <% if (assignment.filePath) { %>
             <% const fileExtension = assignment.filePath.split('.').pop().toLowerCase(); %>
@@ -35,19 +30,21 @@
                     height="500px" 
                     frameborder="0">
                 </iframe>
+            <% } else if (fileExtension === 'docx') { %>
+                <p>DOCX files cannot be viewed directly in the browser. <a href="/documents/download/<%= assignment.filePath.replace('/uploads/', '') %>" download>Download the file</a> instead.</p>
             <% } else { %>
-                <p>Only PDF files are supported for viewing.</p>
+                <p>Unable to display this file type.</p>
             <% } %>
         <% } else { %>
-            <p>No file uploaded for this assignment.</p>
+            <p>No file uploaded for this submission.</p>
         <% } %>
     </div>
 
     <!-- Action buttons -->
     <div class="actions">
-        <% if (assignment.filePath && assignment.filePath.split('.').pop().toLowerCase() === 'pdf') { %>
+        <% if (assignment.filePath && (assignment.filePath.split('.').pop().toLowerCase() !== 'docx')) { %>
             <a id="download-link" href="/documents/download/<%= assignment.filePath.replace('/uploads/', '') %>" download>Download Submission</a>
         <% } %>
-        <a href="/view-assignments">Back to Assignments</a>
+        <a href="/view-assignments">Back to Submissions</a>
     </div>
 </div>

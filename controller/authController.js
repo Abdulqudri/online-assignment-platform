@@ -58,7 +58,7 @@ const authController = {
                 name,
                 email,
                 password: hash,
-                studentId: role === 'student' ? studentId : undefined,
+                userId: role === 'student' ? studentId : undefined,
                 lecturerId: role === 'lecturer' ? lecturerExists._id : undefined, // Use the _id from lecturerExists
                 role,
             });

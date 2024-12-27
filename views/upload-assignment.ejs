@@ -1,30 +1,96 @@
-    <div class="upload-container">
-        <h2>Upload Your Assignment</h2>
-        <form action="#" method="POST" enctype="multipart/form-data">
-            <label for="assignment-title">Assignment Title</label>
-            <input type="text" id="assignment-title" name="assignment_title" placeholder="Enter assignment title" required>
+<div class="upload-container">
+    <h2>Upload Your Assignment</h2>
+    <form id="upload-assignment-form" action="/upload-assignment/<%= assignment %>" method="POST" enctype="multipart/form-data">
+        <label for="assignment-title">Assignment Title</label>
+        <input type="text" id="assignment-title" name="title" placeholder="Enter assignment title" required>
 
-            <label for="course">Select Course</label>
-            <select id="course" name="course" required>
-                <option value="" disabled selected>-- Select Your Course --</option>
-                <option value="course1">Introduction to AI</option>
-                <option value="course2">Web Development</option>
-                <option value="course3">Data Structures</option>
-            </select>
+        <label for="file-upload">Upload File</label>
+        <input type="file" id="file-upload" name="file_upload" accept=".pdf,.docx,.zip" required>
+        <p class="note">Supported formats: PDF, DOCX, ZIP. Max size: 10MB.</p>
 
-            <label for="file-upload">Upload File</label>
-            <input type="file" id="file-upload" name="file_upload" accept=".pdf,.docx,.zip" required>
-            <p class="note">Supported formats: PDF, DOCX, ZIP. Max size: 10MB.</p>
+        <label for="comments">Comments (Optional)</label>
+        <textarea id="comments" name="comments" placeholder="Add any additional comments"></textarea>
 
-            <label for="comments">Comments (Optional)</label>
-            <textarea id="comments" name="comments" placeholder="Add any additional comments"></textarea>
+        <label for="plagiarism-check">
+            <input type="checkbox" id="plagiarism-check" name="plagiarism_check">
+            Enable Plagiarism Check
+        </label>
 
-            <label for="plagiarism-check">
-                <input type="checkbox" id="plagiarism-check" name="plagiarism_check">
-                Enable Plagiarism Check
-            </label>
+        <button type="submit"><i class="fas fa-upload"></i> Submit Assignment</button>
+    </form>
 
-            <button type="submit"><i class="fas fa-upload"></i> Submit Assignment</button>
-        </form>
+    <!-- Message containers -->
+    <div id="success-message" class="message success" style="display: none;">
+        Assignment submitted successfully!
     </div>
+    <div id="error-message" class="message error" style="display: none;">
+        An error occurred while submitting the assignment. Please try again.
+    </div>
+</div>
 
+<script>
+    document.getElementById('upload-assignment-form').addEventListener('submit', async function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        const form = e.target;
+        const formData = new FormData(form);
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+
+                // Optionally reset the form
+                form.reset();
+
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            } else {
+                throw new Error(result.message || 'Failed to submit assignment');
+            }
+        } catch (error) {
+            console.error('Error submitting assignment:', error);
+
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'block';
+
+            // Hide error message after 3 seconds
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
+
+<style>
+    .message {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>

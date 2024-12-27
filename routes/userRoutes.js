@@ -1,8 +1,11 @@
 const express = require("express")
 const checkPermission = require("../middleware/checkPermission")
-const { lecturerId } = require("../controller/usercontroller")
+const { lecturerId, deleteUser, getAllUser, analysis } = require("../controller/usercontroller")
 
 const router = express.Router()
 
 router.post("/createId",  lecturerId)
+router.post("/delete-user/:id", deleteUser)
+router.get("/all-users", getAllUser)
+router.get("/analytic", analysis)
 module.exports = router

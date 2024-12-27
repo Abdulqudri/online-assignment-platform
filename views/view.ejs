@@ -1,62 +1,102 @@
+<div class="view-container">
+    <h1>Submitted Assignments</h1>
+    <h2>Not Reviewed Submissions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Assignment Title</th>
+                <th>Course</th>
+                <th>Student Name</th>
+                <th>Student Email</th>
+                <th>Submission Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="not-reviewed-table-body">
+        </tbody>
+    </table>
 
+    <h2>Reviewed Submissions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Assignment Title</th>
+                <th>Course</th>
+                <th>Student Name</th>
+                <th>Student Email</th>
+                <th>Submission Date</th>
+                <th>Score (%)</th>
+                <th>Comments</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="reviewed-table-body">
+        </tbody>
+    </table>
+</div>
 
-    <div class="view-container">
-        <h1>View Submissions</h1>
-        <div id="submission-content">
-            <!-- Submissions will be dynamically populated here -->
-        </div>
-    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const notReviewedTableBody = document.getElementById('not-reviewed-table-body');
+        const reviewedTableBody = document.getElementById('reviewed-table-body');
 
-    <script>
-        // Simulated submissions data (replace with back-end integration)
-        const submissions = [
-            { studentId: "20231001", name: "John Doe", title: "Assignment 1", submissionDate: "2024-12-20", fileUrl: "#" },
-            { studentId: "20231002", name: "Jane Smith", title: "Assignment 1", submissionDate: "2024-12-21", fileUrl: "#" },
-            { studentId: "20231003", name: "Emily Johnson", title: "Assignment 1", submissionDate: "2024-12-22", fileUrl: "#" },
-        ];
+        try {
+            const response = await fetch('/submitted-assignments', { credentials: 'include' }); // Adjust endpoint as needed
+            const result = await response.json();
 
-        const submissionContent = document.getElementById('submission-content');
+            if (result.success) {
+                const { reviewedSubmissions, notReviewedSubmissions } = result.data;
 
-        if (submissions.length > 0) {
-            // Create table structure
-            let tableHtml = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Student ID</th>
-                            <th>Name</th>
-                            <th>Assignment Title</th>
-                            <th>Submission Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
+                // Populate not-reviewed submissions
+                if (notReviewedSubmissions.length === 0) {
+                    notReviewedTableBody.innerHTML = '<tr><td colspan="6">No submissions awaiting review.</td></tr>';
+                } else {
+                    notReviewedSubmissions.forEach(submission => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${submission.title}</td>
+                            <td>${submission.course.name}</td>
+                            <td>${submission.submittedBy.name}</td>
+                            <td>${submission.submittedBy.email}</td>
+                            <td>${new Date(submission.submittedAt).toLocaleDateString()}</td>
+                            <td>
+                                <a href="/ass-detail/${submission._id}" class="btn btn-view">View</a>
+                                <a href="/provide-feedback/${submission._id}" class="btn btn-view">Review</a>
+                            </td>
+                        `;
+                        notReviewedTableBody.appendChild(row);
+                    });
+                }
 
-            // Populate rows dynamically
-            submissions.forEach(submission => {
-                tableHtml += `
-                    <tr>
-                        <td>${submission.studentId}</td>
-                        <td>${submission.name}</td>
-                        <td>${submission.title}</td>
-                        <td>${submission.submissionDate}</td>
-                        <td class="actions">
-                            <a href="${submission.fileUrl}" target="_blank"><i class="fas fa-eye"></i> View</a>
-                            <a href="${submission.fileUrl}" download><i class="fas fa-download"></i> Download</a>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            tableHtml += `
-                    </tbody>
-                </table>
-            `;
-
-            submissionContent.innerHTML = tableHtml;
-        } else {
-            // If no submissions are available
-            submissionContent.innerHTML = '<p class="message">No submissions available.</p>';
+                // Populate reviewed submissions
+                if (reviewedSubmissions.length === 0) {
+                    reviewedTableBody.innerHTML = '<tr><td colspan="8">No reviewed submissions available.</td></tr>';
+                } else {
+                    reviewedSubmissions.forEach(submission => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${submission.title}</td>
+                            <td>${submission.course.name}</td>
+                            <td>${submission.submittedBy.name}</td>
+                            <td>${submission.submittedBy.email}</td>
+                            <td>${new Date(submission.submittedAt).toLocaleDateString()}</td>
+                            <td>${submission.score || 'N/A'}</td>
+                            <td>${submission.review || 'No comments'}</td>
+                            <td>
+                                <a href="/ass-detail/${submission._id}" class="btn btn-view">View</a>
+                            </td>
+                        `;
+                        reviewedTableBody.appendChild(row);
+                    });
+                }
+            } else {
+                notReviewedTableBody.innerHTML = '<tr><td colspan="6">Failed to load submissions.</td></tr>';
+                reviewedTableBody.innerHTML = '<tr><td colspan="8">Failed to load submissions.</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error fetching submitted assignments:', error);
+            notReviewedTableBody.innerHTML = '<tr><td colspan="6">Error loading submissions.</td></tr>';
+            reviewedTableBody.innerHTML = '<tr><td colspan="8">Error loading submissions.</td></tr>';
         }
-    </script>
+    });
+</script>

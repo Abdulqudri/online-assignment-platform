@@ -1,88 +1,122 @@
-
-
-    <div class="manage-container">
-        <h1>Manage Courses</h1>
-        <form id="manage-courses-form">
-            <div class="form-group">
-                <label for="department">Select Department:</label>
-                <select id="department" name="department" required>
-                    <option value="" disabled selected>-- Select Department --</option>
-                    <option value="computer-science">Computer Science</option>
-                    <option value="information-technology">Information Technology</option>
-                    <option value="electrical-engineering">Electrical Engineering</option>
-                    <option value="mechanical-engineering">Mechanical Engineering</option>
-                    <option value="civil-engineering">Civil Engineering</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="courses">Select Courses:</label>
-                <select id="courses" name="courses" multiple required>
-                    <option value="" disabled>-- Select Department First --</option>
-                </select>
-            </div>
-            <button type="submit">Save Changes</button>
-        </form>
-        <div class="success-message" id="success-message">
-            Your courses have been updated successfully!
+<div class="manage-container">
+    <h1>Manage Courses</h1>
+    <form id="manage-courses-form">
+        <div class="form-group">
+            <label for="department">Select Department:</label>
+            <select id="department" name="department" required>
+                <option value="" disabled selected>-- Select Department --</option>
+            </select>
         </div>
+        <div class="form-group">
+            <label for="courses">Select Courses:</label>
+            <select id="courses" name="courses" multiple required>
+                <option value="" disabled>-- Select Department First --</option>
+            </select>
+        </div>
+        <button type="submit">Save Changes</button>
+    </form>
+    <div class="success-message" id="success-message">
+        Your courses have been updated successfully!
     </div>
+</div>
 
-    <script>
-        const departmentSelect = document.getElementById('department');
-        const coursesSelect = document.getElementById('courses');
-        const successMessage = document.getElementById('success-message');
-        const manageCoursesForm = document.getElementById('manage-courses-form');
+<script>
+    const departmentSelect = document.getElementById('department');
+    const coursesSelect = document.getElementById('courses');
+    const successMessage = document.getElementById('success-message');
+    const manageCoursesForm = document.getElementById('manage-courses-form');
 
-        // Mock data for courses
-        const departmentCourses = {
-            "computer-science": ["Data Structures", "Algorithms", "Operating Systems", "Artificial Intelligence"],
-            "information-technology": ["Web Development", "Database Systems", "Cyber Security", "Cloud Computing"],
-            "electrical-engineering": ["Circuit Analysis", "Electromagnetics", "Power Systems", "Control Systems"],
-            "mechanical-engineering": ["Thermodynamics", "Fluid Mechanics", "Material Science", "Manufacturing Processes"],
-            "civil-engineering": ["Structural Analysis", "Concrete Technology", "Environmental Engineering", "Transportation Engineering"]
-        };
-
-        // Update courses based on selected department
-        departmentSelect.addEventListener('change', function () {
-            const selectedDepartment = this.value;
-            coursesSelect.innerHTML = ""; // Clear previous options
-
-            if (selectedDepartment && departmentCourses[selectedDepartment]) {
-                departmentCourses[selectedDepartment].forEach(course => {
-                    const option = document.createElement('option');
-                    option.value = course.toLowerCase().replace(/ /g, '-');
-                    option.textContent = course;
-                    coursesSelect.appendChild(option);
-                });
-                coursesSelect.multiple = true; // Allow multiple selection
-            } else {
-                const option = document.createElement('option');
-                option.value = "";
-                option.textContent = "-- Select Department First --";
-                option.disabled = true;
-                coursesSelect.appendChild(option);
+    // Fetch departments from the backend
+    async function fetchDepartments() {
+        try {
+            const response = await fetch('/all-dept');
+            if (!response.ok) {
+                throw new Error('Failed to fetch departments');
             }
-        });
+            const departments = await response.json();
 
-        // Form submission handling
-        manageCoursesForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission
+            // Populate the department dropdown
+            departmentSelect.innerHTML = '<option value="" disabled selected>-- Select Department --</option>';
+            departments.data.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept._id; // Assuming the department has an _id field
+                option.textContent = dept.departmentName; // Assuming the department has a name field
+                departmentSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching departments:', error);
+            alert('Failed to load departments. Please try again later.');
+        }
+    }
 
-            // Mock saving changes
-            const selectedDepartment = departmentSelect.value;
-            const selectedCourses = Array.from(coursesSelect.selectedOptions).map(option => option.text);
+    // Fetch courses for a selected department
+    async function fetchCourses(departmentId) {
+        try {
+            const response = await fetch(`/departments/${departmentId}/courses`); // Adjust endpoint as per your backend
+            if (!response.ok) {
+                throw new Error('Failed to fetch courses');
+            }
+            const courses = await response.json();
 
-            console.log('Department:', selectedDepartment);
-            console.log('Selected Courses:', selectedCourses);
+            // Populate the courses dropdown
+            coursesSelect.innerHTML = '';
+            courses.data.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course._id; // Assuming the course has an _id field
+                option.textContent = course.name; // Assuming the course has a name field
+                coursesSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+            coursesSelect.innerHTML = '<option value="" disabled>-- Failed to Load Courses --</option>';
+        }
+    }
 
-            // Show success message
-            successMessage.style.display = 'block';
+    // Handle department selection
+    departmentSelect.addEventListener('change', function () {
+        const selectedDepartmentId = this.value;
+        if (selectedDepartmentId) {
+            fetchCourses(selectedDepartmentId);
+        } else {
+            coursesSelect.innerHTML = '<option value="" disabled>-- Select Department First --</option>';
+        }
+    });
 
-            // Reset the form after submission
-            setTimeout(() => {
-                manageCoursesForm.reset();
-                coursesSelect.innerHTML = `<option value="" disabled>-- Select Department First --</option>`;
-                successMessage.style.display = 'none';
-            }, 3000);
-        });
-    </script>
+    // Form submission handling
+    manageCoursesForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const selectedDepartment = departmentSelect.value;
+        const selectedCourses = Array.from(coursesSelect.selectedOptions).map(option => option.value);
+
+        // Example of saving data (replace with your backend logic)
+        fetch('/save-courses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ department: selectedDepartment, courses: selectedCourses })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save courses');
+                }
+                return response.json();
+            })
+            .then(() => {
+                successMessage.style.display = 'block';
+
+                // Reset the form after submission
+                setTimeout(() => {
+                    manageCoursesForm.reset();
+                    coursesSelect.innerHTML = '<option value="" disabled>-- Select Department First --</option>';
+                    successMessage.style.display = 'none';
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Error saving courses:', error);
+                alert('Failed to save changes. Please try again later.');
+            });
+    });
+
+    // Initial load
+    fetchDepartments();
+</script>

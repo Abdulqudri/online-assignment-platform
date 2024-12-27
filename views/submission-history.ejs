@@ -1,44 +1,80 @@
+<div class="history-container">
+    <h2>Submission History</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Assignment Title</th>
+                <th>Course</th>
+                <th>Submission Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="submission-history-body">
+            <!-- Submissions will be dynamically populated here -->
+        </tbody>
+    </table>
+    <p id="no-record-message" style="display: none; text-align: center; color: gray;">No submission history available.</p>
+</div>
 
-    <div class="history-container">
-        <h2>Submission History</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Assignment Title</th>
-                    <th>Course</th>
-                    <th>Submission Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Assignment 1</td>
-                    <td>Introduction to AI</td>
-                    <td>2024-12-20</td>
-                    <td>Graded</td>
-                    <td>
-                        <a href="view-feedback.html" class="btn btn-feedback">View Feedback</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Assignment 2</td>
-                    <td>Web Development</td>
-                    <td>2024-12-18</td>
-                    <td>Submitted</td>
-                    <td>
-                        <a href="view-feedback.html" class="btn btn-feedback">Pending Feedback</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Assignment 3</td>
-                    <td>Data Structures</td>
-                    <td>2024-12-15</td>
-                    <td>Not Submitted</td>
-                    <td>
-                        <a href="upload-assignments.html" class="btn btn-view">Submit Now</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const tableBody = document.getElementById('submission-history-body');
+        const noRecordMessage = document.getElementById('no-record-message');
+
+        try {
+            // Fetch user submissions using the getUserSubmissions controller
+            const response = await fetch('/get-user-submissions', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include', // Include session/cookie for authentication
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.data.length > 0) {
+                const submissions = data.data;
+
+                // Clear any existing rows and hide the "no record" message
+                tableBody.innerHTML = '';
+                noRecordMessage.style.display = 'none';
+
+                // Populate table with submissions
+                submissions.forEach(submission => {
+                    const row = document.createElement('tr');
+
+                    // Determine action based on status
+                    let actionButton = '';
+                    if (submission.status === 'Reviewed') {
+                        actionButton = `<a href="/view-feedback?id=${submission._id}" class="btn btn-feedback">View Feedback</a>`;
+                    } else if (submission.status === 'Submitted') {
+                        actionButton = `<a class="btn btn-feedback">Pending Feedback</a>`;
+                    } else if (submission.status === 'Pending') {
+                        actionButton = `<a href="/upload-assignment" class="btn btn-view">Submit Now</a>`;
+                    }
+
+                    // Create row HTML
+                    row.innerHTML = `
+                        <td>${submission.title || 'N/A'}</td>
+                        <td>${submission.course?.name || 'N/A'}</td>
+                        <td>${new Date(submission.submittedAt || submission.assignment?.dueDate).toLocaleDateString()}</td>
+                        <td>${submission.status}</td>
+                        <td>${actionButton}</td>
+                    `;
+
+                    // Append row to table body
+                    tableBody.appendChild(row);
+                });
+            } else {
+                // Show the "no record" message if no submissions are found
+                noRecordMessage.style.display = 'block';
+                tableBody.innerHTML = '';
+            }
+        } catch (error) {
+            console.error('Error fetching submission history:', error.message);
+            noRecordMessage.style.display = 'block';
+            noRecordMessage.textContent = 'Failed to load submission history.';
+            tableBody.innerHTML = '';
+        }
+    });
+</script>

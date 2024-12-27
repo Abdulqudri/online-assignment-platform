@@ -1,57 +1,175 @@
-
-
-    <div class="container">
-        <h1>Create Assignment</h1>
-        <form id="create-assignment-form">
-            <div>
-                <label for="assignment-title">Assignment Title</label>
-                <input type="text" id="assignment-title" placeholder="Enter assignment title" required>
-            </div>
-            <div>
-                <label for="assignment-description">Description</label>
-                <textarea id="assignment-description" placeholder="Enter assignment description" required></textarea>
-            </div>
-            <div>
-                <label for="due-date">Due Date</label>
-                <input type="date" id="due-date" required>
-            </div>
-            <div>
-                <label for="due-time">Due Time</label>
-                <input type="time" id="due-time" required>
-            </div>
-            <div>
-                <label for="file-upload">Attach File (Optional)</label>
-                <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.zip,.pptx">
-            </div>
-            <button type="submit">Create Assignment</button>
-        </form>
-        <div id="response-message" class="success-message"></div>
+<div class="container">
+    <h1>Create Assignment</h1>
+    <form id="create-assignment-form">
+        <div>
+            <label for="assignment-title">Assignment Title</label>
+            <input type="text" id="assignment-title" placeholder="Enter assignment title" required>
+        </div>
+        <div>
+            <label for="assignment-description">Description</label>
+            <textarea id="assignment-description" placeholder="Enter assignment description" required></textarea>
+        </div>
+        <div>
+            <label for="due-date">Due Date</label>
+            <input type="date" id="due-date" required>
+        </div>
+        <div>
+            <label for="due-time">Due Time</label>
+            <input type="time" id="due-time" required>
+        </div>
+        <div>
+            <label for="course-select">Select Course</label>
+            <select id="course-select" required>
+                <!-- Options will be populated dynamically from the backend -->
+                <option value="">Select a course...</option>
+            </select>
+        </div>
+        <div>
+            <label for="extra-time">Extra Time for Late Submission (in hours)</label>
+            <input type="number" id="extra-time" min="0" placeholder="Enter extra time" required>
+        </div>
+        <div>
+            <label for="file-upload">Attach File (Optional)</label>
+            <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.zip,.pptx">
+        </div>
+        <button type="submit">Create Assignment</button>
+    </form>
+    <div id="response-message" class="success-message message"></div>
+    
+    <div id="success-message" class="message success" style="display: none;">
+        Assignment submitted successfully!
     </div>
+    <div id="error-message" class="message error" style="display: none;">
+        An error occurred while submitting the assignment. Please try again.
+    </div>
+</div>
 
-    <script>
-        const form = document.getElementById('create-assignment-form');
-        const responseMessage = document.getElementById('response-message');
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const form = document.getElementById('create-assignment-form');
+    const responseMessage = document.getElementById('response-message');
+    const errorMessage = document.getElementById("error-message")
+    const successMessage = document.getElementById("success-message")
+    document.addEventListener('DOMContentLoaded', function() {
+    const courseSelect = document.getElementById('course-select');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
+    // Fetch lecturer courses
+    fetch('/get-lecturer-courses', {
+        method: 'GET',
+        credentials: 'include' // Ensure credentials are sent with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            populateCourseOptions(data.courses);
+        } else {
+            console.error('Failed to fetch courses:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching courses:', error);
+    });
 
-            const title = document.getElementById('assignment-title').value.trim();
-            const description = document.getElementById('assignment-description').value.trim();
-            const dueDate = document.getElementById('due-date').value;
-            const dueTime = document.getElementById('due-time').value;
+    function populateCourseOptions(courses) {
+        // Clear existing options
+        courseSelect.innerHTML = '<option value="">Select a course...</option>';
 
-            // Basic validation
-            if (!title || !description || !dueDate || !dueTime) {
-                responseMessage.textContent = "All fields (except file upload) are required!";
-                responseMessage.className = "error-message";
-                return;
-            }
-
-            // Simulate success response
-            responseMessage.textContent = "Assignment created successfully!";
-            responseMessage.className = "success-message";
-
-            // Reset form
-            form.reset();
+        courses.forEach(course => {
+            const option = document.createElement('option');
+            option.value = course._id; // Use course ID as the value
+            option.textContent = course.name; // Display course name
+            courseSelect.appendChild(option);
         });
-    </script>
+    }
+});
+
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        const title = document.getElementById('assignment-title').value.trim();
+        const description = document.getElementById('assignment-description').value.trim();
+        const dueDate = document.getElementById('due-date').value;
+        const dueTime = document.getElementById('due-time').value;
+        const courseId = document.getElementById('course-select').value;
+        const extraTime = document.getElementById('extra-time').value;
+        const fileUpload = document.getElementById('file-upload').files[0];
+
+        // Basic validation
+        if (!title || !description || !dueDate || !dueTime || !courseId || !extraTime) {
+            responseMessage.textContent = "All fields are required!";
+            responseMessage.className = "error-message";
+            return;
+        }
+        const dueDateTime = new Date(`${dueDate}T${dueTime}`);
+
+    // Validate the combined date
+        if (isNaN(dueDateTime.getTime())) {
+            responseMessage.textContent = "Invalid due date or time!";
+            responseMessage.className = "error-message";
+            return;
+        }
+        // Form data to send to the server
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('dueDate', dueDateTime.toISOString());
+        formData.append('course', courseId);
+        formData.append('extraTime', extraTime);
+        if (fileUpload) {
+            formData.append('file', fileUpload);
+        }
+
+        // Simulate API request
+        fetch('/create-assignment', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                form.reset();
+
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successeMessage.style.display = 'none';
+                }, 3000);
+            } else {
+                throw new Error(result.message || 'Failed to submit assignment');
+            }
+        })
+        .catch(error => {
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'block';
+
+            // Hide error message after 3 seconds
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        });
+    });
+</script>
+<style>
+    .message {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>

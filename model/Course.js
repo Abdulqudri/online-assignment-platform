@@ -9,7 +9,12 @@ const courseSchema = new mongoose.Schema({
         type: String, 
         required: true, 
         unique: true 
-    }})
+    },
+    assignments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Assignment' }],
+    lecturer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+
+
+})
 
   
   const Course = mongoose.model('Course', courseSchema);

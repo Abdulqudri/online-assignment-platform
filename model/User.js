@@ -15,13 +15,12 @@ const UserSchema = new Schema({
     },
     lecturerId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'LecturerId', 
+        ref: 'LecturerId',
     },
     password: {
         type: String,
         required: true
-    },
-    assignedCourse: [String],
+},
 
     department: { 
         type: mongoose.Schema.Types.ObjectId,

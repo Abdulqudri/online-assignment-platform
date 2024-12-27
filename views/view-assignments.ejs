@@ -1,35 +1,76 @@
- <div class="assignments-container">
-        <h2>Active Assignments</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Deadline</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Assignment 1</td>
-                    <td>Write a 1500-word essay on AI applications.</td>
-                    <td>2024-12-31</td>
-                    <td>Pending</td>
-                    <td>
-                        <a href="upload-assignments.html" class="btn btn-submit">Submit</a>
-                        <a href="assignment-details.html" class="btn btn-view">View</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Assignment 2</td>
-                    <td>Create a simple web page using HTML and CSS.</td>
-                    <td>2024-12-25</td>
-                    <td>Submitted</td>
-                    <td>
-                        <a href="assignment-details.html" class="btn btn-view">View</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div class="assignments-container">
+    <h2>Active Assignments</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="assignments-table-body">
+            <tr>
+                <td colspan="5">Loading assignments...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const tableBody = document.getElementById('assignments-table-body');
+
+        try {
+            // Fetch assignments for the logged-in user
+            const response = await fetch('/assignments', { 
+                credentials: 'include', 
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            
+            const result = await response.json();
+
+            if (result.success) {
+                const assignments = result.data;
+
+                // Clear loading message
+                tableBody.innerHTML = '';
+
+                // Filter active assignments (not yet due) and create rows
+                assignments
+                    .filter(assignment => new Date(assignment.dueDate) >= new Date())
+                    .forEach(assignment => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${assignment.title}</td>
+                            <td>${assignment.description}</td>
+                            <td>${new Date(assignment.dueDate).toLocaleString()}</td>
+                            <td>${assignment.status}</td>
+                            <td>
+                                ${assignment.status === 'Pending' 
+                                    ? `<a href="/submit-assignment?id=${assignment._id}" class="btn btn-submit">Submit</a>` 
+                                    : ''}
+                                <a href="/view-detail?id=${assignment._id}" class="btn btn-view">View</a>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+
+                // Show a message if there are no active assignments
+                if (tableBody.children.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5">No active assignments available.</td></tr>';
+                }
+            } else {
+                // Error message for failed API response
+                tableBody.innerHTML = '<tr><td colspan="5">Failed to fetch assignments. Please try again later.</td></tr>';
+                console.error(result.message || 'Error fetching assignments.');
+            }
+        } catch (error) {
+            // Error handling for fetch failure
+            console.error('Error fetching assignments:', error);
+            tableBody.innerHTML = '<tr><td colspan="5">Failed to load assignments. Please check your connection.</td></tr>';
+        }
+    });
+</script>

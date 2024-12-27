@@ -1,81 +1,82 @@
+<div class="container">
+  <h1>Platform Analytics</h1>
 
-    <div class="container">
-        <h1>Platform Analytics</h1>
+  <!-- Charts (Example with Chart.js) -->
+  <div class="chart-container">
+    <canvas id="user-activity-chart"></canvas>
+  </div>
 
-        <!-- Charts (Example with Chart.js) -->
-        <div class="chart-container">
-            <canvas id="user-activity-chart"></canvas>
-        </div>
+  <!-- User Summary Table -->
+  <h2>User Summary</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Total Users</th>
+        <th>Total Assignments</th>
+        <th>Total Submissions</th>
+        <th>Active Users</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="total-users">0</td>
+        <td id="total-assignments">0</td>
+        <td id="total-submissions">0</td>
+        <td id="active-users">0</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-        <!-- User Summary Table -->
-        <h2>User Summary</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Total Users</th>
-                    <th>Total Assignments</th>
-                    <th>Total Submissions</th>
-                    <th>Active Users</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id="total-users">0</td>
-                    <td id="total-assignments">0</td>
-                    <td id="total-submissions">0</td>
-                    <td id="active-users">0</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch("/analytic")
+      .then((response) => response.json())
+      .then((data) => {
+        
+        // Populate the table with fetched data
+        document.getElementById("total-users").textContent = data.totalUsers;
+        document.getElementById("total-assignments").textContent = data.totalAssignments;
+        document.getElementById("total-submissions").textContent = data.totalSubmissions;
+        document.getElementById("active-users").textContent = data.activeUsers;
 
-    <!-- Chart.js Library -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Simulate fetching analytics data (replace this with actual API calls)
-            const analyticsData = {
-                totalUsers: 120,        // Example data
-                totalAssignments: 350,  // Example data
-                totalSubmissions: 800,  // Example data
-                activeUsers: 90          // Example data
-            };
-
-            // Populate the table
-            document.getElementById('total-users').textContent = analyticsData.totalUsers;
-            document.getElementById('total-assignments').textContent = analyticsData.totalAssignments;
-            document.getElementById('total-submissions').textContent = analyticsData.totalSubmissions;
-            document.getElementById('active-users').textContent = analyticsData.activeUsers;
-
-            // Chart: User Activity
-            const ctx = document.getElementById('user-activity-chart').getContext('2d');
-            const userActivityChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Total Users', 'Total Assignments', 'Total Submissions', 'Active Users'],
-                    datasets: [{
-                        label: 'User Activity',
-                        data: [
-                            analyticsData.totalUsers, 
-                            analyticsData.totalAssignments, 
-                            analyticsData.totalSubmissions, 
-                            analyticsData.activeUsers
-                        ],
-                        backgroundColor: [
-                            '#6A0DAD', '#5A0A8A', '#6A0DAD', '#5A0A8A'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        });
-    </script>
-
+        const ctx = document.getElementById("user-activity-chart").getContext("2d");
+    const userActivityChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          "Total Users",
+          "Total Assignments",
+          "Total Submissions",
+          "Active Users",
+        ],
+        datasets: [
+          {
+            label: "User Activity",
+            data: [
+              data.totalUsers,
+              data.totalAssignments,
+              data.totalSubmissions,
+              data.activeUsers,
+            ],
+            backgroundColor: ["#6A0DAD", "#5A0A8A", "#6A0DAD", "#5A0A8A"],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+      });
+    // Chart: User Activity
+    
+  });
+</script>

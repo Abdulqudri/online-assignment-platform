@@ -1,102 +1,185 @@
-
-
-    <div class="student-manage-container">
-        <h1>Manage Courses</h1>
-        <form id="manage-courses-form">
-            <div class="form-group">
-                <label for="department">Select Department:</label>
-                <select id="department" name="department" required>
-                    <option value="" disabled selected>-- Select Department --</option>
-                    <option value="computer-science">Computer Science</option>
-                    <option value="information-technology">Information Technology</option>
-                    <option value="electrical-engineering">Electrical Engineering</option>
-                    <option value="mechanical-engineering">Mechanical Engineering</option>
-                    <option value="civil-engineering">Civil Engineering</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="courses">Select Courses:</label>
-                <select id="courses" name="courses" multiple required>
-                    <option value="" disabled>-- Select Department First --</option>
-                </select>
-            </div>
-            <button type="submit">Add Courses</button>
-        </form>
-        <div class="success-message" id="success-message">
-            Courses have been successfully added to your list!
+<div class="student-manage-container">
+    <h1>Manage Courses</h1>
+    <form id="manage-courses-form">
+        <div class="form-group">
+            <label for="department">Select Department:</label>
+            <select id="department" name="department" required>
+                <option value="" disabled selected>-- Select Department --</option>
+            </select>
         </div>
-        <div class="selected-courses" id="selected-courses">
-            <h2>Selected Courses:</h2>
-            <ul id="courses-list"></ul>
-            <button id="enroll-button">Enroll</button>
+        <div class="form-group">
+            <label for="courses">Select Courses:</label>
+            <select id="courses" name="courses" multiple required>
+                <option value="" disabled>-- Select Department First --</option>
+            </select>
         </div>
+        <button type="submit">Add Courses</button>
+    </form>
+    <div class="success-message" id="success-message" style="display: none;">
+        Courses have been successfully added to your list!
     </div>
+    <div class="selected-courses" id="selected-courses">
+        <h2>Selected Courses:</h2>
+        <ul id="courses-list"></ul>
+        <button id="enroll-button" style="display: none;">Enroll</button>
+    </div>
+</div>
 
-    <script>
-        const departmentSelect = document.getElementById('department');
-        const coursesSelect = document.getElementById('courses');
-        const successMessage = document.getElementById('success-message');
-        const coursesList = document.getElementById('courses-list');
-        const enrollButton = document.getElementById('enroll-button');
-        const manageCoursesForm = document.getElementById('manage-courses-form');
+<script>
+    const departmentSelect = document.getElementById('department');
+    const coursesSelect = document.getElementById('courses');
+    const successMessage = document.getElementById('success-message');
+    const coursesList = document.getElementById('courses-list');
+    const enrollButton = document.getElementById('enroll-button');
+    const manageCoursesForm = document.getElementById('manage-courses-form');
+    const courses = []; // Array to store selected courses
 
-        // Mock data for courses
-        const departmentCourses = {
-            "computer-science": ["Data Structures", "Algorithms", "Operating Systems", "Artificial Intelligence"],
-            "information-technology": ["Web Development", "Database Systems", "Cyber Security", "Cloud Computing"],
-            "electrical-engineering": ["Circuit Analysis", "Electromagnetics", "Power Systems", "Control Systems"],
-            "mechanical-engineering": ["Thermodynamics", "Fluid Mechanics", "Material Science", "Manufacturing Processes"],
-            "civil-engineering": ["Structural Analysis", "Concrete Technology", "Environmental Engineering", "Transportation Engineering"]
-        };
+    // Fetch departments and populate the dropdown
+    async function fetchDepartments() {
+        try {
+            const response = await fetch('/all-dept');
+            const data = await response.json();
 
-        // Update courses based on selected department
-        departmentSelect.addEventListener('change', function () {
-            const selectedDepartment = this.value;
-            coursesSelect.innerHTML = ""; // Clear previous options
-
-            if (selectedDepartment && departmentCourses[selectedDepartment]) {
-                departmentCourses[selectedDepartment].forEach(course => {
+            if (data.success) {
+                data.data.forEach(department => {
                     const option = document.createElement('option');
-                    option.value = course.toLowerCase().replace(/ /g, '-');
-                    option.textContent = course;
-                    coursesSelect.appendChild(option);
+                    option.value = department._id;
+                    option.textContent = department.departmentName;
+                    departmentSelect.appendChild(option);
                 });
-                coursesSelect.multiple = true; // Allow multiple selection
             } else {
-                const option = document.createElement('option');
-                option.value = "";
-                option.textContent = "-- Select Department First --";
-                option.disabled = true;
-                coursesSelect.appendChild(option);
+                alert('Failed to fetch departments.');
+            }
+        } catch (error) {
+            console.error('Error fetching departments:', error);
+            alert('An error occurred while fetching departments.');
+        }
+    }
+
+    // Fetch courses when a department is selected
+    departmentSelect.addEventListener('change', async function () {
+        const selectedDepartment = this.value;
+        coursesSelect.innerHTML = ""; // Clear previous options
+
+        if (selectedDepartment) {
+            try {
+                const response = await fetch(`/departments/${selectedDepartment}/courses`);
+                const data = await response.json();
+                if (data.success) {
+                    data.data.forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course._id;
+                        option.textContent = `${course.code} - ${course.name}`; // Show course code and name
+                        coursesSelect.appendChild(option);
+                    });
+                } else {
+                    alert('Failed to fetch courses.');
+                }
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+                alert('An error occurred while fetching courses.');
+            }
+        } else {
+            const option = document.createElement('option');
+            option.value = "";
+            option.textContent = "-- Select Department First --";
+            option.disabled = true;
+            coursesSelect.appendChild(option);
+        }
+    });
+
+    // Form submission handling
+    manageCoursesForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get selected courses
+        const selectedCourses = Array.from(coursesSelect.selectedOptions).map(option => option.text);
+
+        // Append new selected courses to the list
+        selectedCourses.forEach(course => {
+            if (!courses.includes(course)) {
+                courses.push(course);
+                const li = document.createElement('li');
+                li.textContent = course;
+
+                // Create and append delete icon
+                const deleteIcon = document.createElement('span');
+                deleteIcon.className = 'delete-icon';
+                deleteIcon.textContent = ' ×';
+                deleteIcon.style.cursor = 'pointer';
+                li.appendChild(deleteIcon);
+
+                coursesList.appendChild(li);
             }
         });
 
-        // Form submission handling
-        manageCoursesForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission
+        // Show success message and enroll button
+        successMessage.style.display = 'block';
+        enrollButton.style.display = 'block';
 
-            // Get selected courses
-            const selectedCourses = Array.from(coursesSelect.selectedOptions).map(option => option.text);
+        // Reset message after 3 seconds
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 3000);
+    });
 
-            // Append new selected courses to the list
-            selectedCourses.forEach(course => {
-                const li = document.createElement('li');
-                li.textContent = course;
-                coursesList.appendChild(li);
+    // Remove selected course on delete icon click
+    coursesList.addEventListener('click', function (event) {
+        if (event.target.classList.contains('delete-icon')) {
+            const courseItem = event.target.parentElement;
+            const courseName = courseItem.childNodes[0].textContent.trim(); // Extract course name
+            const courseIndex = courses.indexOf(courseName);
+
+            if (courseIndex > -1) {
+                courses.splice(courseIndex, 1); // Remove course from the array
+                courseItem.remove(); // Remove the list item from DOM
+            }
+        }
+    });
+
+    // Enroll button functionality
+    enrollButton.addEventListener('click', async () => {
+        // Get the selected department and courses
+        const selectedDepartment = departmentSelect.value;
+        const selectedCourses = Array.from(coursesSelect.selectedOptions).map(option => option.value);
+
+        if (!selectedDepartment || selectedCourses.length === 0) {
+            alert('Please select a department and at least one course before enrolling.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/save-student-courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    department: selectedDepartment,
+                    courses: selectedCourses,
+                }),
             });
 
-            // Show success message and enroll button
-            successMessage.style.display = 'block';
-            enrollButton.style.display = 'block';
+            const data = await response.json();
 
-            // Reset message after 3 seconds
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 3000);
-        });
+            if (data.success) {
+                alert('You have successfully enrolled in the selected courses!');
+                successMessage.style.display = 'block';
 
-        // Enroll button functionality
-        enrollButton.addEventListener('click', () => {
-            alert('You have successfully enrolled in the selected courses!');
-        });
-    </script>
+                // Clear the form or update the UI
+                departmentSelect.value = '';
+                coursesSelect.innerHTML = '<option value="" disabled>-- Select Department First --</option>';
+                coursesList.innerHTML = '';
+                enrollButton.style.display = 'none';
+            } else {
+                alert(`Failed to enroll: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Error enrolling user:', error);
+            alert('An error occurred while enrolling. Please try again.');
+        }
+    });
+
+    // Initialize the dropdown with departments
+    fetchDepartments();
+</script>

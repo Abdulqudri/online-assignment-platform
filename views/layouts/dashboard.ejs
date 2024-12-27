@@ -43,14 +43,12 @@
 
       <% if (user.role === "student") { %>
                 <li><a href="/view-assignments"><i class="fas fa-book"></i> View Assignments</a></li>
-                <li><a href="/upload-assignments"><i class="fas fa-upload"></i> Upload Assignments</a></li>
                 <li><a href="/view-feedback"><i class="fas fa-comments"></i> View Feedback</a></li>
                 <li><a href="/submission-history"><i class="fas fa-history"></i> Submission History</a></li>
                 <li><a href="/student-manage-course"><i class="fas fa-user-edit"></i>Manage Course</a></li>
       <% } else if (user.role === "lecturer") { %>
                 <li><a href="/create-assignments"><i class="fas fa-plus-circle"></i> Create Assignments</a></li>
                 <li><a href="/view-submissions"><i class="fas fa-file-alt"></i> View Submissions</a></li>
-                <li><a href="/provide-feedback"><i class="fas fa-check-circle"></i> Provide Feedback</a></li>
                 <li><a href="/assignment-analytics"><i class="fas fa-chart-line"></i> Assignment Analytics</a></li>
                 <li><a href="/lecturer-manage-course"><i class="fas fa-user-edit"></i> Manage Course</a></li>
                 <li><a href="/manage-plagiarism"><i class="fas fa-shield-alt"></i> Manage Plagiarism</a></li>

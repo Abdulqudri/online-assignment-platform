@@ -9,6 +9,7 @@ const router = require("./routes/authRoutes")
 const viewRoutes = require("./routes/viewRoutes")
 const userRoutes = require("./routes/userRoutes")
 const courseRoutes = require("./routes/courseRoute")
+const assignmentRoutes = require("./routes/assignmentRoutes")
 const checkAuth = require("./middleware/checkAuth")
 
 const port = process.env.PORT
@@ -18,7 +19,7 @@ const mongo_uri = process.env.MONGO_URI
 const app = express()
 
 // connecting to database
-mongoose.connect(mongo_uri)
+mongoose.connect(mongo_uri) 
   .then(() => console.log('Connected!'));
 
 const store = new mongoDbStore({
@@ -38,6 +39,7 @@ app.use(session({
 }));
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 app.use(expressLayouts)
@@ -62,6 +64,7 @@ app.use(courseRoutes)
 app.use(userRoutes)
 app.use(checkAuth)
 app.use(viewRoutes)
+app.use(assignmentRoutes)
 
 mongoose.connection.once("open", () => {
   app.listen(port, () => {

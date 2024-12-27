@@ -2,6 +2,9 @@ const express = require("express")
 const User = require("../model/User")
 const Department = require("../model/Department")
 const Course = require("../model/Course")
+const Assignment = require("../model/Assignment")
+const path = require('path')
+const AssignmentSubmission = require("../model/AssignmentSubmission")
 
 const router = express.Router()
 
@@ -43,17 +46,71 @@ router.get("/view-feedback", async(req, res) => {
     res.render("view-feedback", {user})
   } catch (err) {
     res.status(500).json({message: "server error"})
-  }
-  
+}
 })
-router.get("/upload-assignments", async(req, res) => {
+router.get("/view-detail", async (req, res) => {
+  const userId = req.session.user.id;
+  const { id } = req.query; // Get the `id` from the query parameters
+
+  try {
+      // Fetch the user details
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).redirect("/auth/login");
+      }
+
+      // Fetch the assignment submission details using the ID
+      const assignment = await Assignment.findById(id)
+      .populate('course', 'name') // Populate course details
+      .populate('userIds', 'name'); // Populate user details if needed
+
+      if (!assignment) {
+          return res.status(404).render("viewdetail", { user, message: "Assignment not found." });
+      }
+      console.log(assignment)
+      // Render the viewdetail page with the submission data
+      res.render("viewdetail", { user ,  assignment});
+  } catch (err) {
+      res.status(500).json({ message: "Server error" });
+  }
+});
+router.get("/ass-detail/:id", async (req, res) => {
+  const userId = req.session.user.id;
+  const { id } = req.params; // Get the `id` from the query parameters
+
+  try {
+      // Fetch the user details
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).redirect("/auth/login");
+      }
+
+      // Fetch the assignment submission details using the ID
+      const assignment = await AssignmentSubmission.findById(id)
+      .populate('course', 'name code') // Populate course details
+      .populate('submittedBy', 'name userId')// Populate user details if needed
+      .populate('assignment', 'title')
+
+      if (!assignment) {
+          return res.status(404).render("view-submitted-detail", { user, message: "Assignment not found." });
+      }
+      console.log(assignment)
+      // Render the viewdetail page with the submission data
+      res.render("view-submitted-detail", { user ,  assignment});
+  } catch (err) {
+      res.status(500).json({ message: "Server error" });
+  }
+})
+
+router.get("/submit-assignment", async(req, res) => {
   const userId = req.session.user.id
+  const assignment = req.query.id
   try {
     const user = await User.findById(userId)
     if(!user){
       return res.status(404).redirect("/auth/login")
     }
-    res.render("upload-assignment", {user})
+    res.render("upload-assignment", {user, assignment})
   } catch (err) {
     res.status(500).json({message: "server error"})
   }
@@ -113,19 +170,34 @@ router.get("/view-submissions", async(req, res) => {
   }
   
 })
-router.get("/provide-feedback", async(req, res) => {
+router.get("/provide-feedback/:id", async (req, res) => {
+  const submissionId = req.params.id; // Get the submission ID from the route parameter
   const userId = req.session.user.id
   try {
-    const user = await User.findById(userId)
+      const user = await User.findById(userId)
     if(!user){
       return res.status(404).redirect("/auth/login")
     }
-    res.render("feedback", {user})
+      const submission = await AssignmentSubmission.findById(submissionId)
+          .populate('submittedBy', 'name userId')
+          .exec();
+      
+      if (!submission) {
+          return res.status(404).render('error', { message: 'Submission not found' });
+      }
+      console.log(submission)
+      // Pass the submission details to the feedback form
+      res.render('feedback', {
+          user,
+          submissionId: submissionId, // Pass submissionId to the view
+          studentId: submission.submittedBy.userId, // Extract studentId from submittedBy
+          assignmentTitle: submission.title // Extract assignment title from assignment
+      });
   } catch (err) {
-    res.status(500).json({message: "server error"})
+      res.status(500).json({ message: "Server error" });
   }
-  
-})
+});
+
 router.get("/assignment-analytics", async(req, res) => {
   const userId = req.session.user.id
   try {
@@ -230,7 +302,47 @@ router.get("/lecturer-manage-course", async(req, res) => {
   }
   
 })
-
-
+router.get("/feedback-details/:id", async(req, res) => {
+  const userId = req.session.user.id
+  try {
+    const user = await User.findById(userId)
+    if(!user){
+      return res.status(404).redirect("/auth/login")
+    }
+    res.render("lecturer-manage-course", {user})
+  } catch (err) {
+    res.status(500).json({message: "server error"})
+  }
   
-module.exports = router
+})
+
+
+const mimeTypes = {
+  pdf: 'application/pdf',
+  doc: 'application/msword',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  zip: 'application/zip',
+  ppt: 'application/vnd.ms-powerpoint',
+  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+};
+
+
+
+router.get('/documents/view/:filePath', (req, res) => {
+    const filePath = path.join(__dirname, '../uploads', req.params.filePath);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline');
+    res.sendFile(filePath);
+});
+router.get('/documents/download/:filePath', (req, res) => {
+  const filePath = path.join(__dirname, '../uploads', req.params.filePath);
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename="${path.basename(filePath)}"`);
+  res.sendFile(filePath);
+});
+
+
+
+module.exports = router;
+
+
