@@ -20,14 +20,12 @@
 
         body {
             background-color: #F2F2F2;
-            /* Bright Gray */
             color: #333;
         }
 
         /* Navigation Bar */
         nav {
             background: #6A0DAD;
-            /* Aconite Purple */
             color: #fff;
             padding: 10px 15px;
             display: flex;
@@ -35,10 +33,36 @@
             align-items: center;
         }
 
+        /* Logo styling */
         nav h1 {
-            font-size: 1.8em;
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #ffffff; /* White for text contrast */
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem; /* Spacing between icons and text */
+        margin: 0;
         }
 
+        /* Icon styling */
+        nav h1 i {
+        color: #ffd600; /* Bright yellow for highlighting icons */
+        transition: transform 0.2s ease-in-out;
+        }
+
+        /* Icon hover effect */
+        nav h1 i:hover {
+        transform: scale(1.1); /* Slight zoom for interactivity */
+        }
+
+        /* Text styling for "AssignHub" */
+        nav h1 span {
+        color: #ffffff; /* White to match the interface theme */
+        letter-spacing: 0.5px;
+        text-transform: uppercase; /* To give a professional feel */
+        }
+        
         nav ul {
             list-style: none;
             display: flex;
@@ -100,20 +124,45 @@
             box-shadow: 0 0 5px rgba(106, 13, 173, 0.5);
         }
 
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            width: 100%;
+        }
+
+        .password-toggle {
+            position: absolute;
+            background: white;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6A0DAD;
+            font-size: 1.2em;
+        }
+
         .login-container button {
             background-color: #6A0DAD;
             color: #fff;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s ease;
-        }
-        button {
             width: 50%;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto;
         }
+
         .login-container button:hover {
             background-color: #5A0A8C;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: -15px;
         }
 
         .link-container {
@@ -135,8 +184,6 @@
             border-top: 3px solid #6A0DAD;
             padding: 30px;
             text-align: center;
-            font-family: 'Poppins', sans-serif;
-            color: #333;
         }
     </style>
 </head>
@@ -144,9 +191,13 @@
 <body>
     <!-- Navigation Bar -->
     <nav>
-        <h1>ONLINE ASSIGNMENT SUBMISSION PLATFORM</h1>
+        <h1>
+            <i class="fas fa-tasks"></i>
+            <span>AssignHub</span>
+            <i class="fas fa-check-circle"></i>
+          </h1>
         <ul>
-            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/welcome"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
             <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
@@ -156,21 +207,27 @@
     <div class="login-container">
         <h2><i class="fas fa-sign-in-alt" style="font-size: 3em; display: block; text-align: center;"></i></h2>
         <h2>Login to Your Account</h2>
-        <form id="loginForm" method="POST" action="/auth/login" >
-            
-
+        <form id="loginForm" method="POST" action="/auth/login" onsubmit="return handleSubmit(event)">
             <!-- Email Address -->
             <label for="email">
                 <i class="fas fa-envelope"></i> Email Address:
             </label>
             <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-
+            <div id="emailError" class="error-message"></div>
+        
             <!-- Password -->
             <label for="password">
                 <i class="fas fa-lock"></i> Password:
             </label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
-
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                
+                <i class="fas fa-eye-slash password-toggle" onclick="togglePasswordVisibility()"></i>
+                
+            </div>
+            <div id="passwordError" class="error-message"></div>
+        
+            <!-- Role -->
             <label for="userType">Role selection:</label>
             <select id="userType" name="role" required>
                 <option value="">--Select Role--</option>
@@ -178,26 +235,85 @@
                 <option value="lecturer">Lecturer</option>
                 <option value="admin">Admin</option>
             </select>
-
+            <div id="roleError" class="error-message"></div>
+        
             <button type="submit">Login</button>
-            
-
-
-
-
+            <div id="formError" class="error-message"></div>
         </form>
+        
         <div class="link-container">
             <p>Don't have an account? <a href="/auth/register">Register Here</a></p>
         </div>
     </div>
-    <footer>
-        </div class="right-reserved">
-        <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i> for students
-            and instructors.</p>
 
-        </div>
+    <footer>
+        <p>&copy; 2024 Online Assignment Submission Platform.</p>
     </footer>
-    
+
+    <script>
+        async function handleSubmit(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Clear previous errors
+    document.getElementById("emailError").textContent = "";
+    document.getElementById("passwordError").textContent = "";
+    document.getElementById("roleError").textContent = "";
+    document.getElementById("formError").textContent = "";
+
+    const formData = {
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value,
+    role: document.getElementById("userType").value,
+};
+
+try {
+    const response = await fetch("/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+    });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            // If backend validation fails, display error messages
+            if (data.errors) {
+                if (data.errors.email) {
+                    document.getElementById("emailError").textContent = data.errors.email;
+                }
+                if (data.errors.password) {
+                    document.getElementById("passwordError").textContent = data.errors.password;
+                }
+                if (data.errors.role) {
+                    document.getElementById("roleError").textContent = data.errors.role;
+                }
+            } else if (data.message) {
+                document.getElementById("formError").textContent = data.message;
+            }
+        } else {
+            // If successful, redirect to the intended page
+            window.location.href = data.redirect || '/'
+        }
+    } catch (error) {
+        document.getElementById("formError").textContent = "An unexpected error occurred. Please try again.";
+    }
+}
+
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById("password");
+    const toggleIcon = document.querySelector(".password-toggle");
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+        passwordInput.type = "password";
+        toggleIcon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+}
+
+    </script>
 </body>
 
 </html>

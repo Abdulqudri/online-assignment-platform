@@ -9,7 +9,7 @@ const {
   getLecturerCourse,
   getRegisterCourse,
   saveStudentCourse,
-} = require("../controller/courseController");
+} = require("../controllers/courseController");
 
 const router = express.Router();
 

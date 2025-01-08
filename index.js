@@ -1,13 +1,15 @@
 const express = require("express")
 const mongoose = require("mongoose")
 require("dotenv").config()
+const http = require('http')
+const { Server } = require('socket.io')
 const session = require("express-session")
 const mongoDbStore = require("connect-mongodb-session")(session)
 const expressLayouts = require('express-ejs-layouts');
 const path = require("path")
 const router = require("./routes/authRoutes")
 const viewRoutes = require("./routes/viewRoutes")
-const userRoutes = require("./routes/userRoutes")
+const userRoutes = require("./routes/UserRoutes")
 const courseRoutes = require("./routes/courseRoute")
 const assignmentRoutes = require("./routes/assignmentRoutes")
 const checkAuth = require("./middleware/checkAuth")
@@ -17,6 +19,9 @@ const mongo_uri = process.env.MONGO_URI
 
 //initializing express app
 const app = express()
+const server = http.createServer(app)
+const io = new Server(server)
+
 
 // connecting to database
 mongoose.connect(mongo_uri) 
@@ -26,6 +31,7 @@ const store = new mongoDbStore({
   uri: mongo_uri,
   collection: "my-session"
 })
+
 app.use(session({
   secret: process.env.SESSION_KEY, 
   resave: false, 
@@ -37,6 +43,11 @@ app.use(session({
   },
   store: store
 }));
+
+
+io.on("connection", (socket) => {
+  // ...
+});
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -52,7 +63,7 @@ app.use(express.json());
 // Middleware to parse URL-encoded data
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
+app.get("/welcome", (req, res) => {
     res.render("welcome", {layout: false})
 })
 app.use("/auth", router)
@@ -63,11 +74,14 @@ app.get("/about", (req, res) => {
 app.use(courseRoutes)
 app.use(userRoutes)
 app.use(checkAuth)
-app.use(viewRoutes)
-app.use(assignmentRoutes)
+app.use(viewRoutes(io))
+app.use(assignmentRoutes(io))
+
 
 mongoose.connection.once("open", () => {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`listening to  http://localhost:${port}`)
   })
+  
 })
+

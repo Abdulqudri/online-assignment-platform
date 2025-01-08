@@ -37,7 +37,7 @@
     <div id="response-message" class="success-message message"></div>
     
     <div id="success-message" class="message success" style="display: none;">
-        Assignment submitted successfully!
+        Assignment Created successfully!
     </div>
     <div id="error-message" class="message error" style="display: none;">
         An error occurred while submitting the assignment. Please try again.
@@ -135,7 +135,7 @@
 
                 // Hide success message after 3 seconds
                 setTimeout(() => {
-                    successeMessage.style.display = 'none';
+                    successMessage.style.display = 'none';
                 }, 3000);
             } else {
                 throw new Error(result.message || 'Failed to submit assignment');

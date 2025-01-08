@@ -1,3 +1,25 @@
+<style>
+    .message {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+
 <div class="upload-container">
     <h2>Upload Your Assignment</h2>
     <form id="upload-assignment-form" action="/upload-assignment/<%= assignment %>" method="POST" enctype="multipart/form-data">
@@ -21,7 +43,7 @@
 
     <!-- Message containers -->
     <div id="success-message" class="message success" style="display: none;">
-        Assignment submitted successfully!
+        Assignment Submitted  successfully!
     </div>
     <div id="error-message" class="message error" style="display: none;">
         An error occurred while submitting the assignment. Please try again.
@@ -73,24 +95,3 @@
     });
 </script>
 
-<style>
-    .message {
-        margin-top: 10px;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        text-align: center;
-    }
-
-    .message.success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .message.error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-</style>

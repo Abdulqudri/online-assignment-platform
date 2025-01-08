@@ -1,20 +1,20 @@
-const express = require("express")
+module.exports = (io) => {const express = require("express")
 const User = require("../model/User")
 const Department = require("../model/Department")
 const Course = require("../model/Course")
 const Assignment = require("../model/Assignment")
 const path = require('path')
 const AssignmentSubmission = require("../model/AssignmentSubmission")
-
+const Notification = require("../model/Notification")
 const router = express.Router()
 
-router.get("/dashboard", async (req, res) => {
+router.get("/", async (req, res) => {
 
     const userId = req.session.user.id
     try {
       const user = await User.findById(userId)
       if(!user){
-        return res.status(404).redirect("/auth/login")
+        return res.status(404).redirect("/welcome")
       }
       res.render("index",{user})
     } catch (err) {
@@ -30,6 +30,14 @@ router.get("/view-assignments", async(req, res) => {
     if(!user){
       return res.status(404).redirect("/auth/login")
     }
+    await Notification.updateMany(
+      { userId: userId, read: false },
+      { $set: { read: true } }
+    );
+
+    // Emit an event to update unread count
+    const unreadCount = await Notification.countDocuments({ userId, read: false });
+    io.to(userId.toString()).emit("updateUnreadCount", { unreadCount });
     res.render("view-assignments", {user})
   } catch (err) {
     res.status(500).json({message: "server error"})
@@ -343,6 +351,7 @@ router.get('/documents/download/:filePath', (req, res) => {
 
 
 
-module.exports = router;
+return router;
 
 
+}

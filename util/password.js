@@ -13,9 +13,7 @@ const hashPass = async (pass) => {
 
 const checkPass = async (pass, hash) => {
     const match = await bcrypt.compare(pass, hash)
-    if (match) {
-        return match;
-    }
-    throw new Error("something went wrong")
+    
+    return match;
 }
 module.exports = {hashPass, checkPass};

@@ -36,9 +36,34 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+        /* Logo styling */
         nav h1 {
-            font-size: 1.8em;
-            color: #fff;
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #ffffff; /* White for text contrast */
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem; /* Spacing between icons and text */
+        margin: 0;
+        }
+
+        /* Icon styling */
+        nav h1 i {
+        color: #ffd600; /* Bright yellow for highlighting icons */
+        transition: transform 0.2s ease-in-out;
+        }
+
+        /* Icon hover effect */
+        nav h1 i:hover {
+        transform: scale(1.1); /* Slight zoom for interactivity */
+        }
+
+        /* Text styling for "AssignHub" */
+        nav h1 span {
+        color: #ffffff; /* White to match the interface theme */
+        letter-spacing: 0.5px;
+        text-transform: uppercase; /* To give a professional feel */
         }
 
         nav ul {
@@ -236,7 +261,11 @@
 <body>
     <!-- Navigation Bar -->
     <nav>
-        <h1>ONLINE ASSIGNMENT SUBMISSION PLATFORM</h1>
+        <h1>
+            <i class="fas fa-tasks"></i>
+            <span>AssignHub</span>
+            <i class="fas fa-check-circle"></i>
+          </h1>
         <ul>
             <% if(!user) { %>
             <li><a href="/"><i class="fas fa-home"></i> Home</a></li>

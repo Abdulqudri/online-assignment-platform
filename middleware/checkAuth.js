@@ -3,6 +3,6 @@ const checkAuth = (req, res, next) => {
       return next();
     }
   
-    return res.status(401).redirect("/auth/login");
+    return res.status(401).redirect("/welcome");
 };
 module.exports = checkAuth

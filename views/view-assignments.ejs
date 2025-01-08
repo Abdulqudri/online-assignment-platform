@@ -49,10 +49,10 @@
                             <td>${new Date(assignment.dueDate).toLocaleString()}</td>
                             <td>${assignment.status}</td>
                             <td>
-                                ${assignment.status === 'Pending' 
-                                    ? `<a href="/submit-assignment?id=${assignment._id}" class="btn btn-submit">Submit</a>` 
+                                ${assignment.status === 'pending' 
+                                    ? `<a href="/submit-assignment?id=${assignment.assignmentId}" class="btn btn-submit">Submit</a>` 
                                     : ''}
-                                <a href="/view-detail?id=${assignment._id}" class="btn btn-view">View</a>
+                                <a href="/view-detail?id=${assignment.assignmentId}" class="btn btn-view">View</a>
                             </td>
                         `;
                         tableBody.appendChild(row);

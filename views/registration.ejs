@@ -23,7 +23,6 @@
             color: #333;
         }
 
-        /* Navigation Bar */
         nav {
             background: #6A0DAD;
             color: #fff;
@@ -33,9 +32,34 @@
             align-items: center;
         }
 
-        nav h1 {
-            font-size: 1.9em;
+       /* Logo styling */
+       nav h1 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #ffffff; /* White for text contrast */
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem; /* Spacing between icons and text */
+        margin: 0;
+        }
 
+        /* Icon styling */
+        nav h1 i {
+        color: #ffd600; /* Bright yellow for highlighting icons */
+        transition: transform 0.2s ease-in-out;
+        }
+
+        /* Icon hover effect */
+        nav h1 i:hover {
+        transform: scale(1.1); /* Slight zoom for interactivity */
+        }
+
+        /* Text styling for "AssignHub" */
+        nav h1 span {
+        color: #ffffff; /* White to match the interface theme */
+        letter-spacing: 0.5px;
+        text-transform: uppercase; /* To give a professional feel */
         }
 
         nav ul {
@@ -57,20 +81,6 @@
             color: #D8BFD8;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: calc(100% - 20px);
-            /* Adjust the width to fit content, subtract padding */
-            padding: 10px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-
-        /* Registration Section */
         .registration-container {
             max-width: 600px;
             margin: 50px auto;
@@ -105,52 +115,38 @@
             border-radius: 5px;
         }
 
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            width: calc(100% - 20px);
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .password-toggle.i {
+            font-size: 1.2em;
+            color: #6A0DAD;
+        }
+
         .registration-container button {
             background-color: #6A0DAD;
             color: #fff;
             border: none;
             cursor: pointer;
-
-
         }
 
         .registration-container button:hover {
             background-color: #5A0A8C;
-
-        }
-
-        .submit {
-            display: block;
-            width: 50%;
-            margin: 0 auto;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .back-link a {
-            color: #6A0DAD;
-            text-decoration: none;
-        }
-
-        .link-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .link-container a {
-            color: #6A0DAD;
-            text-decoration: none;
-        }
-
-        .link-container a:hover {
-            text-decoration: underline;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
         }
 
         footer {
@@ -158,110 +154,177 @@
             border-top: 3px solid #6A0DAD;
             padding: 30px;
             text-align: center;
-            font-family: 'Poppins', sans-serif;
-            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .user-fields {
+            display: none;
+        }
+        .error-message {
+            display: none;
+            color: red;
+            margin-top: -10px;
         }
     </style>
 </head>
 
 <body>
-    <!-- Navigation Bar -->
     <nav>
-        <h1>ONLINE ASSIGNMENT SUBMISSION PLATFORM</h1>
+        <h1>
+            <i class="fas fa-tasks"></i>
+            <span>AssignHub</span>
+            <i class="fas fa-check-circle"></i>
+          </h1>
         <ul>
-            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/welcome"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
             <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
         </ul>
     </nav>
 
-    <!-- Registration Section -->
     <div class="registration-container">
         <h2><i class="fas fa-user-circle" style="font-size: 3em; display: block; text-align: center;"></i></h2>
-        <h2 style="text-align: center;">User Registration</h2>
+        <h2>User Registration</h2>
 
-
-        <form id="registrationForm" method="POST"  action="/auth/register">
+        <form id="registrationForm" method="POST" action="/auth/register">
             <label for="userType">Register as:</label>
             <select id="userType" name="role" required>
                 <option value="">--Select--</option>
                 <option value="student">Student</option>
                 <option value="lecturer">Lecturer</option>
             </select>
-           
-                
+            <div id="roleError" class="error-message"></div>
+
             <label for="name">
                 <i class="fas fa-user"></i> Full Name:
             </label>
-            <input type="text" id="name" name="name" placeholder="Enter your full name" reqiured pattern="^[a-zA-Z\s]+$"
+            <input type="text" id="name" name="name" placeholder="Enter your full name" pattern="^[a-zA-Z\s]+$"
                 title="Only alphabets and spaces are allowed" required>
+            <div id="nameError" class="error-message"></div>
 
             <label for="email">
                 <i class="fas fa-envelope"></i> Email Address:
             </label>
             <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <div id="emailError" class="error-message"></div>
 
             <label for="password">
                 <i class="fas fa-lock"></i> Password:
             </label>
-            <input type="password" id="password" name="password" placeholder="Enter your password"
-                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
-                title="Minimum 8 characters, at least one uppercase letter, one lowercase letter, and one number"
-                required>
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Enter your password"
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
+                    title="Minimum 8 characters, at least one uppercase letter, one lowercase letter, and one number"
+                    required>
+                <i class="fas fa-eye-slash password-toggle" onclick="togglePasswordVisibility()"></i>
+            </div>
+            <div id="passwordError" class="error-message"></div>
 
-            <div  class="user-fields lecturer" style="display: none;" >
+            <div class="user-fields lecturer" style="display: none;">
                 <label for="lecturerId">
                     <i class="fas fa-id-card"></i> Lecturer ID:
                 </label>
-                <input type="text" id="lecturerId" name="lecturerIdNo"
-                        placeholder="Enter your lecturer ID or institutional ID" >
+                <input type="text" id="lecturerId" name="lecturerIdNo" placeholder="Enter your lecturer ID"
+                    >
             </div>
             <div class="user-fields student" style="display: none;">
                 <label for="admission-no">
                     <i class="fas fa-id-card"></i> Admission No:
                 </label>
-
-                <input type="text" id="admission-no" name="studentId" placeholder="Enter your student ID (e.g 1910310067)" 
-                pattern="^[a-zA-Z0-9]{10}$" title="10 alphanumeric characters" >
+                <input type="text" id="admission-no" name="studentId"
+                    placeholder="Enter your student ID (e.g 1910310067)" pattern="^[a-zA-Z0-9]{10}$"
+                    title="10 alphanumeric characters" >
             </div>
+            <div id="lecturerIdError" class="error-message"></div>
 
-                
+
             <button class="submit" type="submit">Register</button>
-            
+            <div id="generalError" class="error-message"></div>
         </form>
-        <div class="link-container">
-            <p>Already have an account? <a href="/auth/login">Login here</a></p>
-        </div>
-        <div class="back-link">
-            <a href="/welcome"><i class="fas fa-arrow-left"></i> Back to Home</a>
-        </div>
     </div>
 
+    <footer>
+        <p>&copy; 2024 Online Assignment Submission Platform.</p>
+    </footer>
+
     <script>
-        // Script to display form fields based on user type selection
-        document.getElementById('userType').addEventListener('change', function () {
-            var userType = this.value;
-            document.querySelectorAll('.user-fields').forEach(function (el) {
-                el.style.display = 'none';
+        // Toggle Password Visibility
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.querySelector('.password-toggle');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.add('fa-eye-slash');
+                toggleIcon.classList.remove('fa-eye');
+                
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Backend Error Handling with JSON Payload
+        document.getElementById('registrationForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Clear previous error messages
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+
+            // Get form data as JSON
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
             });
 
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data) // Send JSON instead of FormData
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    const errorData = result.errors || { message: result.message || 'An error occurred.' };
+                    for (const [key, value] of Object.entries(errorData)) {
+                        const errorElement = document.getElementById(`${key}Error`);
+                        errorElement.style.display = "block"
+                        if (errorElement) errorElement.textContent = value;
+                    }
+                } else {
+                    // Redirect or show success message
+                    window.location.href = result.redirectUrl || '/auth/login';
+                }
+            } catch (err) {
+                document.getElementById('generalError').textContent = 'Unable to process the request. Please try again.';
+            }
+        });
+
+        // Show relevant fields based on user type
+        document.getElementById('userType').addEventListener('change', function () {
+            const userType = this.value;
+            document.querySelectorAll('.user-fields').forEach(field => field.style.display = 'none');
             if (userType === 'student') {
                 document.querySelector('.student').style.display = 'block';
-                
             } else if (userType === 'lecturer') {
                 document.querySelector('.lecturer').style.display = 'block';
-                
-        }});
+            }
+        });
     </script>
-    <footer>
-
-        <div class="right-reserved">
-        <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i> for students
-            and instructors.</p>
-
-        </div>
-
-    </footer>
 </body>
 
 </html>

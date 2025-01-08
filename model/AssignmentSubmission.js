@@ -10,7 +10,7 @@ const AssignmentSubmissionSchema = new Schema({
     title: { type: String, required: true },
     status: {
         type: String,
-        enum: ['Submitted', 'Pending', 'Reviewed'],
+        enum: ['Submitted', 'Reviewed'],
         default: 'Submitted',
     },
     course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },

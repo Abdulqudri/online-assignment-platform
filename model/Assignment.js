@@ -28,11 +28,6 @@ const AssignmentSchema = new mongoose.Schema({
     },
     submissions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'AssignmentSubmission' }],
     userIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    status: {
-        type: String,
-        enum: ['Pending', 'Expired', 'Submitted'],
-        default: 'Pending' // Default status
-    }
 });
 
 const Assignment = mongoose.model('Assignment', AssignmentSchema);

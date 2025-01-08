@@ -35,9 +35,36 @@
             align-items: center;
         }
 
+        /* Logo styling */
         nav h1 {
-            font-size: 1.8em;
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #ffffff; /* White for text contrast */
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem; /* Spacing between icons and text */
+        margin: 0;
         }
+
+        /* Icon styling */
+        nav h1 i {
+        color: #ffd600; /* Bright yellow for highlighting icons */
+        transition: transform 0.2s ease-in-out;
+        }
+
+        /* Icon hover effect */
+        nav h1 i:hover {
+        transform: scale(1.1); /* Slight zoom for interactivity */
+        }
+
+        /* Text styling for "AssignHub" */
+        nav h1 span {
+        color: #ffffff; /* White to match the interface theme */
+        letter-spacing: 0.5px;
+        text-transform: uppercase; /* To give a professional feel */
+        }
+        
 
         nav ul {
             list-style: none;
@@ -58,15 +85,17 @@
             color: #D8BFD8;
         }
 
-        /* Hero Section */
-        .hero {
+       /* Hero Section */
+       .hero {
+            background: url('/public/images/welcomeimage.jpg') no-repeat ;
+            background-size: cover;
             text-align: center;
             padding: 50px 20px;
-            background: #fff;
+            background-color: #615f5f;
             border-bottom: 3px solid #6A0DAD;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: relative;
         }
-
         .hero h2 {
             color: #6A0DAD;
             margin-bottom: 15px;
@@ -169,7 +198,11 @@
 <body>
     <!-- Navigation Bar -->
     <nav>
-        <h1>ONLINE ASSIGNMENT SUBMISSION PLATFORM</h1>
+        <h1>
+            <i class="fas fa-tasks"></i>
+            <span>AssignHub</span>
+            <i class="fas fa-check-circle"></i>
+          </h1>
         <ul>
             <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
@@ -181,14 +214,13 @@
     <!-- Hero Section -->
     <section class="hero">
         <h2 id="dynamic-heading">Welcome to the Online Assignment Submission Platform</h2>
-
-       
-
+        
         <p>
             Our platform streamlines assignment submissions, offering an efficient way <br>for students to submit work,
             lecturers to evaluate, and administrators to manage academic tasks.<br> Accessible, secure, and
             user-friendly.
         </p>
+    
         <a href="/auth/register" class="btn">Get Started</a>
     </section>
 
