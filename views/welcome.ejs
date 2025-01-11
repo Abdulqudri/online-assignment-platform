@@ -87,15 +87,41 @@
 
        /* Hero Section */
        .hero {
-            background: url('/public/images/welcomeimage.jpg') no-repeat ;
-            background-size: cover;
-            text-align: center;
-            padding: 50px 20px;
-            background-color: #615f5f;
-            border-bottom: 3px solid #6A0DAD;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: relative;
-        }
+    position: relative; /* To position the pseudo-element relative to the container */    
+    background: url('/public/images/welcomeimage.jpg') no-repeat center center;
+    background-size: cover; /* Ensures the section is fully covered */
+    text-align: center;
+    padding: 50px 20px;
+    background-color: floralwhite;
+    border-bottom: 3px solid #6A0DAD;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    height: 50vh;
+    overflow: hidden; /* Ensures the pseudo-element stays within bounds */
+    
+}
+@media (max-width: 768px) {
+    .hero {
+        height: 30vh; /* Reduce height for smaller screens */
+        padding: 30px 15px;
+    }
+}
+.hero::before {
+    content: ''; /* Necessary for pseudo-elements */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/public/images/welcomeimage.jpg') no-repeat center center;
+    background-size: cover; /* Ensures the image covers the container */
+    filter: blur(5px); /* Blurs the image */
+    -webkit-filter: blur(5px); /* For older WebKit browsers */
+    z-index: -1; /* Places the image behind the text */
+}
+
+
+
         .hero h2 {
             color: #6A0DAD;
             margin-bottom: 15px;

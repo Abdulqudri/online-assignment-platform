@@ -31,12 +31,12 @@ router.get("/view-assignments", async(req, res) => {
       return res.status(404).redirect("/auth/login")
     }
     await Notification.updateMany(
-      { userId: userId, read: false },
+      { userId: userId, read: false, type: "newAssignment" },
       { $set: { read: true } }
     );
 
     // Emit an event to update unread count
-    const unreadCount = await Notification.countDocuments({ userId, read: false });
+    const unreadCount = await Notification.countDocuments({ userId, read: false , type: "newAssignment"});
     io.to(userId.toString()).emit("updateUnreadCount", { unreadCount });
     res.render("view-assignments", {user})
   } catch (err) {
@@ -51,6 +51,14 @@ router.get("/view-feedback", async(req, res) => {
     if(!user){
       return res.status(404).redirect("/auth/login")
     }
+    await Notification.updateMany(
+      { userId: userId, read: false, type: "assignmentReview" },
+      { $set: { read: true } }
+    );
+
+    // Emit an event to update unread count
+    const unreadCount = await Notification.countDocuments({ userId, read: false , type: "assignmentReview"});
+    io.to(userId.toString()).emit("updateUnreadCount", { unreadCount });
     res.render("view-feedback", {user})
   } catch (err) {
     res.status(500).json({message: "server error"})
@@ -172,6 +180,12 @@ router.get("/view-submissions", async(req, res) => {
     if(!user){
       return res.status(404).redirect("/auth/login")
     }
+    await Notification.updateMany(
+      { userId: userId, read: false, type: "assignmentSubmission" },
+      { $set: { read: true } }
+    );
+    const unreadCount = await Notification.countDocuments({ userId, read: false});
+    io.to(userId.toString()).emit("updateUnreadCount", { unreadCount });
     res.render("view", {user})
   } catch (err) {
     res.status(500).json({message: "server error"})

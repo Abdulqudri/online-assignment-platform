@@ -14,41 +14,29 @@ module.exports = (io) => {
         console.log(`User ${userId} joined their room`);
       });
 
-      // Listen for newAssignment event
+      // // Listen for newAssignment event
       socket.on('newAssignment',async (data) => {
-        const { studentId, assignmentId, title, description, dueDate } = data;
+        const { studentId } = data;
 
         // Add the notification to the database
         const notification = await Notification.findOne({ userId: studentId });
     
-        if (notification) {
-          notification.notifications.push({
-            assignmentId,
-            title,
-            description,
-            dueDate,
-            isRead: false,
-          });
-          await notification.save();
-        } else {
-          await Notification.create({
-            userId: studentId,
-            notifications: [
-              { assignmentId, title, description, dueDate, isRead: false },
-            ],
-          });
-        }
-    
         // Emit the notification to the specific student's room
         io.to(studentId).emit('newAssignmentNotification', {
-          assignmentId,
-          title,
-          description,
-          dueDate,
+          message: notification.message,
+          unreadCount: 1
+        });
+        io.to(studentId).emit('newAssignmentNotification', {
+          message: notification.message,
+          unreadCount: 1
+        });
+        io.to(studentId).emit('assignmentReviewNotification', {
+          message: notification.message,
+          unreadCount: 1
         });
       });
     
-      // When the student views an assignment
+      //When the student views an assignment
       socket.on('viewedAssignment', async (data) => {
         const { studentId, assignmentId } = data;
     
@@ -122,6 +110,7 @@ module.exports = (io) => {
           const notifications = studentIds.filter(id => id !== req.session.user.id.toString())
           .map(id => ({
             userId: id,
+            type: "newAssignment",
             assignmentId: newAssignment._id,
             message: `New assignment: ${title}`,
             read: false
@@ -161,52 +150,44 @@ module.exports = (io) => {
         try {
           const { title, comments, plagiarism_check } = req.body;
           let filePath = null;
+      
           if (req.file) {
             filePath = `/uploads/${req.file.filename}`;
           }
+      
           const userId = req.session.user.id; // Assuming session contains user data
           const assignment_id = req.params.id;
-
+      
           // Validate input
           if (!title) {
             return res
               .status(400)
               .json({ success: false, message: "Title and file are required." });
           }
-
+      
           // Fetch the user and validate session
           const user = await User.findById(userId).populate("courses");
           if (!user) {
             return res
               .status(401)
-              .json({
-                success: false,
-                message: "User not found or not logged in.",
-              });
+              .json({ success: false, message: "User not found or not logged in." });
           }
-
+      
           // Fetch the assignment
-          const assignment = await Assignment.findById(assignment_id).populate(
-            "course"
-          );
+          const assignment = await Assignment.findById(assignment_id).populate("course");
           if (!assignment) {
             return res
               .status(404)
               .json({ success: false, message: "Assignment not found." });
           }
-
+      
           // Verify the assignment belongs to a course the user is enrolled in
-          if (
-            !user.courses.some((course) => course._id.equals(assignment.course._id))
-          ) {
+          if (!user.courses.some((course) => course._id.equals(assignment.course._id))) {
             return res
               .status(403)
-              .json({
-                success: false,
-                message: "User not enrolled in this course.",
-              });
+              .json({ success: false, message: "User not enrolled in this course." });
           }
-
+      
           // Check if the user already submitted for this assignment
           const existingSubmission = await AssignmentSubmission.findOne({
             assignment: assignment._id,
@@ -217,25 +198,62 @@ module.exports = (io) => {
               .status(400)
               .json({ success: false, message: "Assignment already submitted." });
           }
-
+      
           // Create a new submission
           const submission = new AssignmentSubmission({
             assignment: assignment._id,
             title,
-            course: assignment.course._id, // Associate the course from the assignment
+            course: assignment.course._id,
             filePath,
             comments: comments || null,
             plagiarismCheck: !!plagiarism_check,
             submittedBy: userId,
           });
-
-          // Update the assignment status to "submitted"
-          assignment.submissions.push(submission._id)
+      
+          // Update the assignment submissions
+          assignment.submissions.push(submission._id);
           await assignment.save();
-
+      
           // Save the submission
           await submission.save();
-
+      
+          // Notify all lecturers associated with the course
+          const lecturers = await User.find({
+            role: "lecturer",
+            courses: assignment.course._id,
+          });
+      
+          const notifications = lecturers.map((lecturer) => ({
+            userId: lecturer._id,
+            type: "assignmentSubmission",
+            read: false,
+            message: `New submission received for assignment: ${submission.title}`,
+            relatedId: submission._id,
+            assignmentId: assignment._id
+          }));
+      
+          try {
+            // Save notifications to the database
+            const savedNotifications = await Notification.insertMany(notifications);
+      
+            // Emit real-time notifications to relevant lecturers
+            lecturers.forEach((lecturer) => {
+              const lecturerId = lecturer._id.toString();
+              const notification = savedNotifications.find(
+                (notif) => notif.userId.toString() === lecturerId
+              );
+      
+              if (notification) {
+                io.to(lecturerId).emit("submitAssignmentNotification", {
+                  message: notification.message,
+                  unreadCount: 1,
+                });
+              }
+            });
+          } catch (notificationError) {
+            console.error("Error handling notifications:", notificationError);
+          }
+      
           res.status(201).json({
             success: true,
             message: "Assignment submitted successfully.",
@@ -243,15 +261,14 @@ module.exports = (io) => {
           });
         } catch (error) {
           console.error("Error submitting assignment:", error);
-          res
-            .status(500)
-            .json({
-              success: false,
-              message: "Internal server error.",
-              error: error.message,
-            });
+          res.status(500).json({
+            success: false,
+            message: "Internal server error.",
+            error: error.message,
+          });
         }
-      },
+      }
+      ,
 
       // Get Submissions for a User (For Students)
       getUserSubmissions: async (req, res) => {
@@ -415,6 +432,23 @@ module.exports = (io) => {
           submission.review = feedback; // Store feedback in the review field
           submission.status = "Reviewed"; // Update status to 'Reviewed'
           await submission.save();
+          const notification = new Notification({
+            userId: submission.submittedBy, // Notify the student who submitted the assignment
+            type: "assignmentReview", // New type for reviewed assignments
+            read: false,
+            assignmentId: submission.assignment._id,
+            message: `Your submission for assignment "${submission.assignment.title}" has been reviewed.`,
+            createdAt: new Date(),
+        });
+
+        await notification.save();
+
+        // Emit a real-time notification to the student
+        const studentId = submission.submittedBy._id.toString();
+        io.to(studentId).emit("assignmentReviewNotification", {
+            message: notification.message,
+            unreadCount: 1,
+        });
 
           // Respond with success message
           res.status(200).json({ message: "Feedback submitted successfully!" });
@@ -531,7 +565,30 @@ module.exports = (io) => {
       notifications: async (req, res) => {
         try {
           const userId = req.session.user.id; // Get user ID from session or JWT
-          const notifications = await Notification.find({ userId , read: false})
+          const notifications = await Notification.find({ userId , read: false , type: "newAssignment"})
+            .sort({ createdAt: -1 }); // Sort by most recent
+      
+          res.status(200).json(notifications); // Send notifications as response
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          res.status(500).json({ error: "Failed to fetch notifications" });
+        }
+      },
+      submissionNotifications: async (req, res) => {
+        try {
+          const userId = req.session.user.id; // Get user ID from session or JWT
+          const notifications = await Notification.find({ userId , read: false, type: "assignmentSubmission"})
+            .sort({ createdAt: -1 }); // Sort by most recent
+      
+          res.status(200).json(notifications); // Send notifications as response
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          res.status(500).json({ error: "Failed to fetch notifications" });
+        }
+      },reviewNotifications: async (req, res) => {
+        try {
+          const userId = req.session.user.id; // Get user ID from session or JWT
+          const notifications = await Notification.find({ userId , read: false, type: "assignmentReview"})
             .sort({ createdAt: -1 }); // Sort by most recent
       
           res.status(200).json(notifications); // Send notifications as response
