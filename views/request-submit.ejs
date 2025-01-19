@@ -21,48 +21,52 @@
 </style>
 
 <div class="upload-container">
-    <h2>Upload Your Assignment</h2>
-    <form id="upload-assignment-form" action="/upload-assignment/<%= assignment %>" method="POST" enctype="multipart/form-data">
+    <h2>Request Late Submission</h2>
+    <form id="upload-assignment-form" action="/request-submit/<%= assignment._id %>" method="POST">
         <label for="assignment-title">Assignment Title</label>
-        <input type="text" id="assignment-title" name="title" placeholder="Enter assignment title" required>
+        <input type="text" id="assignment-title" name="title" value="<%= assignment.title %>" required readonly>
 
-        <label for="file-upload">Upload File</label>
-        <input type="file" id="file-upload" name="file_upload" accept=".pdf,.docx,.zip" required>
-        <p class="note">Supported formats: PDF, DOCX, ZIP. Max size: 10MB.</p>
 
-        <label for="comments">Comments (Optional)</label>
-        <textarea id="comments" name="comments" placeholder="Add any additional comments"></textarea>
+        <label for="reason">Reason for late submission</label>
+        <textarea id="reason" name="reason" placeholder="Add any reason "></textarea>
 
-        <button type="submit"><i class="fas fa-upload"></i> Submit Assignment</button>
+        <button type="submit"><i class="fas fa-upload"></i> Submit Request</button>
     </form>
 
     <!-- Message containers -->
     <div id="success-message" class="message success" style="display: none;">
-        Assignment Submitted  successfully!
+        Assignment request  successfully!
     </div>
     <div id="error-message" class="message error" style="display: none;">
-        An error occurred while submitting the assignment. Please try again.
+        An error occurred while requesting the assignment. Please try again.
     </div>
 </div>
 
 <script>
+
     document.getElementById('upload-assignment-form').addEventListener('submit', async function (e) {
         e.preventDefault(); // Prevent default form submission
-
-        const form = e.target;
-        const formData = new FormData(form);
+        const id = "<%= user._id %>"
+        const course = "<%= assignment.course %>"
+        const form = document.getElementById("upload-assignment-form");
         const successMessage = document.getElementById('success-message');
         const errorMessage = document.getElementById('error-message');
+        const feedbackData = {
+            id,
+            reason: form["reason"].value,
+            course
+        }
 
         try {
             const response = await fetch(form.action, {
                 method: 'POST',
-                body: formData,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(feedbackData),
             });
 
             const result = await response.json();
 
-            if (response.ok && result.success) {
+            if (response.ok) {
                 successMessage.style.display = 'block';
                 errorMessage.style.display = 'none';
 
@@ -74,6 +78,7 @@
                     successMessage.style.display = 'none';
                 }, 3000);
             } else {
+                errorMessage.innerHTML = result.msg
                 throw new Error(result.message || 'Failed to submit assignment');
             }
         } catch (error) {

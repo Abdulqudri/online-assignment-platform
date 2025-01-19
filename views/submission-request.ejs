@@ -1,0 +1,70 @@
+<div class="assignments-container">
+    <h2>Submission Requests</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Admission No</th>
+                <th>Name</th>
+                <th>Reason</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="assignments-table-body">
+            <tr>
+                <td colspan="5">Loading requests...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const tableBody = document.getElementById('assignments-table-body');
+
+        try {
+            // Fetch pending requests for the logged-in lecturer
+            const response = await fetch('/get-all', {
+                credentials: 'include',
+                method: 'GET',
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                const { submissions } = result.data;
+
+                // Clear loading message
+                tableBody.innerHTML = '';
+
+                // Populate table with pending requests
+                submissions.forEach(request => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${request.assignment.title}</td>
+                        <td>${request.user.userId}</td>
+                        <td>${request.user.name}</td>
+                        <td>${request.reason}</td>
+                        <td>
+                            <a href="/view-request-details?id=${request._id}" class="btn btn-view">View</a>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // Show a message if no pending requests exist
+                if (tableBody.children.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5">No pending requests available.</td></tr>';
+                }
+            } else {
+                // Handle errors in API response
+                tableBody.innerHTML = '<tr><td colspan="5">Failed to fetch requests. Please try again later.</td></tr>';
+                console.error(result.message || 'Error fetching requests.');
+            }
+        } catch (error) {
+            // Handle fetch errors
+            console.error('Error fetching requests:', error);
+            tableBody.innerHTML = '<tr><td colspan="5">Failed to load requests. Please check your connection.</td></tr>';
+        }
+    });
+</script>

@@ -40,7 +40,6 @@
 
                 // Filter active assignments (not yet due) and create rows
                 assignments
-                    .filter(assignment => new Date(assignment.dueDate) >= new Date())
                     .forEach(assignment => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
@@ -51,6 +50,9 @@
                             <td>
                                 ${assignment.status === 'pending' 
                                     ? `<a href="/submit-assignment?id=${assignment.assignmentId}" class="btn btn-submit">Submit</a>` 
+                                    : ''}
+                                ${assignment.status === 'expired'
+                                ? `<a href="/request-submit/${assignment.assignmentId}" class="btn btn-submit">Request </a>` 
                                     : ''}
                                 <a href="/view-detail?id=${assignment.assignmentId}" class="btn btn-view">View</a>
                             </td>

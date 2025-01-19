@@ -19,72 +19,90 @@
         }
 
         body {
-            background-color: #F2F2F2;
-            /* Bright Gray */
-            color: #333;
+            background-color: #F1E6EA;
+            color: #6A0DAD;
+            line-height: 1.8;
         }
 
         /* Navigation Bar */
         nav {
             background: #6A0DAD;
-            /* Aconite Purple */
             color: #fff;
-            padding: 15px 20px;
+            padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
-        /* Logo styling */
         nav h1 {
-        font-family: 'Poppins', sans-serif;
-        font-size: 2rem;
-        font-weight: bold;
-        color: #ffffff; /* White for text contrast */
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem; /* Spacing between icons and text */
-        margin: 0;
-        }
-
-        /* Icon styling */
-        nav h1 i {
-        color: #ffd600; /* Bright yellow for highlighting icons */
-        transition: transform 0.2s ease-in-out;
-        }
-
-        /* Icon hover effect */
-        nav h1 i:hover {
-        transform: scale(1.1); /* Slight zoom for interactivity */
-        }
-
-        /* Text styling for "AssignHub" */
-        nav h1 span {
-        color: #ffffff; /* White to match the interface theme */
-        letter-spacing: 0.5px;
-        text-transform: uppercase; /* To give a professional feel */
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-        }
-
-        nav ul li {
-            margin: 0 15px;
+            gap: 15px;
+            flex-wrap: wrap;
+            transition: max-height 0.3s ease-in-out;
+            overflow: hidden;
         }
 
         nav ul li a {
             color: #fff;
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.3s ease;
-            cursor: pointer;
         }
 
         nav ul li a:hover {
             color: #D8BFD8;
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        /* Mobile Menu */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                display: none; /* Hide by default */
+            }
+
+            nav ul.active {
+                background-color: #555;
+            position: absolute;
+            padding: 10px;
+            top: 20px;
+            right: 50px;
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            transition: max-height 0.3s ease-in-out;
+            z-index: 1000;
+             /* Show when active */
+            }
+            .menu-bar{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
         }
 
         /* About Section */
@@ -153,47 +171,6 @@
             text-align: center;
         }
 
-        .developer-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .developer-section h2 {
-            color: #6A0DAD;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .developer-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .developer-photo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .developer-info p {
-            color: #555;
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-
-        .developer-info a {
-            color: #6A0DAD;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .developer-info a:hover {
-            text-decoration: underline;
-        }
-
         footer {
             background: #F9F9F9;
             border-top: 3px solid #6A0DAD;
@@ -202,101 +179,37 @@
             font-family: 'Poppins', sans-serif;
             color: #333;
         }
-
-        .contact-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact-section h2 {
-            color: #6A0DAD;
-            margin-bottom: 15px;
-        }
-
-        .contact-section p {
-            margin-bottom: 10px;
-            color: #555;
-            font-size: 1.1em;
-        }
-
-        .contact-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .contact-section ul li {
-            margin: 10px 0;
-            color: #333;
-            font-size: 1em;
-        }
-
-        .contact-section ul li i {
-            color: #6A0DAD;
-            margin-right: 8px;
-        }
-
-        .contact-section a,
-        .right-reserved a {
-            color: #6A0DAD;
-            text-decoration: none;
-        }
-
-        .contact-section a:hover,
-        .right-reserved a:hover {
-            text-decoration: underline;
-        }
-
-        .right-reserved {
-            font-size: 0.9em;
-            margin-top: 20px;
-            color: #555;
-        }
-
-        .right-reserved i {
-            color: #6A0DAD;
-        }
     </style>
 </head>
 
 <body>
     <!-- Navigation Bar -->
     <nav>
+        <div class="menu-bar">
         <h1>
             <i class="fas fa-tasks"></i>
-            <span>AssignHub</span>
+            AssignHub
             <i class="fas fa-check-circle"></i>
-          </h1>
-        <ul>
-            <% if(!user) { %>
-            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
-            <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
-            <% }else{ %>
-                <li><a href="/dashboard"><i class="fas fa-home"></i> Home</a></li>
-                <li>
-                    <a id="logout"><i class="fas fa-sign-in-alt"></i> Logout</a>
-                  </li>
-                <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
-            <% } %>
-        </ul>
-    </nav>
+        </h1>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+    <ul id="menu">
+        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
+        <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+    </ul>
+</nav>
 
     <!-- About Section -->
     <section class="about-section">
         <h2> About the Online Assignment Submission Platform</h2>
-        <p id="dynamic-paragraph">
+        <p>
             The Online Assignment Submission Platform (OASP) is a revolutionary system designed to streamline the
-            submission
-            and evaluation of assignments for students and lecturers. Built with cutting-edge technology, OASP aims to
-            enhance
-            productivity and simplify academic workflows. <br>
-
-            Our platform ensures plagiarism-free submissions, timely feedback, and performance analytics that support
-            both
-            academic excellence and administrative efficiency.
+            submission and evaluation of assignments for students and lecturers.
         </p>
-
         <div class="features">
             <div class="feature-box">
                 <i class="fas fa-upload"></i>
@@ -315,83 +228,19 @@
             </div>
         </div>
     </section>
-    <!-- Developer Section -->
-    <section class="developer-section">
-        <div class="developer-container">
-            <h2>Meet the Developer</h2>
-            <div class="developer-info">
-                <img src="developer picture.jpg" alt="Developer Photo" class="developer-photo">
-                <p>
-                    Hi, I’m <strong>Al-Harbeeb</strong>, a Computer Science undergraduate at Usmanu Danfodiyo
-                    University, Sokoto.
-                    I specialize in developing user-friendly, scalable web applications like the Online Assignment
-                    Submission Platform (OASP).
-                    My goal is to simplify academic workflows with innovative solutions.
-                </p>
-                <p>
-                    Feel free to connect with me: <br>
-                    <a href="mailto:1910310067@udusok.edu.ng"><i class="fas fa-envelope"></i>
-                        1910310067@udusok.edu.ng</a> |
-                    <a href="https://twitter.com/al_harbeeb" target="_blank"><i class="fas fa-twitter"></i>
-                        @al_harbeeb</a>
-                </p>
-            </div>
-        </div>
-    </section>
 
     <footer>
-        <section class="contact-section">
-            <div class="contact-container">
-                <h2>Contact Us</h2>
-                <p>If you have any questions or need assistance, feel free to reach out to us:</p>
-                <ul>
-                    <li><i class="fas fa-phone-alt"></i> Phone: +2349033375279</li>
-                    <li><i class="fas fa-envelope"></i> Email: <a
-                            href="mailto:1910310067@udusok.edu.ng">1910310067@udusok.edu.ng</a></li>
-                    <li><i class="fas fa-twitter"></i> Twitter: <a href="https://twitter.com/al_harbeeb"
-                            target="_blank">@al_harbeeb</a></li>
-                </ul>
-            </div>
-
-            <div class="right-reserved">
-                <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i> for
-                    students and instructors.</p>
-            </div>
-        </section>
+        <p>&copy; 2024 Online Assignment Submission Platform</p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const heading = document.getElementById('dynamic-paragraph');
-            heading.style.opacity = '0';
-            heading.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                heading.style.transition = 'opacity 1.5s ease-in-out, transform 10s ease-in-out';
-                heading.style.opacity = '1';
-                heading.style.transform = 'translateY(0)';
-            }, 100); // Delay for animation to start
-        });
-    
-        const logout = document.querySelector("#logout");
-  
-        logout.addEventListener("click", async () => {
-          try {
-            res = await fetch("/auth/logout", {
-              method: "POST",
-              credentials: "include",
-            });
-            if (!res.ok) {
-              alert("Failed to log out.");
-            }
-            alert("logout sucessfully");
-            window.location.href = "/auth/login";
-          } catch (error) {
-            console.log(error);
-          }
-        });
-      </script>
+        const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
 
-
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+    </script>
 </body>
 
 </html>

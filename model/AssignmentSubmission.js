@@ -16,11 +16,14 @@ const AssignmentSubmissionSchema = new Schema({
     course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
     filePath: { type: String, required: true },
     comments: { type: String },
-    plagiarismCheck: { type: Boolean, default: false },
+    plagiarismScore: {  type: Number, min: 0, max: 100  },
     submittedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     submittedAt: { type: Date, default: Date.now },
     review: { type: String }, // Feedback from the lecturer
     score: { type: Number, min: 0, max: 100 },
+    flaged: {
+        type: Boolean
+    }
 });
 
 const AssignmentSubmission = mongoose.model('AssignmentSubmission', AssignmentSubmissionSchema);

@@ -1,53 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | OASP</title>
-    <!-- Font Awesome for Modern Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/public/css/main.css" />
-  </head>
 
-  <body>
-    <header>
-      <nav>
-        <h1>
-          <i class="fas fa-tasks"></i>
-          <span>AssignHub</span>
-          <i class="fas fa-check-circle"></i>
-        </h1>
-        <ul>
-          <li>
-            <a href="/"><i class="fas fa-home"></i> Home</a>
-          </li>
-          <li>
-            <a id="logout"><i class="fas fa-sign-in-alt"></i> Logout</a>
-          </li>
-          <li>
-            <a href="/about"><i class="fas fa-info-circle"></i> About</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | OASP</title>
+  <!-- Font Awesome for Modern Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/css/main.css" />
+</head>
 
-    </div>
+<body>
+  <header>
+    <nav>
+      <h1>
+        <i class="fas fa-tasks"></i>
+        <span>AssignHub</span>
+        <i class="fas fa-check-circle"></i>
+      </h1>
+      <i class="fas fa-bars menu-toggle"> </i>
 
-    <main>
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <h2 id="role-title"><%= user.role %> Dashboard</h2>
-        <ul id="sidebar-menu">
-          <!-- Dynamic menu items will be inserted here -->
-
+      <ul>
+        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <div class="menu">
           <% if (user.role === "student") { %>
           <li>
             <a href="/view-assignments"><i class="fas fa-book"></i> View Assignments <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="count"></span></a>
@@ -59,19 +36,23 @@
             <a href="/submission-history"><i class="fas fa-history"></i> Submission History</a>
           </li>
           <li>
+            <a href="/approved-request-view"><i class="fas fa-approve"></i> Submission History</a>
+          </li>
+          <li>
             <a href="/student-manage-course"><i class="fas fa-user-edit"></i>Manage Course</a>
           </li>
           <% } else if (user.role === "lecturer") { %>
           <li>
-            <a href="/create-assignments"
-              ><i class="fas fa-plus-circle"></i> Create Assignments</a
-            >
+            <a href="/create-assignments"><i class="fas fa-plus-circle"></i> Create Assignments</a>
           </li>
           <li>
             <a href="/view-submissions"><i class="fas fa-file-alt"></i> View Submissions <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="lecturer-count"></span></a>
           </li>
           <li>
             <a href="/assignment-analytics"><i class="fas fa-chart-line"></i> Submission Overview</a>
+          </li>
+          <li>
+            <a href="/request-submissions"><i class="fas fa-tasks"></i>Request Submission <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="lecturer-count"></span></a>
           </li>
           <li>
             <a href="/lecturer-manage-course"><i class="fas fa-user-edit"></i> Manage Course</a>
@@ -93,13 +74,80 @@
             <a href="/admin-manage-course"><i class="fas fa-user-edit"></i> Manage course</a>
           </li>
           <% } %>
-        </ul>
-      </aside>
+        </div>
+        <li><a id="logout"><i class="fas fa-sign-in-alt"></i> Logout</a></li>
+        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+      </ul>
+    </nav>
+  </header>
 
-      <div class="main-content">
-        <div
-          id="real-time-notification"
-          style="
+  </div>
+
+  <main>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 id="role-title"><%= user.role %> Dashboard</h2>
+      <ul id="sidebar-menu">
+        <!-- Dynamic menu items will be inserted here -->
+
+        <% if (user.role === "student") { %>
+        <li>
+          <a href="/view-assignments"><i class="fas fa-book"></i> View Assignments <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="count"></span></a>
+        </li>
+        <li>
+          <a href="/view-feedback"><i class="fas fa-comments"></i> View Feedback <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="review-count"></span></a>
+        </li>
+        <li>
+          <a href="/submission-history"><i class="fas fa-history"></i> Submission History</a>
+        </li>
+        <li>
+          <a href="/approved-request-view"><i class="fas fa-approve"></i> Submission History</a>
+        </li>
+        <li>
+          <a href="/student-manage-course"><i class="fas fa-user-edit"></i>Manage Course</a>
+        </li>
+        <% } else if (user.role === "lecturer") { %>
+        <li>
+          <a href="/create-assignments"><i class="fas fa-plus-circle"></i> Create Assignments</a>
+        </li>
+        <li>
+          <a href="/view-submissions"><i class="fas fa-file-alt"></i> View Submissions <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="lecturer-count"></span></a>
+        </li>
+        <li>
+          <a href="/assignment-analytics"><i class="fas fa-chart-line"></i> Submission Overview</a>
+        </li>
+        <li>
+          <a href="/lecturer-manage-course"><i class="fas fa-user-edit"></i> Manage Course</a>
+        </li>
+        <li>
+          <a href="/request-submissions">
+            <i class="fas fa-tasks"></i>
+            Request Submission <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="lecturer-count"></span>
+          </a>
+        </li>
+
+        <li>
+          <a href="/manage-plagiarism"><i class="fas fa-shield-alt"></i> Manage Plagiarism</a>
+        </li>
+        <% } else if (user.role === "admin") { %>
+        <li>
+          <a href="/manage-users"><i class="fas fa-users"></i> Manage Users</a>
+        </li>
+        <li>
+          <a href="/platform-analytics"><i class="fas fa-chart-bar"></i> Platform Analytics</a>
+        </li>
+        <li>
+          <a href="/generate-lecturerId"><i class="fas fa-cogs"></i> Generate Lecturer ID</a>
+        </li>
+        <li>
+          <a href="/admin-manage-course"><i class="fas fa-user-edit"></i> Manage course</a>
+        </li>
+        <% } %>
+      </ul>
+    </aside>
+
+    <div class="main-content">
+      <div id="real-time-notification" style="
             display: none;
             color: #eee;
             background: #e0cb06;
@@ -107,166 +155,182 @@
             border: 1px solid #e0cb06;
             border-radius: 5px;
             font-size: 1.2rem;
-          "
-        ></div>
-        <%- body %>
-      </div>
-    </main>
+          "></div>
+      <%- body %>
+    </div>
+  </main>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      // User Logout
-      const logout = document.querySelector("#logout");
+  <script src="/socket.io/socket.io.js"></script>
+  
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('header ul');
 
-      logout.addEventListener("click", async () => {
-        try {
-          const res = await fetch("/auth/logout", {
-            method: "POST",
-            credentials: "include",
-          });
-          if (!res.ok) {
-            alert("Failed to log out.");
-          }
-          alert("Logout successful");
-          window.location.href = "/auth/login";
-        } catch (error) {
-          console.log(error);
+    // Toggle navigation menu
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('show-menu');
+    });
+
+
+    // Optionally, you can add logic to toggle the sidebar for mobile view
+    // User Logout
+    const logout = document.querySelector("#logout");
+
+    logout.addEventListener("click", async () => {
+      try {
+        const res = await fetch("/auth/logout", {
+          method: "POST",
+          credentials: "include",
+        });
+        if (!res.ok) {
+          alert("Failed to log out.");
         }
-      });
+        alert("Logout successful");
+        window.location.href = "/auth/login";
+      } catch (error) {
+        console.log(error);
+      }
+    });
 
-      const userId = "<%= user._id %>"; // Inject user ID dynamically from the backend
-      const socket = io();
+    const userId = "<%= user._id %>"; // Inject user ID dynamically from the backend
+    const socket = io();
 
-      // Join user's notification room
-      socket.emit("join", userId);
+    // Join user's notification room
+    socket.emit("join", userId);
 
-      const fetchNotifications = async () => {
-        try {
-          const response = await fetch("/notifications");
-          const notifications = await response.json();
-          const notificationCounts = document.querySelectorAll(".count")
-          notificationCounts.forEach(notificationCount => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await fetch("/notifications");
+        const notifications = await response.json();
+        const notificationCounts = document.querySelectorAll(".count")
+        notificationCounts.forEach(notificationCount => {
 
-            notificationCount.innerHTML = notifications.length > 0 ? notifications.length : "";
-            notificationCount.style.display = notifications.length > 0 ? "inline-block" : "none";
-          })
-          
+          notificationCount.innerHTML = notifications.length > 0 ? notifications.length : "";
+          notificationCount.style.display = notifications.length > 0 ? "inline-block" : "none";
+        })
 
-        } catch (error) {
-          console.error("Error fetching notifications:", error);
-        }
-        };
-        const fetchReviewNotifications = async () => {
-        try {
-          const response = await fetch("/review/notifications");
-          const notifications = await response.json();
-          const reviewNotificationCounts = document.querySelectorAll(".review-count")
-          reviewNotificationCounts.forEach(notificationCount => {
 
-            notificationCount.innerHTML = notifications.length > 0 ? notifications.length : "";
-            notificationCount.style.display = notifications.length > 0 ? "inline-block" : "none";
-          })
-          
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+    const fetchReviewNotifications = async () => {
+      try {
+        const response = await fetch("/review/notifications");
+        const notifications = await response.json();
+        const reviewNotificationCounts = document.querySelectorAll(".review-count")
+        reviewNotificationCounts.forEach(notificationCount => {
 
-        } catch (error) {
-          console.error("Error fetching notifications:", error);
-        }
-        };
-        const fetchSubmissionNotifications = async () => {
-        try {
-          const response = await fetch("/submission/notifications");
-          const notifications = await response.json();
-          const lecturerNotificationCounts = document.querySelectorAll(".lecturer-count")
-          lecturerNotificationCounts.forEach(notificationCount => {
-            notificationCount.innerHTML = notifications.length > 0 ? notifications.length : "";
-            notificationCount.style.display = notifications.length > 0 ? "inline-block" : "none";
-          })
-          
+          notificationCount.innerHTML = notifications.length > 0 ? notifications.length : "";
+          notificationCount.style.display = notifications.length > 0 ? "inline-block" : "none";
+        })
 
-        } catch (error) {
-          console.error("Error fetching notifications:", error);
-        }
-        };
 
-      // Mark all notifications as read when viewing assignments
-      const markNotificationsAsRead = async () => {
-        try {
-          await fetch("/assignments/mark-read", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          fetchNotifications(); // Refresh notifications dynamically
-        } catch (error) {
-          console.error("Error marking notifications as read:", error);
-        }
-      };
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+    const fetchSubmissionNotifications = async () => {
+      try {
+        const response = await fetch("/submission/notifications");
+        const notifications = await response.json();
+        const lecturerNotificationCounts = document.querySelectorAll(".lecturer-count")
+        lecturerNotificationCounts.forEach(notificationCount => {
 
-// Remove a specific notification
-      const removeNotification = async (notificationId) => {
-        try {
-          const response = await fetch("/assignments/remove-notification", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ notificationId }),
-          });
+          notificationCount.innerHTML = notifications.length > 0 ? notifications.length : "";
+          notificationCount.style.display = notifications.length > 0 ? "inline-block" : "none";
+        })
 
-          if (response.ok) {
-            fetchNotifications();
-          } else {
-            console.error("Failed to remove notification");
-          }
-        } catch (error) {
-          console.error("Error removing notification:", error);
-        }
-      };
 
-// Listen for real-time notification updates
-      socket.on("newAssignmentNotification", (data) => {
-        const realTimeNotification = document.getElementById("real-time-notification");
-        realTimeNotification.textContent = data.message || "You have a new notification!";
-        realTimeNotification.style.display = "block";
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
 
-        // Hide notification after 5 seconds
-        setTimeout(() => {
-          realTimeNotification.style.display = "none";
-        }, 5000);
+    // Mark all notifications as read when viewing assignments
+    const markNotificationsAsRead = async () => {
+      try {
+        await fetch("/assignments/mark-read", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         fetchNotifications(); // Refresh notifications dynamically
-      });
-      socket.on("submitAssignmentNotification", (data) => {
-        const realTimeNotification = document.getElementById("real-time-notification");
-        realTimeNotification.textContent = data.message || "You have a new notification!";
-        realTimeNotification.style.display = "block";
+      } catch (error) {
+        console.error("Error marking notifications as read:", error);
+      }
+    };
 
-        // Hide notification after 5 seconds
-        setTimeout(() => {
-          realTimeNotification.style.display = "none";
-        }, 5000);
-        fetchSubmissionNotifications(); // Refresh notifications dynamically
-      });
-      socket.on("assignmentReviewNotification", (data) => {
-        const realTimeNotification = document.getElementById("real-time-notification");
-        realTimeNotification.textContent = data.message || "You have a new notification!";
-        realTimeNotification.style.display = "block";
+    // Remove a specific notification
+    const removeNotification = async (notificationId) => {
+      try {
+        const response = await fetch("/assignments/remove-notification", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            notificationId
+          }),
+        });
 
-        // Hide notification after 5 seconds
-        setTimeout(() => {
-          realTimeNotification.style.display = "none";
-        }, 5000);
-        fetchReviewNotifications(); // Refresh notifications dynamically
-      });
+        if (response.ok) {
+          fetchNotifications();
+        } else {
+          console.error("Failed to remove notification");
+        }
+      } catch (error) {
+        console.error("Error removing notification:", error);
+      }
+    };
 
-      socket.on("updateUnreadCount", (data) => {
-        console.log("Unread notifications:", data.unreadCount);
-      });
+    // Listen for real-time notification updates
+    socket.on("newAssignmentNotification", (data) => {
+      const realTimeNotification = document.getElementById("real-time-notification");
+      realTimeNotification.textContent = data.message || "You have a new notification!";
+      realTimeNotification.style.display = "block";
 
-      // Fetch notifications on page load
-      fetchSubmissionNotifications();
-      fetchNotifications();
-      fetchReviewNotifications()
-    </script>
-  </body>
+      // Hide notification after 5 seconds
+      setTimeout(() => {
+        realTimeNotification.style.display = "none";
+      }, 5000);
+      fetchNotifications(); // Refresh notifications dynamically
+    });
+    socket.on("submitAssignmentNotification", (data) => {
+      const realTimeNotification = document.getElementById("real-time-notification");
+      realTimeNotification.textContent = data.message || "You have a new notification!";
+      realTimeNotification.style.display = "block";
+
+      // Hide notification after 5 seconds
+      setTimeout(() => {
+        realTimeNotification.style.display = "none";
+      }, 5000);
+      fetchSubmissionNotifications(); // Refresh notifications dynamically
+    });
+    socket.on("assignmentReviewNotification", (data) => {
+      const realTimeNotification = document.getElementById("real-time-notification");
+      realTimeNotification.textContent = data.message || "You have a new notification!";
+      realTimeNotification.style.display = "block";
+
+      // Hide notification after 5 seconds
+      setTimeout(() => {
+        realTimeNotification.style.display = "none";
+      }, 5000);
+      fetchReviewNotifications(); // Refresh notifications dynamically
+    });
+
+    socket.on("updateUnreadCount", (data) => {
+      console.log("Unread notifications:", data.unreadCount);
+    });
+
+    // Fetch notifications on page load
+    fetchSubmissionNotifications();
+    fetchNotifications();
+    fetchReviewNotifications()
+
+   
+  </script>
+</body>
+
 </html>

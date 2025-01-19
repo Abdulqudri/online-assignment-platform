@@ -1,0 +1,68 @@
+<div class="assignments-container">
+    <h2>Approved Requests</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Course</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="assignments-table-body">
+            <tr>
+                <td colspan="4">Loading approved requests...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const tableBody = document.getElementById('assignments-table-body');
+
+        try {
+            // Fetch approved requests for the logged-in student
+            const response = await fetch('approved-request', {
+                credentials: 'include',
+                method: 'GET',
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                const { submissions } = result.data;
+
+                // Clear loading message
+                tableBody.innerHTML = '';
+
+                // Populate table with approved requests
+                if (submissions.length > 0) {
+                    submissions.forEach(request => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${request.assignment.title}</td>
+                            <td>${request.course.name} (${request.course.code})</td>
+                            <td>${request.status}</td>
+                            <td>${new Date(request.dueDate).toLocaleDateString()}</td>
+                            <td><a href="/submit-assignment?id=${request.assignment._id}" class="btn btn-submit">Submit</a></td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    // Display message if no approved requests exist
+                    tableBody.innerHTML = '<tr><td colspan="4">No approved requests available.</td></tr>';
+                }
+            } else {
+                // Handle unexpected errors in API response
+                tableBody.innerHTML = '<tr><td colspan="4">Failed to fetch approved requests. Please try again later.</td></tr>';
+                console.error(result.message || 'Error fetching approved requests.');
+            }
+        } catch (error) {
+            // Handle fetch errors
+            console.error('Error fetching approved requests:', error);
+            tableBody.innerHTML = '<tr><td colspan="4">Failed to load approved requests. Please check your connection.</td></tr>';
+        }
+    });
+</script>

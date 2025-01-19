@@ -1,3 +1,5 @@
+const { scanFile } = require("../util/plagiarism");
+
 module.exports = (io) => { 
     
     const Assignment = require("../model/Assignment");
@@ -63,7 +65,7 @@ module.exports = (io) => {
       // Create Assignment (For Lecturers)
       createAssignment: async (req, res) => {
         try {
-          const { title, description, dueDate, course, extraTime } = req.body;
+          const { title, description, dueDate, course } = req.body;
 
           // Validate input
           if (!title || !description || !dueDate || !course) {
@@ -101,7 +103,6 @@ module.exports = (io) => {
             description,
             dueDate: dueDateTime,
             course: foundCourse._id,
-            extraTime: parseInt(extraTime, 10),
             filePath,
             userIds: users.map((user) => user._id),
           });
@@ -206,7 +207,6 @@ module.exports = (io) => {
             course: assignment.course._id,
             filePath,
             comments: comments || null,
-            plagiarismCheck: !!plagiarism_check,
             submittedBy: userId,
           });
       
@@ -216,7 +216,7 @@ module.exports = (io) => {
       
           // Save the submission
           await submission.save();
-      
+          
           // Notify all lecturers associated with the course
           const lecturers = await User.find({
             role: "lecturer",
@@ -253,6 +253,8 @@ module.exports = (io) => {
           } catch (notificationError) {
             console.error("Error handling notifications:", notificationError);
           }
+         
+          await scanFile(submission._id)
       
           res.status(201).json({
             success: true,
@@ -327,14 +329,20 @@ module.exports = (io) => {
             path: 'submissions', // Populate the submissions
             match: { submittedBy: userId }, // Only include submissions for the current student
             select: 'status', // Only include the status field
-          });
+          })
+          .sort({ createdAt: -1 })
+          const today = Date.now()
+          assignments.forEach(async (ass) => {
+            ass.expired = today > ass.dueDate ? true : false;
+            await ass.save()
+          })
           const assignmentStatuses = assignments.map(assignment => ({
             assignmentId: assignment._id,
             title: assignment.title,
             description: assignment.description,
             dueDate: assignment.dueDate,
             submitted: assignment.submissions.length > 0, // True if the student has submitted
-            status: assignment.submissions[0]?.status || 'pending', // 'submitted', 'graded', or 'not submitted'
+            status: assignment.expired ? "expired" : (assignment.submissions[0]?.status || 'pending'), // 'submitted', 'graded', or 'not submitted'
           }));
           // Mark notifications for assignments as read
           

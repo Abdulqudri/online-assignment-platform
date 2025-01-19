@@ -19,10 +19,12 @@
         }
 
         body {
-            background-color: #F2F2F2;
-            color: #333;
+            background-color: #F1E6EA;
+            color: #6A0DAD;
+            line-height: 1.8;
         }
 
+        /* Navigation Bar */
         nav {
             background: #6A0DAD;
             color: #fff;
@@ -30,45 +32,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
-       /* Logo styling */
-       nav h1 {
-        font-family: 'Poppins', sans-serif;
-        font-size: 2rem;
-        font-weight: bold;
-        color: #ffffff; /* White for text contrast */
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem; /* Spacing between icons and text */
-        margin: 0;
-        }
-
-        /* Icon styling */
-        nav h1 i {
-        color: #ffd600; /* Bright yellow for highlighting icons */
-        transition: transform 0.2s ease-in-out;
-        }
-
-        /* Icon hover effect */
-        nav h1 i:hover {
-        transform: scale(1.1); /* Slight zoom for interactivity */
-        }
-
-        /* Text styling for "AssignHub" */
-        nav h1 span {
-        color: #ffffff; /* White to match the interface theme */
-        letter-spacing: 0.5px;
-        text-transform: uppercase; /* To give a professional feel */
+        nav h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-        }
-
-        nav ul li {
-            margin: 0 10px;
+            gap: 15px;
+            flex-wrap: wrap;
+            transition: max-height 0.3s ease-in-out;
+            overflow: hidden;
         }
 
         nav ul li a {
@@ -80,6 +62,49 @@
         nav ul li a:hover {
             color: #D8BFD8;
         }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        /* Mobile Menu */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                display: none; /* Hide by default */
+            }
+
+            nav ul.active {
+                background-color: #555;
+            position: absolute;
+            padding: 10px;
+            top: 20px;
+            right: 50px;
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            transition: max-height 0.3s ease-in-out;
+            z-index: 1000;
+             /* Show when active */
+            }
+            .menu-bar{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+        }
+
 
         .registration-container {
             max-width: 600px;
@@ -180,17 +205,23 @@
 
 <body>
     <nav>
+        <div class="menu-bar">
         <h1>
             <i class="fas fa-tasks"></i>
-            <span>AssignHub</span>
+            AssignHub
             <i class="fas fa-check-circle"></i>
-          </h1>
-        <ul>
-            <li><a href="/welcome"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
-        </ul>
-    </nav>
+        </h1>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+    <ul id="menu">
+        <li><a href="/welcome"><i class="fas fa-home"></i> Home</a></li>
+        
+        <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+    </ul>
+</nav>
 
     <div class="registration-container">
         <h2><i class="fas fa-user-circle" style="font-size: 3em; display: block; text-align: center;"></i></h2>
@@ -258,21 +289,24 @@
     </footer>
 
     <script>
+         const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
         // Toggle Password Visibility
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.querySelector('.password-toggle');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.add('fa-eye-slash');
-                toggleIcon.classList.remove('fa-eye');
-                
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
+    function togglePasswordVisibility() {
+    const passwordInput = document.getElementById("password");
+    const toggleIcon = document.querySelector(".password-toggle");
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.classList.replace("fa-eye-slash", "fa-eye");
+    } else {
+        passwordInput.type = "password";
+        toggleIcon.classList.replace("fa-eye", "fa-eye-slash");
+    }
+}
 
         // Backend Error Handling with JSON Payload
         document.getElementById('registrationForm').addEventListener('submit', async function (e) {

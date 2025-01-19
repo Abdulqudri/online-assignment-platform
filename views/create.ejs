@@ -25,10 +25,6 @@
             </select>
         </div>
         <div>
-            <label for="extra-time">Extra Time for Late Submission (in hours)</label>
-            <input type="number" id="extra-time" min="0" placeholder="Enter extra time" required>
-        </div>
-        <div>
             <label for="file-upload">Attach File (Optional)</label>
             <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.zip,.pptx">
         </div>
@@ -93,11 +89,10 @@
         const dueDate = document.getElementById('due-date').value;
         const dueTime = document.getElementById('due-time').value;
         const courseId = document.getElementById('course-select').value;
-        const extraTime = document.getElementById('extra-time').value;
         const fileUpload = document.getElementById('file-upload').files[0];
 
         // Basic validation
-        if (!title || !description || !dueDate || !dueTime || !courseId || !extraTime) {
+        if (!title || !description || !dueDate || !dueTime || !courseId ) {
             responseMessage.textContent = "All fields are required!";
             responseMessage.className = "error-message";
             return;
@@ -116,7 +111,6 @@
         formData.append('description', description);
         formData.append('dueDate', dueDateTime.toISOString());
         formData.append('course', courseId);
-        formData.append('extraTime', extraTime);
         if (fileUpload) {
             formData.append('file', fileUpload);
         }

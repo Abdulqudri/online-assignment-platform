@@ -20,7 +20,6 @@
 
         body {
             background-color: #F1E6EA;
-            /* Bright Gray */
             color: #6A0DAD;
             line-height: 1.8;
         }
@@ -33,46 +32,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
-        /* Logo styling */
         nav h1 {
-        font-family: 'Poppins', sans-serif;
-        font-size: 2rem;
-        font-weight: bold;
-        color: #ffffff; /* White for text contrast */
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem; /* Spacing between icons and text */
-        margin: 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-
-        /* Icon styling */
-        nav h1 i {
-        color: #ffd600; /* Bright yellow for highlighting icons */
-        transition: transform 0.2s ease-in-out;
-        }
-
-        /* Icon hover effect */
-        nav h1 i:hover {
-        transform: scale(1.1); /* Slight zoom for interactivity */
-        }
-
-        /* Text styling for "AssignHub" */
-        nav h1 span {
-        color: #ffffff; /* White to match the interface theme */
-        letter-spacing: 0.5px;
-        text-transform: uppercase; /* To give a professional feel */
-        }
-        
 
         nav ul {
             list-style: none;
             display: flex;
-        }
-
-        nav ul li {
-            margin: 0 10px;
+            gap: 15px;
+            flex-wrap: wrap;
+            transition: max-height 0.3s ease-in-out;
+            overflow: hidden;
         }
 
         nav ul li a {
@@ -85,50 +63,66 @@
             color: #D8BFD8;
         }
 
-       /* Hero Section */
-       .hero {
-    position: relative; /* To position the pseudo-element relative to the container */    
-    background: url('/public/images/welcomeimage.jpg') no-repeat center center;
-    background-size: cover; /* Ensures the section is fully covered */
-    text-align: center;
-    padding: 50px 20px;
-    background-color: floralwhite;
-    border-bottom: 3px solid #6A0DAD;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: relative;
-    height: 50vh;
-    overflow: hidden; /* Ensures the pseudo-element stays within bounds */
-    
-}
-@media (max-width: 768px) {
-    .hero {
-        height: 30vh; /* Reduce height for smaller screens */
-        padding: 30px 15px;
-    }
-}
-.hero::before {
-    content: ''; /* Necessary for pseudo-elements */
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('/public/images/welcomeimage.jpg') no-repeat center center;
-    background-size: cover; /* Ensures the image covers the container */
-    filter: blur(5px); /* Blurs the image */
-    -webkit-filter: blur(5px); /* For older WebKit browsers */
-    z-index: -1; /* Places the image behind the text */
-}
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
 
+        /* Mobile Menu */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                display: none; /* Hide by default */
+            }
 
+            nav ul.active {
+                background-color: #555;
+            position: absolute;
+            padding: 10px;
+            top: 20px;
+            right: 50px;
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            transition: max-height 0.3s ease-in-out;
+            z-index: 1000;
+             /* Show when active */
+            }
+            .menu-bar{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: url('/public/images/welcomeimage.jpg') no-repeat center center;
+            background-size: cover;
+            height: 60vh;
+            position: relative;
+        }
 
         .hero h2 {
             color: #6A0DAD;
             margin-bottom: 15px;
+            font-size: 2rem;
         }
 
         .hero p {
-            font-size: 1.1em;
+            font-size: 1.1rem;
             margin-bottom: 20px;
         }
 
@@ -155,7 +149,7 @@
         }
 
         .feature {
-            flex: 1 1 250px;
+            flex: 1 1 calc(50% - 20px);
             background: #fff;
             margin: 10px;
             padding: 20px;
@@ -167,24 +161,17 @@
 
         .feature i {
             color: #6A0DAD;
-            font-size: 2.5em;
+            font-size: 2rem;
             margin-bottom: 10px;
         }
 
         /* Footer */
-        /* Footer Section */
         footer {
             background: #F9F9F9;
             border-top: 3px solid #6A0DAD;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
-            font-family: 'Poppins', sans-serif;
             color: #333;
-        }
-
-        .contact-container {
-            max-width: 600px;
-            margin: 0 auto;
         }
 
         .contact-section h2 {
@@ -192,65 +179,62 @@
             margin-bottom: 15px;
         }
 
-        .contact-section p {
-            margin-bottom: 10px;
-            color: #555;
-            font-size: 1.1em;
+        .contact-section ul {
+            list-style: none;
+            padding: 0;
         }
 
-        .contact-section a,
-        .right-reserved a {
+        .contact-section li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .contact-section a {
             color: #6A0DAD;
             text-decoration: none;
         }
 
-        .contact-section a:hover,
-        .right-reserved a:hover {
+        .contact-section a:hover {
             text-decoration: underline;
         }
 
         .right-reserved {
-            font-size: 0.9em;
+            font-size: 0.9rem;
             margin-top: 20px;
             color: #555;
-        }
-
-        .right-reserved i {
-            color: #6A0DAD;
         }
     </style>
 </head>
 
 <body>
-    <!-- Navigation Bar -->
     <nav>
+        <div class="menu-bar">
         <h1>
             <i class="fas fa-tasks"></i>
-            <span>AssignHub</span>
+            AssignHub
             <i class="fas fa-check-circle"></i>
-          </h1>
-        <ul>
-            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
-            <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
-        </ul>
-    </nav>
+        </h1>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+    <ul id="menu">
+        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
+        <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+    </ul>
+</nav>
+    
 
-    <!-- Hero Section -->
     <section class="hero">
         <h2 id="dynamic-heading">Welcome to the Online Assignment Submission Platform</h2>
-        
         <p>
-            Our platform streamlines assignment submissions, offering an efficient way <br>for students to submit work,
-            lecturers to evaluate, and administrators to manage academic tasks.<br> Accessible, secure, and
-            user-friendly.
+            Streamline assignment submissions, evaluations, and academic management. Accessible, secure, and user-friendly.
         </p>
-    
         <a href="/auth/register" class="btn">Get Started</a>
     </section>
 
-    <!-- Features Section -->
     <section class="features">
         <div class="feature">
             <i class="fas fa-file-upload"></i>
@@ -274,43 +258,26 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
-
         <section class="contact-section">
-            <div class="contact-container">
-                <h2>Contact Us</h2>
-                <p>If you have any questions or need assistance, feel free to reach out to us:</p>
-                <ul>
-                    <li><i class="fas fa-phone-alt"></i> Phone: +2349033375279</li>
-                    <li><i class="fas fa-envelope"></i> Email: <a
-                            href="mailto:1910310067@udusok.edu.ng">1910310067@udusok.edu.ng</a></li>
-                    <li><i class="fas fa-twitter"></i> Twitter: <a href="https://twitter.com/al_harbeeb"
-                            target="_blank">@al_harbeeb</a></li>
-                </ul>
-            </div>
-
-            </div class="right-reserved">
-            <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i> for
-                students and instructors.
-
-                </div>
+            <h2>Contact Us</h2>
+            <ul>
+                <li><i class="fas fa-phone-alt"></i> Phone: +2349033375279</li>
+                <li><i class="fas fa-envelope"></i> Email: <a href="mailto:1910310067@udusok.edu.ng">1910310067@udusok.edu.ng</a></li>
+                <li><i class="fas fa-twitter"></i> Twitter: <a href="https://twitter.com/al_harbeeb" target="_blank">@al_harbeeb</a></li>
+            </ul>
         </section>
-
-
+        <div class="right-reserved">
+            <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i>.</p>
+        </div>
     </footer>
 
-
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const heading = document.getElementById('dynamic-heading');
-            heading.style.opacity = '0';
-            heading.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-                heading.style.transition = 'opacity 5s ease-in-out, transform 1.5s ease-in-out';
-                heading.style.opacity = '1';
-                heading.style.transform = 'translateY(0)';
-            }, 100); // Delay for animation to start
+        const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
+
+        toggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
         });
     </script>
 </body>

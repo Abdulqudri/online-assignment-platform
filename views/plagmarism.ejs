@@ -1,92 +1,108 @@
+<div class="plagiarism-container">
+    <h1>Manage Plagiarism</h1>
 
-
-    <div class="container">
-        <h1>Manage Plagiarism</h1>
-
-        <div class="filter">
-            <input type="text" id="student-name" placeholder="Search by Student Name">
-            <select id="plagiarism-threshold">
-                <option value="">Filter by Plagiarism Score</option>
-                <option value="50">Above 50%</option>
-                <option value="75">Above 75%</option>
-                <option value="90">Above 90%</option>
-            </select>
-            <button onclick="applyFilter()">Apply Filter</button>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Assignment ID</th>
-                    <th>Student Name</th>
-                    <th>Plagiarism Score (%)</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="plagiarism-data">
-                <!-- Dynamic rows will be inserted here -->
-            </tbody>
-        </table>
+    <div class="filter">
+        <input type="text" id="student-name" placeholder="Search by Student Name">
+        <select id="plagiarism-threshold">
+            <option value="">Filter by Plagiarism Score</option>
+            <option value="50">Above 50%</option>
+            <option value="75">Above 75%</option>
+            <option value="90">Above 90%</option>
+        </select>
+        <button onclick="applyFilter()">Apply Filter</button>
     </div>
 
-    <!-- JavaScript to handle plagiarism data -->
-    <script>
-        const plagiarismData = [
-            { id: "A101", student: "Alice Johnson", score: 85 },
-            { id: "A102", student: "Bob Smith", score: 65 },
-            { id: "A103", student: "Charlie Brown", score: 95 },
-            { id: "A104", student: "Diana Prince", score: 72 }
-        ];
+    <table>
+        <thead>
+            <tr>
+                <th>Assignment ID</th>
+                <th>Student Name</th>
+                <th>Plagiarism Score (%)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="plagiarism-data">
+            <!-- Dynamic rows will be inserted here -->
+        </tbody>
+    </table>
+</div>
 
-        const plagiarismTable = document.getElementById('plagiarism-data');
+<script>
+    const plagiarismTable = document.getElementById('plagiarism-data');
 
-        // Function to populate plagiarism data
-        function loadPlagiarismData(data) {
+    // Function to fetch and display data
+    async function loadPlagiarismData(filters = {}) {
+        try {
+            const queryParams = new URLSearchParams(filters).toString();
+            const response = await fetch(`/assignments/filter?${queryParams}`);
+            const data = await response.json();
+
             plagiarismTable.innerHTML = ''; // Clear existing data
             data.forEach(item => {
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
-                    <td>${item.id}</td>
-                    <td>${item.student}</td>
-                    <td>${item.score}</td>
+                    <td>${item.submittedBy.userId}</td>
+                    <td>${item.submittedBy.name || 'Unknown'}</td>
+                    <td>${item.plagiarismScore }</td>
                     <td class="action-buttons">
-                        <button onclick="reviewAssignment('${item.id}')">Review</button>
-                        <button onclick="flagAssignment('${item.id}')">Flag</button>
+                        <button onclick="flagAssignment('${item._id}')">Flag</button>
+                        <button onclick="runPlagiarismCheck('${item._id}')">Run Check</button>
                     </td>
                 `;
 
                 plagiarismTable.appendChild(row);
             });
+        } catch (error) {
+            console.error('Error loading data:', error);
         }
+    }
 
-        // Filter function
-        function applyFilter() {
-            const nameFilter = document.getElementById('student-name').value.toLowerCase();
-            const scoreFilter = document.getElementById('plagiarism-threshold').value;
+    // Function to apply filters
+    function applyFilter() {
+        const nameFilter = document.getElementById('student-name').value;
+        const scoreFilter = document.getElementById('plagiarism-threshold').value;
 
-            const filteredData = plagiarismData.filter(item => {
-                const matchesName = item.student.toLowerCase().includes(nameFilter);
-                const matchesScore = !scoreFilter || item.score > parseInt(scoreFilter);
+        const filters = {};
+        if (nameFilter) filters.studentName = nameFilter;
+        if (scoreFilter) filters.plagiarismThreshold = scoreFilter;
 
-                return matchesName && matchesScore;
+        loadPlagiarismData(filters);
+    }
+
+    // Function to review an assignment
+    
+
+    // Function to flag an assignment
+    async function flagAssignment(id) {
+        try {
+            const response = await fetch(`/assignments/${id}/flag`, {
+                method: 'POST',
             });
 
-            loadPlagiarismData(filteredData);
+            const result = await response.json();
+            alert(result.message);
+            loadPlagiarismData(); // Refresh the data
+        } catch (error) {
+            console.error('Error flagging assignment:', error);
         }
+    }
 
-        // Simulate reviewing an assignment
-        function reviewAssignment(id) {
-            alert(`Reviewing assignment with ID: ${id}`);
-            // Implement actual review logic here
+    // Function to run a plagiarism check
+    async function runPlagiarismCheck(id) {
+        try {
+            const response = await fetch(`/assignments/${id}/plagiarism-check`, {
+                method: 'POST',
+            });
+
+            const result = await response.json();
+            alert(`Plagiarism check completed. Score: ${result.data}%`);
+            loadPlagiarismData(); // Refresh the data
+        } catch (error) {
+            console.error('Error running plagiarism check:', error);
         }
+    }
 
-        // Simulate flagging an assignment
-        function flagAssignment(id) {
-            alert(`Flagged assignment with ID: ${id}`);
-            // Implement actual flagging logic here
-        }
-
-        // Load data on page load
-        loadPlagiarismData(plagiarismData);
-    </script>
+    // Load data on page load
+    loadPlagiarismData();
+</script>

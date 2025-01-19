@@ -1,0 +1,107 @@
+<div class="container">
+  <h1>Submission Details</h1>
+  <div class="details">
+    <div>
+      <label>Student ID:</label>
+      <span id="student-id"><%= assignment.user.userId %></span>
+    </div>
+    <div>
+      <label>Student Name:</label>
+      <span id="student-name"><%= assignment.user.name %></span>
+    </div>
+    <div>
+      <label>Assignment Title:</label>
+      <span id="assignment-title"><%= assignment.assignment.title %></span>
+    </div>
+    <div>
+      <label>Reason:</label>
+      <span id="submission-date"><%= assignment.reason %></span>
+    </div>
+    <div>
+      <label for="date">Extension Date</label>
+      <input type="date" name="date" id="date" />
+    </div>
+    <div>
+      <button id="accept">Accept</button>
+      <button id="reject">Reject</button>
+    </div>
+  </div>
+  <div class="success" style="display: none; color: green">
+    Submit successful
+  </div>
+  <div class="error" style="display: none; color: orangered">Submit failed</div>
+</div>
+<script>
+  const accept = document.querySelector("#accept");
+
+  accept.addEventListener("click", async function (event) {
+    event.preventDefault(); // Prevent form submission
+    successMessage = document.querySelector(".success");
+    errorMessage = document.querySelector(".error");
+    const dueDate = document.getElementById("date").value;
+
+    const dueDateTime = new Date(dueDate);
+    console.log(dueDateTime);
+    try{
+    const res = await fetch("/accept-request/<%= assignment._id %>", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Specify JSON content type
+      },
+      body: JSON.stringify({ dueDateTime }),
+    })
+      const data = await res.json()
+        if (data.success) {
+          successMessage.style.display = "block";
+          errorMessage.style.display = "none";
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 3000);
+          window.location.href = "/request-submissions";
+        }
+    }
+      catch(error) {
+        successMessage.style.display = "none";
+        errorMessage.style.display = "block";
+
+        // Hide error message after 3 seconds
+        setTimeout(() => {
+          errorMessage.style.display = "none";
+        }, 3000);
+      }
+    })
+
+  const reject = document.querySelector("#reject");
+  reject.addEventListener("click", async function (event) {
+    event.preventDefault(); // Prevent form submission
+    successMessage = document.querySelector(".success");
+    errorMessage = document.querySelector(".error");
+    const dueDate = document.getElementById("date").value;
+
+    const dueDateTime = new Date(`${dueDate}`);
+    try{
+    const res = await fetch("/reject-request/<%= assignment._id %>", {
+      method: "POST",
+    })
+      const data = await res.json()
+        if (data.success) {
+          successMessage.style.display = "block";
+          errorMessage.style.display = "none";
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 3000);
+          window.location.href = "/request-submissions";
+        }
+    }
+      catch(error) {
+        successMessage.style.display = "none";
+        errorMessage.style.display = "block";
+
+        // Hide error message after 3 seconds
+        setTimeout(() => {
+          errorMessage.style.display = "none";
+        }, 3000);
+      }
+    }
+  )
+</script>

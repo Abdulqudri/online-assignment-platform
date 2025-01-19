@@ -12,7 +12,11 @@ const viewRoutes = require("./routes/viewRoutes")
 const userRoutes = require("./routes/UserRoutes")
 const courseRoutes = require("./routes/courseRoute")
 const assignmentRoutes = require("./routes/assignmentRoutes")
+const plagiarismRoutes = require("./routes/plagiarismRoutes")
 const checkAuth = require("./middleware/checkAuth")
+const requestRoutes = require("./routes/requestRoutes")
+const AssignmentSubmission = require("./model/AssignmentSubmission")
+
 
 const port = process.env.PORT
 const mongo_uri = process.env.MONGO_URI
@@ -27,6 +31,9 @@ const io = new Server(server)
 mongoose.connect(mongo_uri) 
   .then(() => console.log('Connected!'));
 
+
+
+// creation of session
 const store = new mongoDbStore({
   uri: mongo_uri,
   collection: "my-session"
@@ -62,6 +69,30 @@ app.use(express.json());
 
 // Middleware to parse URL-encoded data
 app.use(express.urlencoded({ extended: true }));
+app.post('/webhook/:status/:id/:submissionId', async (req, res) => {
+  const statusData = req.params.status;  // Status data sent by Copyleaks
+  const submissionId = req.params.submissionId
+  const statusInfo = req.body
+  if (statusData === "completed"){
+    try {
+      const submission = await AssignmentSubmission.findById(submissionId)
+
+      if (!submission){
+        return res.status(404).json({
+          msg: "submission not found"
+        })
+      }
+      submission.plagiarismScore = (statusInfo.results.score.aggregatedScore * 100)
+      await submission.save()
+      res.status(200).json({
+        msg: "successful"
+      });
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }
+});
 
 app.get("/welcome", (req, res) => {
     res.render("welcome", {layout: false})
@@ -71,11 +102,16 @@ app.get("/about", (req, res) => {
   const user = req?.session.user
   res.render("about", {layout: false, user})
 })
+
 app.use(courseRoutes)
 app.use(userRoutes)
+app.use(requestRoutes)
 app.use(checkAuth)
 app.use(viewRoutes(io))
 app.use(assignmentRoutes(io))
+app.use(plagiarismRoutes)
+// Webhook to handle the status updates
+
 
 
 mongoose.connection.once("open", () => {

@@ -1,3 +1,5 @@
+const RequestSubmit = require("../model/RequestSubmit")
+
 module.exports = (io) => {const express = require("express")
 const User = require("../model/User")
 const Department = require("../model/Department")
@@ -22,6 +24,70 @@ router.get("/", async (req, res) => {
     }
     
 })
+
+router.get("/request-submissions", async (req, res) => {
+  const userId = req.session.user.id
+  try {
+    const user = await User.findById(userId)
+    if(!user){
+      return res.status(404).redirect("/welcome")
+    }
+    res.render("submission-request",{user})
+  } catch (err) {
+    res.status(500).json({message: "server error"})
+}})
+router.get("/approved-request-view", async (req, res) => {
+  const userId = req.session.user.id
+  try {
+    const user = await User.findById(userId)
+    if(!user){
+      return res.status(404).redirect("/welcome")
+    }
+    res.render("approved-request",{user})
+  } catch (err) {
+    res.status(500).json({message: "server error"})
+}})
+
+router.get("/view-request-details", async (req, res) => {
+  const userId = req.session.user.id
+  const {id} = req.query
+  try {
+    const user = await User.findById(userId)
+    if(!user){
+      return res.status(404).redirect("/welcome")
+    }
+    const assignment = await RequestSubmit.findById(id)
+    .populate('user', 'name userId')
+    .populate('assignment', 'title')
+    console.log(assignment)
+    if(!assignment){
+      return res.status(404).json({
+        msg: "assignment not found"
+      })
+    }
+    res.render("request-detail",{user, assignment})
+  } catch (err) {
+    res.status(500).json({message: "server error"})
+}})
+router.get("/request-submit/:id", async (req, res) => {
+  const userId = req.session.user.id
+  const id = req.params.id
+   
+  try {
+    const user = await User.findById(userId)
+    if(!user){
+      return res.status(404).redirect("/welcome")
+    }
+    const assignment = await Assignment.findById(id)
+    if (!assignment){
+      return res.status(404).json({
+        msg: "No assignment found"
+      })
+    }
+    res.render("request-submit",{user, assignment})
+  } catch (err) {
+    res.status(500).json({message: "server error"})
+}})
   
 router.get("/view-assignments", async(req, res) => {
   const userId = req.session.user.id

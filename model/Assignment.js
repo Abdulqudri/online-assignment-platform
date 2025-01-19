@@ -18,17 +18,17 @@ const AssignmentSchema = new mongoose.Schema({
         ref: 'Course',
         required: true
     },
-    extraTime: {
-        type: Number,
-        default: 0
-    },
     filePath: {
         type: String,
         default: null
     },
     submissions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'AssignmentSubmission' }],
     userIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-});
+    expired: {
+        type: Boolean,
+        default: false
+    }
+},{timestamps: true});
 
 const Assignment = mongoose.model('Assignment', AssignmentSchema);
 

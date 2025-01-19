@@ -194,7 +194,62 @@ const authController = {
           res.clearCookie('connect.sid').json({message: "logout sucessful"});
           
         });
-      }
+      },
+      adminLogin: async (req, res) => {
+        const { email, password } = req.body;
+    
+        // Validate required fields
+        if (!email || !password ) {
+            return res.status(400).json({
+                success: false,
+                errors: {
+                    email: !email ? 'Email is required.' : undefined,
+                    password: !password ? 'Password is required.' : undefined,
+                },
+            });
+        }
+    
+        try {
+            // Check if the user exists
+            const user = await User.findOne({ email, role: "admin" });
+            if (!user) {
+                return res.status(400).json({
+                    success: false,
+                    errors: {
+                        email: 'User with this email does not exist.',
+                    },
+                });
+            }
+    
+            // Check if the password matches
+            const match = await checkPass(password, user.password);
+            if (!match) {
+                return res.status(400).json({
+                    success: false,
+                    errors: {
+                        password: 'Incorrect password.',
+                    },
+                });
+            }
+    
+            // If all checks pass, create a session
+            req.session.user = { id: user._id, username: user.name, role: user.role };
+    
+            // Respond with success
+            return res.status(200).json({
+                success: true,
+                redirect: '/',
+            });
+        } catch (error) {
+            // Handle unexpected errors
+            return res.status(500).json({
+                success: false,
+                message: 'An unexpected error occurred. Please try again.',
+                details: error.message,
+            });
+        }
+    },
+      
 }
 
 
