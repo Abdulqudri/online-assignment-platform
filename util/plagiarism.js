@@ -1,64 +1,82 @@
-const { Copyleaks } = require("plagiarism-checker");
+// src/lib/copyleaks.js
+const plagiarismChecker = require("plagiarism-checker");
+const Copyleaks = 
+  // if it’s a named export
+  (plagiarismChecker.Copyleaks)
+  // or if it’s the default export
+  || plagiarismChecker.default
+  // or if the module itself is the constructor
+  || plagiarismChecker;
+
 const path = require("path");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
-const ngrok_url = process.env.NGROK_URL;
-// Initialize Copyleaks API
-const copyleaks = new Copyleaks();
 
-const EMAIL = process.env.EMAIL; // Set in your .env file
-const API_KEY = process.env.COPY_LEAK_API_KEY; // Set in your .env file
-const copyleaksAuth = async () => {
+const EMAIL = process.env.EMAIL;
+const API_KEY = process.env.COPY_LEAK_API_KEY;
+const NGROK_URL = process.env.NGROK_URL;
+
+if (!EMAIL || !API_KEY) {
+  throw new Error("Missing EMAIL or COPY_LEAK_API_KEY in environment");
+}
+
+// Now Copyleaks should be a valid constructor
+const copyleaks = new Copyleaks({
+  email: EMAIL,
+  apiKey: API_KEY,
+});
+
+let _authToken = null;
+async function getAuthToken() {
+  if (_authToken) return _authToken;
   try {
-    const authToken = await copyleaks.loginAsync(EMAIL, API_KEY);
-    return authToken; // Save this token for further API calls
-  } catch (error) {
-    console.error("Error authenticating with Copyleaks:", error.message);
-    throw error;
+    const { accessToken, expiresIn } = await copyleaks.loginAsync();
+    _authToken = accessToken;
+    setTimeout(() => { _authToken = null; }, (expiresIn - 60) * 1000);
+    return _authToken;
+  } catch (err) {
+    console.error("Copyleaks login failed:", err);
+    throw err;
   }
-};
+}
 
-const scanFile = async (submission) => {
+async function scanFile(submission) {
+  const scanId = uuidv4();
+  const token = await getAuthToken();
+
+  const filename = path.basename(submission.filePath);
+  const fullPath = path.join(__dirname, "..", "uploads", filename);
+
+  let fileBuffer;
   try {
-    const token = await copyleaksAuth();
-    if (!token) {
-      return res
-        .status(500)
-        .json({ message: "Failed to authenticate with Copyleaks API" });
-    }
-    const filename = submission.filePath.replace("/uploads/", "");
+    fileBuffer = await fs.promises.readFile(fullPath);
+  } catch (err) {
+    console.error("Failed to read upload:", err);
+    throw new Error("Upload not found");
+  }
 
-    const filePath = path.join(
-      __dirname,
-      "../uploads",
-      submission.filePath.replace("/uploads/", "")
-    );
-    const fileStream = await fs.promises.readFile(filePath);
-    const scanId = uuidv4();
-
-    // Submit content for plagiarism check
-    const scanPayload = {
-      base64: fileStream.toString("base64"), // Path to the file you want to check
-      filename: filename,
-      properties: {
-        sandbox: true, // Set to false for production
-        webhooks: {
-          status: `${ngrok_url}/webhook/{STATUS}/${scanId}/${submission._id}`,
-        },
-        cheatDetection: true,
-        aiGeneratedText: {
-          detect: true,
-        },
+  const scanOptions = {
+    scanId,
+    fileName: filename,
+    base64: fileBuffer.toString("base64"),
+    properties: {
+      sandbox: true,
+      webhooks: {
+        status: `${NGROK_URL}/webhook/{STATUS}/${scanId}/${submission._id}`,
       },
-    };
+      cheatDetection: true,
+      aiGeneratedText: { detect: true },
+    },
+  };
 
-    // Submit the file for plagiarism scanning
-    await copyleaks.submitFileAsync(token, scanId, scanPayload);
-  } catch (error) {
-    console.error("Error scanning file:", error);
+  try {
+    await copyleaks.createScan(token, scanOptions);
+    console.log(`Scan ${scanId} submitted successfully.`);
+    return scanId;
+  } catch (err) {
+    console.error("Error submitting scan:", err);
+    throw err;
   }
-};
-
-
+}
 
 module.exports = { scanFile };

@@ -20,61 +20,8 @@
         <span>AssignHub</span>
         <i class="fas fa-check-circle"></i>
       </h1>
-      <i class="fas fa-bars menu-toggle"> </i>
-
       <ul>
         <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-        <div class="menu">
-          <% if (user.role === "student") { %>
-          <li>
-            <a href="/view-assignments"><i class="fas fa-book"></i> View Assignments <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="count"></span></a>
-          </li>
-          <li>
-            <a href="/view-feedback"><i class="fas fa-comments"></i> View Feedback <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="review-count"></span></a>
-          </li>
-          <li>
-            <a href="/submission-history"><i class="fas fa-history"></i> Submission History</a>
-          </li>
-          <li>
-            <a href="/approved-request-view"><i class="fas fa-approve"></i> Submission History</a>
-          </li>
-          <li>
-            <a href="/student-manage-course"><i class="fas fa-user-edit"></i>Manage Course</a>
-          </li>
-          <% } else if (user.role === "lecturer") { %>
-          <li>
-            <a href="/create-assignments"><i class="fas fa-plus-circle"></i> Create Assignments</a>
-          </li>
-          <li>
-            <a href="/view-submissions"><i class="fas fa-file-alt"></i> View Submissions <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="lecturer-count"></span></a>
-          </li>
-          <li>
-            <a href="/assignment-analytics"><i class="fas fa-chart-line"></i> Submission Overview</a>
-          </li>
-          <li>
-            <a href="/request-submissions"><i class="fas fa-tasks"></i>Request Submission <span style="display: none;text-align: center; width: 30px; height: 30px; padding: 5px; background: red; color: #fff; border-radius: 50%;justify-items: center;" class="lecturer-count"></span></a>
-          </li>
-          <li>
-            <a href="/lecturer-manage-course"><i class="fas fa-user-edit"></i> Manage Course</a>
-          </li>
-          <li>
-            <a href="/manage-plagiarism"><i class="fas fa-shield-alt"></i> Manage Plagiarism</a>
-          </li>
-          <% } else if (user.role === "admin") { %>
-          <li>
-            <a href="/manage-users"><i class="fas fa-users"></i> Manage Users</a>
-          </li>
-          <li>
-            <a href="/platform-analytics"><i class="fas fa-chart-bar"></i> Platform Analytics</a>
-          </li>
-          <li>
-            <a href="/generate-lecturerId"><i class="fas fa-cogs"></i> Generate Lecturer ID</a>
-          </li>
-          <li>
-            <a href="/admin-manage-course"><i class="fas fa-user-edit"></i> Manage course</a>
-          </li>
-          <% } %>
-        </div>
         <li><a id="logout"><i class="fas fa-sign-in-alt"></i> Logout</a></li>
         <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
       </ul>
@@ -163,20 +110,10 @@
   <script src="/socket.io/socket.io.js"></script>
   
   <script>
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navMenu = document.querySelector('header ul');
-
-    // Toggle navigation menu
-    menuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('show-menu');
-    });
-
-
-    // Optionally, you can add logic to toggle the sidebar for mobile view
-    // User Logout
     const logout = document.querySelector("#logout");
 
     logout.addEventListener("click", async () => {
+      console.log('clicked')
       try {
         const res = await fetch("/auth/logout", {
           method: "POST",

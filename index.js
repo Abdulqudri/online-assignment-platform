@@ -16,6 +16,7 @@ const plagiarismRoutes = require("./routes/plagiarismRoutes")
 const checkAuth = require("./middleware/checkAuth")
 const requestRoutes = require("./routes/requestRoutes")
 const AssignmentSubmission = require("./model/AssignmentSubmission")
+const createAdmin = require("./util/createAdmin")
 
 
 const port = process.env.PORT
@@ -51,7 +52,7 @@ app.use(session({
   store: store
 }));
 
-
+createAdmin()
 io.on("connection", (socket) => {
   // ...
 });
