@@ -1,0 +1,210 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    background-color: #f1e6ea;
+    color: #6a0dad;
+    line-height: 1.8;
+  }
+
+  /* Navigation Bar */
+  nav {
+    background: #6a0dad;
+    color: #fff;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  nav h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  nav ul li a:hover {
+    color: #d8bfd8;
+  }
+
+  /* Hamburger Menu */
+  .menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #fff;
+  }
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 50px 20px;
+    background: url("/public/images/welcomeimage.jpg") no-repeat center
+      center;
+    background-size: cover;
+    height: 60vh;
+    position: relative;
+  }
+
+  .hero h2 {
+    color: #6a0dad;
+    margin-bottom: 15px;
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+  }
+
+  .hero .btn {
+    background-color: #6a0dad;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  .hero .btn:hover {
+    background-color: #5a0a8c;
+  }
+
+  /* Features Section */
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 30px 20px;
+    background-color: #f9fafb;
+  }
+
+  .feature {
+    flex: 1 1 calc(50% - 20px);
+    background: #fff;
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .feature i {
+    color: #6a0dad;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  /* Footer */
+  footer {
+    background: #f9f9f9;
+    border-top: 3px solid #6a0dad;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  .contact-section h2 {
+    color: #6a0dad;
+    margin-bottom: 15px;
+  }
+
+  .contact-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .contact-section li {
+    margin-bottom: 10px;
+    color: #555;
+  }
+
+  .contact-section a {
+    color: #6a0dad;
+    text-decoration: none;
+  }
+
+  .contact-section a:hover {
+    text-decoration: underline;
+  }
+
+  .right-reserved {
+    font-size: 0.9rem;
+    margin-top: 20px;
+    color: #555;
+  }
+
+  /* Mobile Menu */
+  @media (max-width: 768px) {
+    nav ul {
+      flex-direction: column;
+      gap: 10px;
+      display: none; /* Hide by default */
+    }
+
+    nav ul.active {
+      background-color: #555;
+      position: absolute;
+      padding: 10px;
+      top: 20px;
+      right: 50px;
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      transition: max-height 0.3s ease-in-out;
+      z-index: 1000;
+      /* Show when active */
+    }
+    .menu-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-toggle {
+      display: flex;
+    }
+    .hero {
+      padding: 40px 10px;
+      height: 100vh;
+    }
+    .hero h2 {
+      font-size: 1.6rem;
+    }
+    .feature {
+      flex: 1 1 300px;
+      background: #fff;
+      margin: 10px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }

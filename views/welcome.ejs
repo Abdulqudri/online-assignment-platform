@@ -1,285 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to Online Assignment Submission Platform</title>
     <!-- Font Awesome for Modern Icons (CDN) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <!-- Google Fonts for Modern Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/public/css/landingPage.css">
 
-        body {
-            background-color: #F1E6EA;
-            color: #6A0DAD;
-            line-height: 1.8;
-        }
-
-        /* Navigation Bar */
-        nav {
-            background: #6A0DAD;
-            color: #fff;
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
-
-        nav h1 {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #fff;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            transition: max-height 0.3s ease-in-out;
-            overflow: hidden;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        nav ul li a:hover {
-            color: #D8BFD8;
-        }
-
-        /* Hamburger Menu */
-        .menu-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #fff;
-        }
-
-        /* Mobile Menu */
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column;
-                gap: 10px;
-                display: none; /* Hide by default */
-            }
-
-            nav ul.active {
-                background-color: #555;
-            position: absolute;
-            padding: 10px;
-            top: 20px;
-            right: 50px;
-            list-style: none;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            transition: max-height 0.3s ease-in-out;
-            z-index: 1000;
-             /* Show when active */
-            }
-            .menu-bar{
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .menu-toggle {
-                display: flex;
-            }
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 50px 20px;
-            background: url('/public/images/welcomeimage.jpg') no-repeat center center;
-            background-size: cover;
-            height: 60vh;
-            position: relative;
-        }
-
-        .hero h2 {
-            color: #6A0DAD;
-            margin-bottom: 15px;
-            font-size: 2rem;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .hero .btn {
-            background-color: #6A0DAD;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .hero .btn:hover {
-            background-color: #5A0A8C;
-        }
-
-        /* Features Section */
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 30px 20px;
-            background-color: #f9fafb;
-        }
-
-        .feature {
-            flex: 1 1 calc(50% - 20px);
-            background: #fff;
-            margin: 10px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature i {
-            color: #6A0DAD;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        /* Footer */
-        footer {
-            background: #F9F9F9;
-            border-top: 3px solid #6A0DAD;
-            padding: 20px;
-            text-align: center;
-            color: #333;
-        }
-
-        .contact-section h2 {
-            color: #6A0DAD;
-            margin-bottom: 15px;
-        }
-
-        .contact-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .contact-section li {
-            margin-bottom: 10px;
-            color: #555;
-        }
-
-        .contact-section a {
-            color: #6A0DAD;
-            text-decoration: none;
-        }
-
-        .contact-section a:hover {
-            text-decoration: underline;
-        }
-
-        .right-reserved {
-            font-size: 0.9rem;
-            margin-top: 20px;
-            color: #555;
-        }
-    </style>
-</head>
-
-<body>
+  <body>
     <nav>
-        <div class="menu-bar">
+      <div class="menu-bar">
         <h1>
-            <i class="fas fa-tasks"></i>
-            AssignHub
-            <i class="fas fa-check-circle"></i>
+          <i class="fas fa-tasks"></i>
+          AssignHub
+          <i class="fas fa-check-circle"></i>
         </h1>
         <div class="menu-toggle" id="menu-toggle">
-            <i class="fas fa-bars"></i>
+          <i class="fas fa-bars"></i>
         </div>
-    </div>
-    <ul id="menu">
-        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a></li>
-        <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
-    </ul>
-</nav>
-    
+      </div>
+      <ul id="menu">
+        <li>
+          <a href="/"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li>
+          <a href="/auth/register"><i class="fas fa-user-plus"></i> Register</a>
+        </li>
+        <li>
+          <a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        </li>
+        <li>
+          <a href="/about"><i class="fas fa-info-circle"></i> About</a>
+        </li>
+      </ul>
+    </nav>
 
     <section class="hero">
-        <h2 id="dynamic-heading">Welcome to the Online Assignment Submission Platform</h2>
-        <p>
-            Streamline assignment submissions, evaluations, and academic management. Accessible, secure, and user-friendly.
-        </p>
-        <a href="/auth/register" class="btn">Get Started</a>
+      <h2 id="dynamic-heading">
+        Welcome to the Online Assignment Submission Platform
+      </h2>
+      <p>
+        Streamline assignment submissions, evaluations, and academic management.
+        Accessible, secure, and user-friendly.
+      </p>
+      <a href="/auth/register" class="btn">Get Started</a>
     </section>
 
     <section class="features">
-        <div class="feature">
-            <i class="fas fa-file-upload"></i>
-            <h3>Easy Submission</h3>
-            <p>Upload assignments securely and receive instant confirmation.</p>
-        </div>
-        <div class="feature">
-            <i class="fas fa-search"></i>
-            <h3>Plagiarism Check</h3>
-            <p>Ensure originality with integrated plagiarism detection tools.</p>
-        </div>
-        <div class="feature">
-            <i class="fas fa-comment-dots"></i>
-            <h3>Real-time Feedback</h3>
-            <p>Receive timely feedback to improve your academic work.</p>
-        </div>
-        <div class="feature">
-            <i class="fas fa-chart-line"></i>
-            <h3>Track Progress</h3>
-            <p>Stay updated with assignment scores and performance reports.</p>
-        </div>
+      <div class="feature">
+        <i class="fas fa-file-upload"></i>
+        <h3>Easy Submission</h3>
+        <p>Upload assignments securely and receive instant confirmation.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-search"></i>
+        <h3>Plagiarism Check</h3>
+        <p>Ensure originality with integrated plagiarism detection tools.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-comment-dots"></i>
+        <h3>Real-time Feedback</h3>
+        <p>Receive timely feedback to improve your academic work.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-chart-line"></i>
+        <h3>Track Progress</h3>
+        <p>Stay updated with assignment scores and performance reports.</p>
+      </div>
     </section>
 
     <footer>
-        <section class="contact-section">
-            <h2>Contact Us</h2>
-            <ul>
-                <li><i class="fas fa-phone-alt"></i> Phone: +2349033375279</li>
-                <li><i class="fas fa-envelope"></i> Email: <a href="mailto:1910310067@udusok.edu.ng">1910310067@udusok.edu.ng</a></li>
-                <li><i class="fas fa-twitter"></i> Twitter: <a href="https://twitter.com/al_harbeeb" target="_blank">@al_harbeeb</a></li>
-            </ul>
-        </section>
-        <div class="right-reserved">
-            <p>&copy; 2024 Online Assignment Submission Platform. Designed with <i class="fas fa-heart"></i>.</p>
-        </div>
+      <section class="contact-section">
+        <h2>Contact Us</h2>
+        <ul>
+          <li><i class="fas fa-phone-alt"></i> Phone: +2349166926727</li>
+          <li>
+            <i class="fas fa-envelope"></i> Email:
+            <a href="mailto:abdulqudir2003@gmail.com"
+              >abdulqudir2003@gmail.com</a
+            >
+          </li>
+          <li>
+            <i class="fas fa-twitter"></i> Twitter:
+            <a href="https://twitter.com/al_harbeeb" target="_blank"
+              >@abdulqudri1</a
+            >
+          </li>
+        </ul>
+      </section>
+      <div class="right-reserved">
+        <p>
+          &copy; 2025 Online Assignment Submission Platform. Designed with
+          <i class="fas fa-heart"></i>.
+        </p>
+      </div>
     </footer>
 
     <script>
-        const toggle = document.getElementById('menu-toggle');
-        const menu = document.getElementById('menu');
+      const toggle = document.getElementById("menu-toggle");
+      const menu = document.getElementById("menu");
 
-        toggle.addEventListener('click', () => {
-            menu.classList.toggle('active');
-        });
+      toggle.addEventListener("click", () => {
+        menu.classList.toggle("active");
+      });
     </script>
-</body>
-
+  </body>
 </html>

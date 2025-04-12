@@ -1,0 +1,198 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #F1E6EA;
+    color: #6A0DAD;
+    line-height: 1.8;
+}
+
+/* Navigation Bar */
+nav {
+    background: #6A0DAD;
+    color: #fff;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+nav h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+nav ul li a:hover {
+    color: #D8BFD8;
+}
+
+/* Hamburger Menu */
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #fff;
+}
+
+/* Mobile Menu */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+        display: none; /* Hide by default */
+    }
+
+    nav ul.active {
+        background-color: #555;
+    position: absolute;
+    padding: 10px;
+    top: 20px;
+    right: 50px;
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    transition: max-height 0.3s ease-in-out;
+    z-index: 1000;
+     /* Show when active */
+    }
+    .menu-bar{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+}
+
+/* Login Section */
+.login-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+    text-align: center;
+    color: #6A0DAD;
+    margin-bottom: 25px;
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-container label {
+    font-weight: bold;
+}
+
+.login-container input,
+select,
+button {
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.login-container input:focus,
+select:focus {
+    border-color: #6A0DAD;
+    outline: none;
+    box-shadow: 0 0 5px rgba(106, 13, 173, 0.5);
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    background: white;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6A0DAD;
+    font-size: 1.2em;
+}
+
+.login-container button {
+    background-color: #6A0DAD;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.login-container button:hover {
+    background-color: #5A0A8C;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: -15px;
+}
+
+.link-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.link-container a {
+    color: #6A0DAD;
+    text-decoration: none;
+}
+
+.link-container a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    background: #F9F9F9;
+    border-top: 3px solid #6A0DAD;
+    padding: 30px;
+    text-align: center;
+}

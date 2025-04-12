@@ -88,7 +88,7 @@ const authController = {
       }
 
       // Hash the password
-      // const hash = await hashPass(password);
+      const hash = await hashPass(password);
       // const hash1 = await hashPass("Adminpass123")
       // console.log(hash1)
 

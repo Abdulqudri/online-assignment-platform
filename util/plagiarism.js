@@ -1,16 +1,7 @@
-// src/lib/copyleaks.js
-const plagiarismChecker = require("plagiarism-checker");
-const Copyleaks = 
-  // if it’s a named export
-  (plagiarismChecker.Copyleaks)
-  // or if it’s the default export
-  || plagiarismChecker.default
-  // or if the module itself is the constructor
-  || plagiarismChecker;
-
 const path = require("path");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
+const CopyleaksCloud = require("plagiarism-checker");
 
 const EMAIL = process.env.EMAIL;
 const API_KEY = process.env.COPY_LEAK_API_KEY;
@@ -21,19 +12,11 @@ if (!EMAIL || !API_KEY) {
 }
 
 // Now Copyleaks should be a valid constructor
-const copyleaks = new Copyleaks({
-  email: EMAIL,
-  apiKey: API_KEY,
-});
+const copyleaks = new CopyleaksCloud()
 
-let _authToken = null;
 async function getAuthToken() {
-  if (_authToken) return _authToken;
   try {
-    const { accessToken, expiresIn } = await copyleaks.loginAsync();
-    _authToken = accessToken;
-    setTimeout(() => { _authToken = null; }, (expiresIn - 60) * 1000);
-    return _authToken;
+    await copyleaks.login(EMAIL,API_KEY)
   } catch (err) {
     console.error("Copyleaks login failed:", err);
     throw err;
@@ -42,7 +25,7 @@ async function getAuthToken() {
 
 async function scanFile(submission) {
   const scanId = uuidv4();
-  const token = await getAuthToken();
+  await getAuthToken();
 
   const filename = path.basename(submission.filePath);
   const fullPath = path.join(__dirname, "..", "uploads", filename);
@@ -70,7 +53,7 @@ async function scanFile(submission) {
   };
 
   try {
-    await copyleaks.createScan(token, scanOptions);
+    await copyleaks.createByFile(fileBuffer);
     console.log(`Scan ${scanId} submitted successfully.`);
     return scanId;
   } catch (err) {

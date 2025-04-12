@@ -1,6 +1,6 @@
 const express = require("express")
 const checkPermission = require("../middleware/checkPermission")
-const { lecturerId, deleteUser, getAllUser, analysis } = require("../controller/usercontroller")
+const { lecturerId, deleteUser, getAllUser, analysis } = require("../controllers/userController")
 
 const router = express.Router()
 

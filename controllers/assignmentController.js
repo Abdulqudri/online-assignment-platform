@@ -254,7 +254,7 @@ module.exports = (io) => {
             console.error("Error handling notifications:", notificationError);
           }
          
-          await scanFile(submission._id)
+          //await scanFile(submission._id)
       
           res.status(201).json({
             success: true,
