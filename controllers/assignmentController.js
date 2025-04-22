@@ -1,5 +1,3 @@
-const { scanFile } = require("../util/plagiarism");
-
 module.exports = (io) => { 
     
     const Assignment = require("../model/Assignment");

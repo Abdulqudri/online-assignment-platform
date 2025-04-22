@@ -45,6 +45,6 @@
         <% if (assignment.filePath && (assignment.filePath.split('.').pop().toLowerCase() !== 'docx')) { %>
             <a id="download-link" href="/documents/download/<%= assignment.filePath.replace('/uploads/', '') %>" download>Download Submission</a>
         <% } %>
-        <a href="/view-assignments">Back to Submissions</a>
+        <a href="/view-submissions">Back to Submissions</a>
     </div>
 </div>

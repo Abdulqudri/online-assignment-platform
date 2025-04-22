@@ -44,7 +44,7 @@
                 row.innerHTML = `
                     <td>${item.submittedBy.userId}</td>
                     <td>${item.submittedBy.name || 'Unknown'}</td>
-                    <td>${item.plagiarismScore }</td>
+                    <td>${item.plagiarismScore || 'Nil' }</td>
                     <td class="action-buttons">
                         <button onclick="flagAssignment('${item._id}')">Flag</button>
                         <button onclick="runPlagiarismCheck('${item._id}')">Run Check</button>
